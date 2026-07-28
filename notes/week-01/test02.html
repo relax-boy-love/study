@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // console.log(typeof "hello");       // 你的预测：String
+        // console.log(typeof 123);           // 你的预测：Number
+        // console.log(typeof true);          // 你的预测：Boolean
+        // console.log(typeof undefined);     // 你的预测：undefined
+        // console.log(typeof null);          // 你的预测：Object
+        // console.log(typeof {});            // 你的预测：Object
+        // console.log(typeof []);            // 你的预测：Object
+        // console.log(typeof function () { });// 你的预测：function
+        // console.log(typeof NaN);           // 你的预测：Number
+        // console.log(typeof 10n);           // 你的预测：bigint
+        const values = [
+            "hello",
+            123,
+            true,
+            undefined,
+            null,
+            [],
+            {},
+            function () { },
+            NaN
+        ];
+
+        for (let i = 0; i < values.length; i++) {
+            //console.log(values[i], typeof values[i]);
+        }
+
+
+
+
+        function getDataType(value) {
+            if (value === null) {
+                return "null";
+            }
+            /* 使用Array.isArray判断value 返回值是true或者false */
+            if (Array.isArray(value)) {
+                return "array";
+            }
+            /* 使用Number.isNaN判断 返回值是true或者false*/
+            if (Number.isNaN(value)) {
+                return "nan";
+            }
+
+            return typeof value;
+        }
+        console.log(getDataType("hello"));
+        console.log(getDataType(123));
+        console.log(getDataType(true));
+        console.log(getDataType(undefined));
+        console.log(getDataType(null));
+        console.log(getDataType([]));
+        console.log(getDataType({}));
+        console.log(getDataType(function () { }));
+        console.log(getDataType(NaN));
+        console.log(getDataType(10n));
+
+
+
+        console.log(Number("123"));     // 预测：123
+        console.log(Number(""));        // 预测：0
+        console.log(Number("hello"));   // 预测：NaN
+        console.log(Number(null));      // 预测：0
+
+        console.log(Boolean(0));        // 预测：false
+        console.log(Boolean(""));       // 预测：false
+        console.log(Boolean("false"));  // 预测：true
+        console.log(Boolean([]));       // 预测：true
+
+        console.log(1 + "2");           // 预测："12"
+        console.log("5" - 2);           // 预测：3
+        // ==比较时可能进行类型转换。===不会转换类型，类型和值都相同才返回true。
+
+        console.log(0 == false);          // 预测：true
+        console.log(0 === false);         // 预测：false
+        console.log("" == false);         // 预测：true
+        console.log("" === false);        // 预测：false
+        console.log(null == undefined);   // 预测：true
+        console.log(null === undefined);  // 预测：false
+        console.log("1" == 1);            // 预测：true
+        console.log("1" === 1);           // 预测：false
+
+        function sumArray(arr) {
+            // 返回数组中所有数字的总和
+
+            let sum = 0;
+
+
+            for (let i = 0; i < arr.length; i++) {
+                const element = arr[i];
+
+                if (typeof element === "number" && !Number.isNaN(element)) {
+                    sum += element;
+                }
+            }
+
+            return sum;
+        }
+
+
+        console.log(sumArray([1, 2, 3, 4]));       // 10
+        console.log(sumArray([]));                 // 0
+        console.log(sumArray([-1, 2, -3]));        // -2
+        console.log(sumArray([1, "2", 3, null]));  // 4
+        console.log(sumArray([1, NaN, 2]));        // 3
+        console.log(sumArray(["1", "2"]));         // 0
+
+        // typeof null是什么？   object
+        // 如何判断数组？         使用Array.isArray()方法
+        // 如何判断NaN？          使用Number.isNaN()方法
+        // == 与 === 有什么区别？  == 可能转换类型   === 不允许转换类型
+        // 哪些常见值转换为布尔值后是false？ 0,"",false,NaN,undefined,null
+    </script>
+</body>
+
+</html>
