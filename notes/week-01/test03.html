@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        
+
+        // 全局作用域
+        const globalName = "全局变量";
+
+        function showName() {
+            console.log(globalName);
+        }
+
+        showName();
+
+        // 函数作用域
+        function test() {
+            const functionName = "函数变量";
+            console.log(functionName);
+        }
+        test();
+        // console.log(functionName);
+        // 能否正常输出？ 不能
+        // 如果不能，会出现什么类型的错误？ functionName is not defined
+        // 为什么函数外不能访问这个变量？   因为functionName定义在函数内部只能当前函数才能访问
+        if (true) {
+            const message = "hello";
+            let count = 1;
+
+            console.log(message);
+            console.log(count);
+        }
+
+        // console.log(message);
+        // console.log(count);
+        // 哪些输出可以正常执行？ if内的可以正常执行
+        // 哪一行最先报错？ 39行开始报错
+        // 报错后，后面的代码是否还会继续执行？ 后面代码不会执行
+
+
+
+
+
+        const value = "全局";
+
+        function outer1() {
+            const value = "outer";
+
+            function inner() {
+                const value = "inner";
+                console.log(value);
+            }
+
+            inner();
+        }
+
+        outer1();
+
+        // 最终输出哪个value？  inner
+        // 为什么不会输出另外两个？ 因为作用域链的形式是先在当前作用域去找再去找外层嵌套在找全局
+        // 如果删除inner()中的const value，会输出什么？ outer
+        // 如果再删除outer()中的const value，会输出什么？ 全局
+
+        const globalValue = "global";
+
+        function outer2() {
+            const outerValue = "outer";
+
+            function inner() {
+                const innerValue = "inner";
+
+                console.log(globalValue);
+                console.log(outerValue);
+                console.log(innerValue);
+            }
+
+            inner();
+        }
+
+        outer2();
+
+        //         全局作用域：
+        //         拥有哪些变量？ globalValue
+
+        //         outer函数作用域：
+        //         拥有哪些变量？ outerValue
+        //         可以访问哪些外部变量？ globalValue
+
+        //         inner函数作用域：
+        //         拥有哪些变量？ innerValue
+        //         可以访问哪些外部变量？ outerValue globalValue
+
+        console.log(username);
+
+        var username = "小明";
+
+        console.log(username);
+        // 第一次输出什么？ undefined
+        // 第二次输出什么？ 小明
+        // 为什么第一次不会直接报告“变量未定义”？ 因为var有声明提升相当于是 var username;
+
+        console.log(age);
+
+        let age = 18;
+
+        console.log(age);
+        // 第一行能否正常输出？ 不能
+        // 如果不能，会是什么错误类型？ Cannot access 'age' before initialization
+        // 第二个console.log有没有机会执行？ 没有
+        // 暂时性死区从哪里开始，到哪里结束？ 在第一个输出开始在定义 let age 结束
+
+        showMessage1();
+
+        function showMessage1() {
+            console.log("hello");
+        }
+        // 函数声明之前能否调用？ 可以
+        // 如果可以，为什么？  函数名和函数体一起提升
+
+        showMessage2();
+
+        const showMessage2 = function () {
+            console.log("hello");
+        };
+        // 这次能否在声明前调用？ 不能
+        // 它和上一题的函数声明有什么区别？ 因为它是以const 定义 在定义前是暂时性死区
+        // showMessage遵循函数声明规则，还是const变量规则？ const
+
+        if (true) {
+            var score = 100;
+        }
+
+        console.log(score);
+        // 能否访问score？ 可以
+        // var是否具有块级作用域？ 不具备
+
+
+        if (true) {
+            let level = 5;
+        }
+
+        console.log(level);
+
+        // 能否访问level？ 不能
+        // 如果不能，错误类型是什么？ level is not defined
+        // level的有效作用域在哪里？ 在if的大括号内
+
+
+        function createCounter() {
+            let count = 0;
+
+            return function () {
+                count++;
+                return count;
+            };
+        }
+
+        const counterA = createCounter();
+
+        console.log(counterA());
+        console.log(counterA());
+        console.log(counterA());
+
+        const counterB = createCounter();
+
+        console.log(counterB());
+        console.log(counterA());
+
+        // 五个console.log分别输出什么？ 1，2，3，1，4
+        // 为什么调用counterA()时，count没有每次恢复为0？ 因为在函数里面return count； count被重新赋值了
+        // counterA保存了什么？ count改变的值
+        // counterA和counterB使用的是同一个count吗？ 不是
+        // 外部代码能否直接修改count？ 不能
+
+        // 全局作用域
+        // ├── createCounter
+        // ├── counterA
+        // └── counterB
+
+        // 第一次调用createCounter创建的作用域
+        // └── 保存了什么变量？ countA
+
+        // 第二次调用createCounter创建的作用域
+        // └── 保存了什么变量？ countB
+
+        // counterA指向：countA
+        // counterB指向：countB
+
+        
+        // 计算器
+
+
+
+        function createCounter(initialValue) {
+            let count = initialValue;
+
+            return {
+                increment: function () {
+                    // count增加1并返回
+                    count++;
+                    return count
+                },
+
+                decrement: function () {
+                    // count减少1并返回
+                    count--;
+                    return count
+                },
+
+                getValue: function () {
+                    // 不修改count，只返回当前值
+                    return count
+                },
+
+                reset: function () {
+                    count = initialValue;
+                    return count
+                }
+            };
+        }
+        const counter = createCounter(10);
+
+        console.log(counter.getValue());
+        console.log(counter.increment());
+        console.log(counter.increment());
+        console.log(counter.decrement());
+        console.log(counter.reset());
+        console.log(counter.getValue());
+
+
+        function once(fn) {
+            // 变量1：记录fn是否执行过
+            // 变量2：保存第一次执行的结果
+            let hasRun = false;
+            let ruslt;
+
+            return function (...args) {
+                // 如果没有执行过：
+                if (hasRun === false) {
+                    reuslt = fn(...args);
+                    hasRun = true;
+                }
+                // 1. 调用fn
+                // 2. 传入args
+                // 3. 保存结果
+                // 4. 修改执行状态
+
+                // 返回第一次保存的结果
+                return reuslt
+            };
+        }
+
+        function pay(amount) {
+            console.log("支付了：" + amount);
+            return "支付成功";
+        }
+
+        const payOnce = once(pay);
+
+        console.log(payOnce(100));
+        console.log(payOnce(200));
+        console.log(payOnce(300));
+
+        // pay()只执行一次
+        // "支付了：100"只打印一次
+        // 后两次不能再次支付
+        // 三次调用都返回第一次执行结果
+        // 不使用全局变量
+
+
+        function memoize(fn) {
+            const cache = {};
+
+            return function (number) {
+
+                if (cache[number] === undefined) {
+                    cache[number] = fn(number);
+                }
+
+                return cache[number]
+                // 第一步：检查cache中是否已经保存number对应的结果
+
+                // 如果存在，直接返回缓存结果
+
+                // 如果不存在，执行fn(number)
+
+                // 将计算结果保存在cache[number]中
+
+                // 返回计算结果
+            };
+        }
+
+        function calculateSquare(number) {
+            console.log("正在计算：" + number);
+            return number * number;
+        }
+
+        const cachedSquare = memoize(calculateSquare);
+
+        console.log(cachedSquare(5));
+        console.log(cachedSquare(5));
+        console.log(cachedSquare(6));
+        console.log(cachedSquare(5));
+
+        
+        // 闭包练习	             返回到外部的内容	        闭包需要保存什么
+        // createCounter	    包含四个方法的对象	       count和重置所需的数据
+        // once	                包装后的新函数	           原函数、执行状态、首次结果
+        // memoize	            带缓存功能的新函数	       原函数和缓存对象
+
+        // 什么是作用域链？                             先找自己作用域的在找外层在找全局
+        // var、let和const在提升方面有什么区别？        三者的声明都会被JavaScript提前处理，但表现不同：
+                                                        // var：声明提升，并初始化成undefined
+                                                        // let：声明提升，但初始化前处于暂时性死区
+                                                        // const：声明提升，但初始化前处于暂时性死区
+        // 什么是暂时性死区？                          从当前作用域开始→ 一直到let或const声明语句执行完成
+        // 返回一个函数就一定体现了闭包吗？              不是 必须要使用外部函数的变量
+        // 闭包为什么能够保存外层变量？                 因为内部在调用没有结束所以变量不会改变
+        // 两次调用createCounter()为什么产生独立计数？  因为它创建了不同的实列
+        // once为什么需要保存执行状态和第一次结果？      因为害怕重复点击多次执行
+        // memoize为什么能够避免重复计算？              因为它会先去匹配之前是否有计算 如果有直接返回结果
+        // 闭包一定会导致内存泄漏吗？                   已经不再需要的数据，是否仍然被长期引用而无法释放
+        // 什么情况下缓存函数可能造成内存问题？          不断传入不同参数  缓存持续增长  缓存没有数量限制  缓存没有过期时间  不需要缓存后仍然保留包装函数
+
+                 
+
+
+
+
+        // 全局作用域
+        // ├── createCounter
+        // └── counter
+        // ↓
+        // 返回的对象
+        // ├── increment函数
+        // ├── decrement函数
+        // ├── getValue函数
+        // └── reset函数
+        // ↓
+        // 共同引用createCounter调用时的作用域
+        // ├── 保存什么变量？  count
+        // └── 保存什么初始参数？   initialValue
+    </script>
+</body>
+
+</html>
