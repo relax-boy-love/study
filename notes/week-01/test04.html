@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 第一部分：默认绑定
+        "use strict";
+
+        function showName1() {
+            console.log(this);
+        }
+
+        showName1();
+        // 这是哪一种调用方式？                 直接调用
+        // this指向什么？                      普通函数直接调用
+        // ├── 非严格模式：this通常是全局对象  全局对象 = windows
+        // └── 严格模式：this是undefined
+        // 如果执行this.name，可能发生什么？    可能会报错
+
+        // 第二部分：隐式绑定
+
+        const student = {
+            name: "小红",
+
+            introduce: function () {
+                console.log(this.name);
+            }
+        };
+
+        student.introduce();
+        // 谁调用了introduce？  student
+        // this指向谁？         student对象
+        // 最终输出什么？       小红
+
+        const user1 = {
+            name: "小明",
+
+            showName: function () {
+                console.log(this.name);
+            }
+        };
+
+        const admin = {
+            name: "管理员",
+            showName: user1.showName
+        };
+
+        admin.showName();
+
+        // showName最开始定义在哪个对象中？             user
+        // 最后通过哪个对象调用？                       admin
+        // this由定义位置决定，还是调用位置决定？       调用位置决定 简单理解为谁.this就指向谁
+        // 最终输出哪个名字？                           管理员
+
+        "use strict";
+
+        const user2 = {
+            name: "小明",
+
+            showThis: function () {
+                console.log(this);
+            }
+        };
+
+        const fn = user2.showThis;
+
+        fn();
+
+        // 调用时前面还有user.吗？                      没有
+        // 这次属于默认绑定还是隐式绑定？                默认绑定
+        // 严格模式下this是什么？                       undefined
+        // 为什么把对象方法赋值给变量后可能丢失this？     将对象方法赋值给变量后，调用形式从对象.方法()变成了普通的函数()。普通函数的this由调用位置决定，因此失去原对象的隐式绑定。
+
+
+        // 第三部分 箭头函数
+
+        "use strict";
+
+        const user3 = {
+            name: "小明",
+
+            showName: function () {
+                function inner() {
+                    console.log(this);
+                }
+
+                inner();
+            }
+        };
+
+        user3.showName();
+
+        // showName中的this指向谁？                     user
+        // inner()属于直接调用还是对象方法调用？          直接调用
+        // inner中的this是否自动继承showName的this？     否(我猜的为我讲解一下)
+        // 严格模式下最终输出什么？                      undefined
+
+        "use strict";
+
+        const user4 = {
+            name: "小明",
+
+            showName: function () {
+                const inner = () => {
+                    console.log(this.name);
+                };
+
+                inner();
+            }
+        };
+
+        user4.showName();
+        // showName中的this指向谁？              user
+        // 箭头函数是否拥有自己的this？             不拥有
+        // 箭头函数去哪里寻找this？               在自己的外层作用域中寻找this
+        // 最终输出什么？                       小明
+
+
+
+
+        function introduce(greeting, punctuation) {
+            console.log(greeting + "，我是" + this.name + punctuation);
+        }
+
+        const student1 = {
+            name: "小红"
+        };
+
+        introduce.call(student1, "你好", "！");
+        introduce.apply(student1, ["早上好", "。"]);
+
+        const boundIntroduce = introduce.bind(student1, "欢迎");
+        boundIntroduce("！");
+
+        // call中的this指向谁？                                 student1    
+        // call传入了几个业务参数？                             2
+        // apply为什么使用数组？                                apply传参方法就是需要数组
+        // 执行bind时，原函数是否立即运行？                     否
+        // boundIntroduce("！")的greeting来自哪里？           前面就已经传入参数欢迎了
+        // punctuation来自哪里？                               后面调用时传入
+        // 最后会使用哪个对象的name？                           student1
+
+
+        function Person(name, age) {
+            this.name = name;
+            this.age = age;
+
+            this.introduce = function () {
+                console.log("我是" + this.name + "，今年" + this.age + "岁");
+            };
+        }
+
+        const personA = new Person("小明", 20);
+        const personB = new Person("小红", 18);
+
+        personA.introduce();
+        personB.introduce();
+
+        // new Person("小明", 20)执行时，Person中的this指向谁？ personA
+        // personA和personB是同一个对象吗？                     不是
+        // personA.introduce()中的this指向谁？                  personA
+        // 两次调用分别输出什么？                                  我是小明，今年20岁  我是小红，今年18岁
+        // 如果忘记写new，直接执行Person("小明", 20)，严格模式下this是什么？   undefined
+        // 箭头函数能否通过new调用？先预测，不要查答案。          不能 箭头函数没有this
+
+
+        // 练习
+        function introduce(greeting, city) {
+            return greeting + "，我是" + this.name + "，来自" + city;
+        }
+
+        const userA = {
+            name: "小明"
+        };
+
+        // 使用call调用introduce，要求：
+        // this指向userA
+        // greeting传入"你好"
+        // city传入"上海"
+
+        const resultA = introduce.call(/* 填写参数 */userA, "你好", "上海");
+
+        console.log(resultA);
+
+        // this指向userB
+        // greeting传入"早上好"
+        // city传入"北京"
+        // 业务参数必须放进数组
+        const userB = {
+            name: "小红"
+        };
+        const resultB = introduce.apply(/* 填写参数 */userB, ["早上好", "北京"]);
+
+        console.log(resultB);
+
+        // this绑定为userA
+        // 提前传入greeting："欢迎"
+        // 调用新函数时再传入city："广州"
+        const boundIntroduce1 = introduce.bind(/* 填写参数 */userA, "欢迎");
+
+        const resultC = boundIntroduce1(/* 填写参数 */"广州");
+
+        console.log(resultC);
+        // 哪两个方法会立即执行introduce？  call apply
+        // 哪个方法只返回新函数？            bind
+        // call和apply唯一的主要传参区别是什么？ apply必须以数组传输
+        // bind创建的新函数为什么不会丢失this？   会创建一个新的“绑定函数”。这个新函数内部已经固定保存
+        // 如果执行boundIntroduce1.call(userB, "深圳")，你预测this会变成userB吗？  不会
+
+
+        const user = {
+            name: "小明"
+        };
+
+        function introduce1(greeting, city) {
+            return greeting + "，我是" + this.name + "，来自" + city;
+        }
+
+        // 第一步：把introduce临时添加到user对象
+        user.mycall = introduce1;
+        // 第二步：通过user调用临时方法，传入两个参数
+        // 第三步：保存返回值
+        const result = user.mycall("你好", "成都")
+
+
+        // 第四步：删除临时属性
+        delete user.mycall;
+
+        // 第五步：打印返回值，并检查user中是否还存在临时属性
+        console.log(result)
+        console.log(user)
+        // 暂时不要写Function.prototype.myCall
+        // 先手动完成一次“添加、调用、删除”
+        // 最后打印user，确保没有残留临时函数
+
+
+        Function.prototype.myCall = function (context, ...args) {
+            const key = Symbol("tempFunction");
+
+            // 将调用myCall的原函数临时放入context
+            context[key] = /* 原函数是谁？ */this;
+
+            // 通过context调用临时方法，并展开args
+            const result = context[key](...args);
+
+            // 删除临时方法
+            delete context[key];
+
+            // 返回原函数执行结果
+            return result;
+        };
+
+        const user6 = {
+            name: "小明"
+        };
+
+        function introduce2(greeting, city) {
+            return greeting + "，我是" + this.name + "，来自" + city;
+        }
+
+        const result1 = introduce2.myCall(user6, "你好", "成都");
+
+
+        console.log(result1);
+        console.log(user6);
+
+
+        const calculator = {
+            base: 10
+        };
+
+        function add(a, b) {
+            return this.base + a + b;
+        }
+
+        console.log(add.myCall(calculator, 2, 3));
+        console.log(calculator);
+
+
+
+        Function.prototype.myBind = function (context, ...bindArgs) {
+            // 保存调用myBind的原函数
+            const originalFunction = this;
+            return function (...callArgs) {
+                return originalFunction.myCall(
+                    context,
+                    ...bindArgs,
+                    ...callArgs
+                );
+            };
+        };
+
+        const boundIntroduce2 = introduce2.myBind(user, "欢迎");
+        boundIntroduce2("成都");
+
+
+        // 1. undefined
+        // 2. 小明
+        // 3. 管理员
+        // 4. undefined
+        // 5. undefined
+        // 6. 小明
+        // 7. 小红
+        // 8. 15
+        // 9. A
+        // 10.小刚
+    </script>
+</body>
+
+</html>
