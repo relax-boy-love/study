@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        function Person1(name) {
+            this.name = name;
+        }
+
+        Person1.prototype.sayHello = function () {
+            return "你好，我是" + this.name;
+        };
+
+        const personA1 = new Person1("小明");
+        const personB1 = new Person1("小红");
+
+        console.log(personA1.name);
+        console.log(personA1.sayHello());
+        console.log(personB1.sayHello());
+
+        console.log(personA1.sayHello === personB1.sayHello);
+        console.log(Object.getPrototypeOf(personA1) === Person1.prototype);
+        console.log(Person1.prototype.constructor === Person1);
+
+        // 六个console.log分别输出什么？ 1 小明 2 你好，我是小明 3 你好，我是小红 4 false 5 true 6 true
+        // name保存在哪里？               new构建的新对象中
+        // sayHello保存在哪里？             prototype中
+        // 两个实例调用的是不是同一个sayHello函数？ 是
+        // Person.prototype.constructor指回谁？ Person
+
+
+        function Person2(name) {
+            this.name = name;
+        }
+
+        Person2.prototype.sayHello = function () {
+            return "你好，我是" + this.name;
+        };
+
+        const personA2 = new Person2("小明");
+
+        console.log(personA2.__proto__ === Person2.prototype);
+        console.log(Object.getPrototypeOf(personA2) === Person2.prototype);
+        console.log(Person2.prototype.__proto__ === Object.prototype);
+        console.log(Object.prototype.__proto__);
+        console.log(personA2.hasOwnProperty("name"));
+        console.log(personA2.hasOwnProperty("sayHello"));
+        console.log("sayHello" in personA2);
+
+        // 1. 七个console.log分别输出什么？   1 true 2 true 3 true 4 null 5 true 6 false 7 true
+
+        // 2. personA2自身有没有name？         有
+
+        // 3. personA2自身有没有sayHello？ 没有
+
+        // 4. 为什么personA2可以调用sayHello？  因为sayHello存在在Person2的原型上
+
+        // 5. hasOwnProperty和in有什么区别？     hasOwnProperty只找自身不找原型 in要找原型
+
+        // 6. 原型链的终点是什么？          null
+
+
+        function Person3(name) {
+            this.name = name;
+        }
+
+        Person3.prototype.role = "普通用户";
+
+        Person3.prototype.sayHello = function () {
+            return "原型方法：" + this.name;
+        };
+
+        const personC = new Person3("小明");
+        const personD = new Person3("小红");
+
+        console.log(personC.role);
+        console.log(personD.role);
+
+        personC.role = "管理员";
+
+        console.log(personC.role);
+        console.log(personD.role);
+
+        console.log(personC.hasOwnProperty("role"));
+        console.log(personD.hasOwnProperty("role"));
+
+        delete personC.role;
+
+        console.log(personC.role);
+        console.log(personC.hasOwnProperty("role"));
+
+        personC.sayHello = function () {
+            return "实例方法：" + this.name;
+        };
+
+        console.log(personC.sayHello());
+        console.log(personD.sayHello());
+        // 1. 十个console.log分别输出什么？ 1.普通用户 2.普通用户 3.管理员 4.普通用户 5.true  6.false 7.普通用户 8.false 9.实例方法：小明 10.原型方法：小红
+
+        // 2. personC.role = "管理员"有没有修改Person.prototype.role？  没有
+
+        // 3. 为什么personD.role没有受到影响？                      因为两个是不同的对象
+
+        // 4. delete personC.role删除的是哪里的属性？               自身实列的
+
+        // 5. 删除后，为什么personC.role又变成了"普通用户"？          自身没有就会去找原型的
+
+        // 6. personC和personD最后调用的是不是同一个sayHello函数？          不是
+
+        // personC
+        // ├── name："小明"
+        // ├── role："管理员"
+        // └── __proto__ → Person3.prototype
+        //                   └── role："普通用户"
+
+        // personD
+        // ├── name："小红"
+        // └── __proto__ → Person3.prototype
+        //                   └── role："普通用户"
+
+
+        function User5(name) {
+            this.name = name;
+        }
+
+        User5.prototype.sayHello = function () {
+            return "你好，我是" + this.name;
+        };
+
+        function Admin5(name, role) {
+            User5.call(this, name);
+            this.role = role;
+        }
+
+        Admin5.prototype = Object.create(User5.prototype);
+        Admin5.prototype.constructor = Admin5;
+
+        Admin5.prototype.manage = function () {
+            return this.name + "正在管理系统";
+        };
+
+        const userA5 = new User5("小红");
+        const adminA5 = new Admin5("小明", "超级管理员");
+
+        console.log(adminA5.name);
+        console.log(adminA5.role);
+        console.log(adminA5.sayHello());
+        console.log(adminA5.manage());
+
+        console.log(adminA5.hasOwnProperty("name"));
+        console.log(adminA5.hasOwnProperty("sayHello"));
+
+        console.log(adminA5.__proto__ === Admin5.prototype);
+        console.log(Admin5.prototype.__proto__ === User5.prototype);
+        console.log(Admin5.prototype.constructor === Admin5);
+        // 1. 九个console.log分别输出什么？ 1.小明 2.超级管理员 3.你好，我是小明 4.小明正在管理系统 5.true 6.false 7.true 8.true 9.true
+
+        // 2. adminA5的name来自哪一行代码？ User5.call(this, name);
+
+        // 3. adminA5为什么能够调用sayHello？   因为Admin5.prototype = Object.create(User5.prototype);
+
+        // 4. adminA5为什么能够调用manage？     Admin5.prototype里面就有manage
+
+        // 5. User5.call(this, name)负责继承什么？      adminA5.name添加实列属性name
+
+        // 6. Object.create(User5.prototype)负责继承什么？   创建一个新对象继承 User5.prototype 上的原型方法和属性
+
+        // 7. 为什么需要修复Admin5.prototype.constructor？  因为Object.create(User5.prototype)的constructor指向的是User5
+
+        // adminA5自身
+        // ├── name："小明"
+        // ├── role："超级管理员"
+        // │
+        // └── __proto__
+        //       ↓
+        // Admin5.prototype
+        // ├── manage()
+        // │
+        // └── __proto__
+        //       ↓
+        // User5.prototype
+        // ├── sayHello()
+        // │
+        // └── __proto__
+        //       ↓
+        // Object.prototype
+        //       ↓
+        // null
+
+
+
+
+        class User6 {
+            constructor(name, age) {
+                this.name = name;
+                this.age = age;
+            }
+
+            introduce() {
+                return "我是" + this.name + "，今年" + this.age + "岁";
+            }
+        }
+
+        class Admin6 extends User6 {
+            constructor(name, age, role) {
+                super(name, age);
+                this.role = role;
+            }
+
+            manage() {
+                return this.name + "正在管理系统";
+            }
+        }
+
+        const userA6 = new User6("小红", 18);
+        const adminA6 = new Admin6("小明", 20, "超级管理员");
+
+        console.log(userA6.introduce());
+        console.log(adminA6.name);
+        console.log(adminA6.age);
+        console.log(adminA6.role);
+        console.log(adminA6.introduce());
+        console.log(adminA6.manage());
+
+        console.log(userA6.hasOwnProperty("introduce"));
+        console.log(adminA6.hasOwnProperty("manage"));
+
+        console.log(userA6.introduce === adminA6.introduce);
+        console.log(Object.getPrototypeOf(adminA6) === Admin6.prototype);
+        console.log(Object.getPrototypeOf(Admin6.prototype) === User6.prototype);
+        // 1. 十一个console.log分别输出什么？ 1.我是小红，今年18岁 2.小明 3.20 4.超级管理员 5.我是小明，今年20岁 6.小明正在管理系统 7.false 8. false 9.true 10.true 11.true
+
+        // 2. constructor什么时候执行？ 和new一起执行
+
+        // 3. introduce保存在实例自身还是User6.prototype？  User6.prototype
+
+        // 4. manage保存在实例自身还是Admin6.prototype？    Admin6.prototype
+
+        // 5. extends主要负责什么？     继承User6的属性和方法
+
+        // 6. super(name, age)主要负责什么？        为adminA6添加实列属性name, age
+
+        // 7. 为什么必须先调用super()，才能在子类constructor中使用this？
+        // 进入子类constructor
+        //         ↓
+        // this暂时不能使用
+        //         ↓
+        // 调用super()
+        //         ↓
+        // 父类constructor初始化当前实例
+        //         ↓
+        // 现在可以使用this
+
+        // 8. class是否脱离了JavaScript的原型机制？ 没有
+
+
+
+        function Person7(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        Person7.prototype.introduce = function () {
+            return "我是" + this.name + "，今年" + this.age + "岁";
+        };
+
+        // 第一步：创建新对象，并连接Person7.prototype
+        const personObject = Object.create(Person7.prototype);
+
+        // 第二步：调用Person7，并把this指向personObject
+        Person7.call(personObject, "小王", 22);
+
+        // 第三步：查看结果
+        console.log(personObject.name);
+        console.log(personObject.age);
+        console.log(personObject.introduce());
+        console.log(Object.getPrototypeOf(personObject) === Person7.prototype);
+
+
+
+        function myNew(Constructor, ...args) {
+            // 创建新对象，并连接构造函数的prototype
+            const newObject = Object.create(Constructor.prototype);
+
+            // 调用传进来的构造函数
+            // this指向newObject，并展开args
+            Constructor.call(newObject, ...args);
+
+            // 返回创建完成的对象
+            return newObject;
+        }
+
+        const personA7 = myNew(Person7, "小明", 20);
+
+        console.log(personA7.name);
+        console.log(personA7.age);
+        console.log(personA7.introduce());
+
+
+        function myNew2(Constructor, ...args) {
+            const newObject = Object.create(Constructor.prototype);
+
+            const result = Constructor.call(newObject, ...args);
+
+            const isObject =
+                result !== null &&
+                (typeof result === "object" || typeof result === "function");
+
+            if (isObject) {
+                return result
+            }
+
+            // 构造函数没有返回对象时，返回谁？
+            return newObject;
+        }
+
+        function Product7(name) {
+            this.name = name;
+            return 100;
+        }
+
+        function SpecialProduct7(name) {
+            this.name = name;
+
+            return {
+                name: "构造函数主动返回的对象"
+            };
+        }
+
+        const productA7 = myNew2(Product7, "电脑");
+        const productB7 = myNew2(SpecialProduct7, "手机");
+
+        console.log(productA7.name);
+        console.log(productB7.name);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function myInstanceof(object, Constructor) {
+            // 从object的直接原型开始查找
+
+            let currentPrototype = Object.getPrototypeOf(object);
+
+            // 保存需要寻找的目标原型
+            const targetPrototype = Constructor.prototype;
+
+            while (currentPrototype !== null) {
+                if (currentPrototype === targetPrototype) {
+                    // 找到目标应该返回什么？
+                    return true;
+                }
+
+                // 没找到，沿原型链向上移动一层
+                currentPrototype = Object.getPrototypeOf(currentPrototype);
+            }
+
+            // 到达null仍然没找到，应该返回什么？
+            return false;
+        }
+
+        function Person8(name) {
+            this.name = name;
+        }
+
+        function Animal8() { }
+
+        const personA8 = new Person8("小明");
+
+        console.log(myInstanceof(personA8, Person8));
+        console.log(myInstanceof(personA8, Object));
+        console.log(myInstanceof(personA8, Animal8));
+
+
+        // 创建 User7 类。
+
+        // constructor 接收 name 和 age，保存为实例属性。
+
+        // 添加 introduce() 方法，返回：
+
+        // 我是小明，今年20岁
+        // 创建 Admin7 类并继承 User7。
+
+        // Admin7 额外接收 permission，保存为实例属性。
+
+        // 添加 deleteUser(username) 方法，返回：
+
+        // 小明删除了用户：小红
+        class user7 {
+            constructor(name, age) {
+                this.name = name;
+                this.age = age;
+            }
+            introduce() {
+                return "我是" + this.name + ",今年" + this.age + "岁"
+            }
+        }
+        class Admin7 extends user7 {
+            constructor(name, age, permission) {
+                super(name, age);
+                this.permission = permission;
+            }
+            deleteUser(username) {
+                return this.name + "删除了用户：" + username
+            }
+        }
+        const adminB7 = new Admin7("小明", 20, "all");
+
+        console.log(adminB7.introduce());
+        console.log(adminB7.deleteUser("小红"));
+        console.log(adminB7.permission);
+
+        console.log(adminB7 instanceof Admin7);
+        console.log(adminB7 instanceof user7);
+        console.log(adminB7 instanceof Object);
+        // adminB7实例自身拥有：
+        // ├── name：小明
+        // ├── age：20
+        // ├── permission：all
+        // ├── introduce是不是自身属性：不是
+        // └── deleteUser是不是自身属性：不是
+
+        // adminB7
+        //    │
+        //    │ Object.getPrototypeOf(adminB7)
+        //    ▼
+        // Admin7.prototype
+        //    │
+        //    │ Object.getPrototypeOf(Admin7.prototype)
+        //    ▼
+        // user7.prototype
+        //    │
+        //    │ Object.getPrototypeOf(user7.prototype)
+        //    ▼
+        // Object.prototype
+        //    │
+        //    │ Object.getPrototypeOf(Object.prototype)
+        //    ▼
+        // null
+
+        // introduce保存在：user7.prototype
+
+        // deleteUser保存在：Admin7.prototype
+        // adminB7自身
+        //     ↓
+        // Admin7.prototype
+        //     ↓
+        // user7.prototype（在这里找到introduce）
+
+
+        // adminB7自身
+        //     ↓
+        // Admin7.prototype（在这里找到deleteUser）
+
+
+        // Admin7构造函数
+        //     │
+        //     │ prototype
+        //     ▼
+        // deleteUser
+        //     │
+        //     │ constructor
+        //     ▼
+        // Admin7
+
+        // User7构造函数
+        //     │
+        //     │ prototype
+        //     ▼
+        // introduce
+        //     │
+        //     │ constructor
+        //     ▼
+        // User7
+
+        console.log(Object.getPrototypeOf(adminB7) === Admin7.prototype); // true
+
+        console.log(
+            Object.getPrototypeOf(Admin7.prototype) === User7.prototype  //true
+        );
+
+        console.log(
+            Object.getPrototypeOf(User7.prototype) === Object.prototype  //true
+        );
+
+        console.log(Object.getPrototypeOf(Object.prototype));   // null 
+
+        console.log(adminB7.hasOwnProperty("name"));     // true
+        console.log(adminB7.hasOwnProperty("introduce")); //false
+
+        console.log(Admin7.prototype.hasOwnProperty("deleteUser")); // true
+        console.log(User7.prototype.hasOwnProperty("introduce")); //true
+
+
+
+
+        // adminB7实例
+        // ├── name："小明"
+        // ├── age：20
+        // ├── permission："all"
+        // │
+        // └── 原型 → Admin7.prototype
+        //              ├── deleteUser()
+        //              ├── constructor → Admin7
+        //              │
+        //              └── 原型 → User7.prototype
+        //                           ├── introduce()
+        //                           ├── constructor → User7
+        //                           │
+        //                           └── 原型 → Object.prototype
+        //                                        │
+        //                                        └── 原型 → null
+    </script>
+</body>
+
+</html>
