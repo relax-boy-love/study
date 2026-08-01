@@ -403,7 +403,7 @@
         // 添加 deleteUser(username) 方法，返回：
 
         // 小明删除了用户：小红
-        class user7 {
+        class User7 {
             constructor(name, age) {
                 this.name = name;
                 this.age = age;
@@ -412,7 +412,7 @@
                 return "我是" + this.name + ",今年" + this.age + "岁"
             }
         }
-        class Admin7 extends user7 {
+        class Admin7 extends User7 {
             constructor(name, age, permission) {
                 super(name, age);
                 this.permission = permission;
@@ -428,7 +428,7 @@
         console.log(adminB7.permission);
 
         console.log(adminB7 instanceof Admin7);
-        console.log(adminB7 instanceof user7);
+        console.log(adminB7 instanceof User7);
         console.log(adminB7 instanceof Object);
         // adminB7实例自身拥有：
         // ├── name：小明
@@ -445,9 +445,9 @@
         //    │
         //    │ Object.getPrototypeOf(Admin7.prototype)
         //    ▼
-        // user7.prototype
+        // User7.prototype
         //    │
-        //    │ Object.getPrototypeOf(user7.prototype)
+        //    │ Object.getPrototypeOf(User7.prototype)
         //    ▼
         // Object.prototype
         //    │
@@ -455,14 +455,14 @@
         //    ▼
         // null
 
-        // introduce保存在：user7.prototype
+        // introduce保存在：User7.prototype
 
         // deleteUser保存在：Admin7.prototype
         // adminB7自身
         //     ↓
         // Admin7.prototype
         //     ↓
-        // user7.prototype（在这里找到introduce）
+        // User7.prototype（在这里找到introduce）
 
 
         // adminB7自身

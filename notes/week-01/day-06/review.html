@@ -1,0 +1,453 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="increase">+1</button>
+    <span id="count">0</span>
+    <button id="reset">重置</button>
+    <script>
+        /*
+第一周 JavaScript 基础思维导图
+
+一、数据类型
+├── JavaScript有哪些基本数据类型？   String Number    Symbol    null Boolean   BigInt  Undefined
+│
+├── 哪些属于引用类型？                  Object
+│
+├── typeof null的结果是什么？   Object
+│
+├── 如何准确判断数组？          Array.isArray()
+│
+├── 如何准确判断NaN？           Number.isNaN()
+│
+└── 哪些常见值转换为Boolean后是false？      NULL undefined false 0 NaN ""
+│
+
+二、类型转换
+├── 显式类型转换是什么？
+│   ├── 转为数字： Number()
+│   ├── 转为字符串： String()
+│   └── 转为布尔值：    Boolean()
+│
+├── 隐式类型转换是什么？    没有主动写 Number()、String()，但 JavaScript 自动进行了转换。
+│
+├── 1 + "2"的结果和原因： 12 字符串
+│
+├── "5" - 2的结果和原因： 3
+│
+└── ==和===的区别： == 可能会类型转换比较 ===不会类型转换
+│
+
+三、作用域与提升
+├── 什么是作用域？      变量和函数能够被访问的有效范围。
+│
+├── 什么是作用域链？    类似是先访问自己作用域内的在找外层作用域的在找全局作用域
+│
+├── var、let、const的提升有什么区别？  var提升会赋值undefined  let,const 提升不能访问
+│
+├── 什么是暂时性死区？              在一个作用域let声明前是暂时性死区
+│
+└── 函数声明能否在定义前调用？为什么？  可以  函数声明会整体提升，包括函数名和函数体
+│
+
+四、闭包
+├── 什么是闭包？                    有一个内部函数  并且内部函数调用外部变量  外部调用函数
+│
+├── 闭包为什么能保存外层变量？         因为外部在调用函数所以变量不会改变
+│
+├── 两次调用createCounter为什么数据互不影响？       不知道
+│
+├── once需要保存哪两个数据？                    输出结果 和是否执行 执行就是true 没有执行就是false
+│
+├── memoize为什么可以避免重复计算？                因为 memoize 把数据保存在一个对象中 计算前都会去对照对象里面是否已经存在
+│
+└── 闭包可能在什么情况下造成内存问题？                 没有用的数据没有清理
+│
+
+五、this
+├── this由函数定义位置还是调用方式决定？                调用方式
+│
+├── 对象方法调用时，this指向谁？                        对象
+│
+├── 普通函数直接调用时，严格模式下this是什么？             undefined
+│
+├── 箭头函数有没有自己的this？                              没有
+│
+├── call的作用：                                        指定this指向
+│
+├── apply与call的主要区别：                             apply数组传参
+│
+├── bind的作用：                                        bind 不立即执行原函数，而是返回一个绑定了 this 的新函数，并且可以预先传入部分参数。
+│
+└── new调用时，构造函数中的this指向谁？                     new构建的对象
+│
+
+六、原型与原型链
+├── prototype属于谁？                       构造函数或class
+│
+├── 实例的__proto__指向哪里？               构造函数.prototype
+│
+├── constructor指向哪里？                  对应的构造函数
+│
+├── 属性的查找顺序是什么？                   先找自身有没有  自身没有在去原型找
+│
+├── 原型链的终点是什么？                       null
+│
+├── hasOwnProperty和in有什么区别？          hasOwnProperty只找自身  in找自身还要找原型
+│
+├── 什么是属性遮蔽？                        自身有 原型也有 用自身
+│
+└── instanceof检查的是什么？                原型链中是否存在某个原型
+│
+
+七、class与继承
+├── constructor什么时候执行？                           new的时候
+│
+├── class中的普通方法保存在哪里？                       prototype
+│
+├── extends负责什么？                                   继承原型对象
+│
+├── super()负责什么？                                   给对象的属性赋值
+│
+└── 为什么子类必须先执行super()才能使用this？               this还没有完成初始化
+│
+
+八、手写题
+├── 数组去重的基本思路：            if(arr.indexof() === -1){
+                                            arr.push()
+                                                }
+│
+├── 统计字符次数的基本思路：            for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+
+    if (char === " ") {
+      continue;
+    }
+
+    if (res[char] === undefined) {
+      res[char] = 1;
+    } else {
+      res[char]++;
+    }
+  }
+│
+├── once的基本思路：
+│
+├── memoize的基本思路：
+│
+├── myCall的基本思路：  不知道不知道我看代码可以理解
+│
+├── myBind的基本思路：  不知道不知道我看代码可以理解
+│
+├── myNew的基本思路：  不知道 不知道我看代码可以理解
+│
+└── myInstanceof的基本思路： 不知道我看代码可以理解
+*/
+
+        console.log(typeof []);         //object
+        console.log(typeof null);       //object
+        console.log(typeof NaN);        //number
+        console.log(Array.isArray({})); //false
+        console.log(Number.isNaN("hello"));//false
+
+        console.log(Number(""));      //0
+        console.log(Number("hello")); // NaN
+        console.log(Boolean("0"));  // true
+        console.log(1 + true);  //  2 因为true默认值是1
+        console.log("10" - null);// 10  null =0
+
+        var value = 10;
+
+        function test() {
+            console.log(value);
+            var value = 20;
+            console.log(value);
+        }
+
+        test();
+        console.log(value);
+        // 三个console.log分别输出什么？ undefined 20 10
+        // 为什么函数中的第一次输出不是10？ 因为var有声明提升并且是undefined   在自身作用域中先找自身在找全局
+
+
+        function createStepCounter(step) {
+            let count = 0;
+
+            return function () {
+                count += step;
+                return count;
+            };
+        }
+
+        const counterA = createStepCounter(2);
+        const counterB = createStepCounter(5);
+
+        console.log(counterA()); //2
+        console.log(counterA()); //4
+        console.log(counterB()); //5
+        console.log(counterA()); //6
+        console.log(counterB()); //10
+        // counterA和counterB创建独立的函数域
+        "use strict";
+
+        const user = {
+            name: "小明",
+
+            showName() {
+                return this.name;
+            }
+        };
+
+        const show = user.showName;
+
+        console.log(user.showName());
+        console.log(show());
+        // 第一次输出什么？   小明
+        // 第二次执行会输出什么或发生什么？   应该没有输出 控制台会报错
+        // 两次调用中的this分别指向谁？   第一次this指向user 第二次指向属于普通函数直接调用undefined
+
+
+
+        function uniqueArray(arr) {
+            const result = [];
+
+            for (let i = 0; i < arr.length; i++) {
+                if (result.indexOf(arr[i]) === -1) {
+                    result.push(arr[i])
+                }
+            }
+
+            return result;
+        }
+        console.log(uniqueArray([1, 2, 1, 3, 2, 4]));
+
+        // score 从高到低。
+        // 分数相同时，age 从小到大。
+        // 不修改原数组。
+
+        const students = [
+            { name: "小明", score: 80, age: 20 },
+            { name: "小红", score: 95, age: 21 },
+            { name: "小刚", score: 80, age: 18 }
+        ];
+
+        function sortStudents(students) {
+            const res = [...students];
+
+            // 完成代码
+            res.sort(function (a, b) {
+                if (a.score === b.score) {
+                    return a.age - b.age
+                } else {
+                    return b.score - a.score
+                }
+            })
+            return res;
+        }
+        console.log(sortStudents(students))
+
+
+        function once(fn) {
+            let hasRun = false;
+            let result;
+
+            return function (...args) {
+                // 补全
+                if (hasRun === false) {
+                    result = fn(...args)
+                    hasRun = true;
+                }
+                return result;
+            };
+        }
+
+        function add(a, b) {
+            console.log("执行了add");
+            return a + b;
+        }
+
+        const addOnce = once(add);
+
+        console.log(addOnce(1, 2));
+        console.log(addOnce(10, 20));
+
+        // “执行了add”会打印几次？        1
+        // 两个console.log分别输出什么？ 3 3
+
+        function introduce(greeting, city) {
+            return greeting + "，我是" + this.name + "，来自" + city;
+        }
+
+        const userA = { name: "小明" };
+
+        const resultA = introduce.call(userA, "你好", "上海");
+        const resultB = introduce.apply(userA, ["早上好", "北京"]);
+        const bound = introduce.bind(userA, "欢迎");
+        const resultC = bound("广州");
+        // resultA：你好，我是小明，来自上海
+        // resultB：早上好，我是小明，来自北京
+        // resultC：欢迎，我是小明，来自广州
+
+        // 哪两个方法立即执行原函数？ call apply
+        // 哪个方法返回新函数？ bind
+        // bind提前传入了哪个参数？greeting
+
+        function User(name) {
+            this.name = name;
+        }
+
+        User.prototype.sayHello = function () {
+            return "你好，我是" + this.name;
+        };
+
+        const userB = new User("小红");
+
+        console.log(userB.hasOwnProperty("name"));  //true
+        console.log(userB.hasOwnProperty("sayHello")); // false
+        console.log("sayHello" in userB);  //true
+        console.log(userB.__proto__ === User.prototype); //true
+        console.log(User.prototype.__proto__ === Object.prototype); // true
+        // userB
+        //   ↓__proto__
+        // User.prototype
+        //   ↓__proto__
+        // Object.prototype
+        //   ↓__proto__
+        // null
+
+
+        function countCharacters(str) {
+            const newStr = str.toLowerCase();
+            const result = {};
+            for (var i = 0; i < newStr.length; i++) {
+                if (newStr[i] === " ") {
+                    continue;
+                }
+                if (result[newStr[i]] === undefined) {
+                    result[newStr[i]] = 1;
+                } else {
+                    result[newStr[i]]++;
+                }
+
+
+            }
+            // 忽略空格
+            // 不区分大小写
+            // 统计每个字符出现次数
+
+            return result;
+        }
+
+        console.log(countCharacters("Hello JS"));
+
+
+
+        // 点击 +1，数字增加 1。
+        // 点击“重置”，数字恢复为 0。
+        // 使用一个 render() 函数统一更新页面。
+        // 不要在两个事件中重复写 countElement.textContent = count。
+        const increaseButton = document.querySelector("#increase");
+        const resetButton = document.querySelector("#reset");
+        const countElement = document.querySelector("#count");
+
+        let count = 0;
+
+        // 继续完成
+        increaseButton.addEventListener("click", function () {
+            count++;
+            render();
+        });
+        resetButton.addEventListener("click", function () {
+            count = 0;
+            render();
+        });
+
+        function render() {
+            countElement.textContent = count;
+        }
+
+
+
+        class ReviewUser {
+            constructor(name) {
+                this.name = name;
+            }
+
+            introduce() {
+                return "我是" + this.name;
+            }
+        }
+
+        class ReviewAdmin extends ReviewUser {
+            constructor(name, role) {
+                // 补全
+                super(name);
+                this.role = role;
+            }
+
+            manage() {
+                return this.name + "正在管理系统";
+            }
+        }
+
+        const reviewAdmin = new ReviewAdmin("小明", "超级管理员");
+        console.log(reviewAdmin.name);            //小明
+        console.log(reviewAdmin.role);            //超级管理员
+        console.log(reviewAdmin.introduce());     //我是小明
+        console.log(reviewAdmin.manage());        //小明正在管理系统
+        console.log(reviewAdmin.hasOwnProperty("introduce")); //false
+        console.log(reviewAdmin instanceof ReviewUser);    // true
+
+
+        function myNew(Constructor, ...args) {
+            // 创建对象，并连接Constructor.prototype
+            const newObject = Object.create(Constructor.prototype);
+
+            // 执行构造函数，让this指向新对象
+            const result = Constructor.call(newObject, ...args);
+
+            // 判断构造函数是否主动返回了对象或函数
+            const isObject =
+                result !== null &&
+                (typeof result === "object" || typeof result === "function");
+
+            if (isObject) {
+                return result;
+            }
+
+            return newObject;
+        }
+        // Object.create负责什么？  Object.create负责连接Constructor的原型
+        // call负责什么？            call负责让this指向newObject对象
+
+        function myInstanceof(object, Constructor) {
+            // 从实例的直接原型开始
+            let currentPrototype = Object.getPrototypeOf(object);
+
+            // 需要寻找的目标
+            const targetPrototype = Constructor.prototype;
+
+            while (currentPrototype !== null) {
+                if (currentPrototype === targetPrototype) {
+                    return true;
+                }
+
+                // 向原型链上一层移动
+                currentPrototype = Object.getPrototypeOf(currentPrototype);
+            }
+
+            return false;
+        }
+        // myInstanceof在原型链中寻找什么？ Constructor的原型是否在原型链上
+
+        // 到达null仍然没有找到，说明什么？  Constructor的原型没有在原型链上
+    </script>
+</body>
+
+</html>

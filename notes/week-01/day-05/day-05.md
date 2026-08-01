@@ -56,7 +56,7 @@ function Person(name) {
 每执行一次 `new Person()`，都会创建一个新的 `sayHello` 函数：
 
 ```js
-personA.sayHello === personB.sayHello; // false
+personA.sayHello === personB.sayHello; // true
 ```
 
 如果创建一万个实例，就会创建一万个函数。
