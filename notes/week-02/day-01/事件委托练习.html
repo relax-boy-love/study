@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务列表</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 40px 16px;
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .task-app {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 24px;
+            border-radius: 12px;
+            background-color: #ffffff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .title {
+            margin: 0 0 20px;
+            text-align: center;
+        }
+
+        .task-form {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .task-input {
+            flex: 1;
+            height: 42px;
+            padding: 0 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .task-input:focus {
+            border-color: #2563eb;
+        }
+
+        .add-button,
+        .delete-button {
+            border: none;
+            border-radius: 6px;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .add-button {
+            padding: 0 18px;
+            background-color: #2563eb;
+        }
+
+        .task-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 10px;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+
+        .task-text {
+            flex: 1;
+        }
+
+        .delete-button {
+            padding: 8px 12px;
+            background-color: #dc2626;
+        }
+
+        .delete-button:hover {
+            background-color: #b91c1c;
+        }
+
+        .empty-message {
+            display: none;
+            margin: 20px 0 0;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .edit-button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            color: #ffffff;
+            background-color: #f59e0b;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="task-app">
+        <h1 class="title">我的任务列表</h1>
+
+        <div class="task-form">
+            <input class="task-input" type="text" placeholder="请输入任务">
+
+            <button class="add-button" type="button">
+                添加任务
+            </button>
+        </div>
+
+        <ul class="task-list">
+            <li class="task-item" data-id="1">
+                <span class="task-text">学习 DOM</span>
+                <div class="task-actions">
+                    <button class="edit-button">修改</button>
+                    <button class="delete-button">删除</button>
+                </div>
+            </li>
+
+            <li class="task-item" data-id="2">
+                <span class="task-text">学习事件冒泡</span>
+                <div class="task-actions">
+                    <button class="edit-button">修改</button>
+                    <button class="delete-button">删除</button>
+                </div>
+            </li>
+        </ul>
+
+        <p class="empty-message">当前没有任务</p>
+    </main>
+
+    <script>
+        const taskInput = document.querySelector(".task-input");
+        const addButton = document.querySelector(".add-button");
+        const taskList = document.querySelector(".task-list");
+        const emptyMessage = document.querySelector(".empty-message");
+        let nextTaskId = 3;
+
+        updateEmptyMessage()
+
+        addButton.addEventListener("click", function () {
+            // 1. 获取输入框内容，并删除两端空格
+            const taskContent = taskInput.value.trim();
+
+            // 2. 如果内容为空，结束函数，不创建任务
+            if (taskContent === "") {
+                return;
+            }
+
+            // 3. 创建任务项li，添加类名并设置任务id
+            const taskItem = document.createElement("li");
+            taskItem.classList.add("task-item");
+            taskItem.dataset.id = nextTaskId;
+
+            // 4. 创建显示任务内容的span
+            const taskText = document.createElement("span");
+            taskText.classList.add("task-text");
+            taskText.textContent = taskContent;
+
+            // 5. 创建修改按钮
+            const editButton = document.createElement("button");
+            editButton.classList.add("edit-button");
+            editButton.type = "button";
+            editButton.textContent = "修改";
+
+            // 6. 创建删除按钮
+            const deleteButton = document.createElement("button");
+            deleteButton.classList.add("delete-button");
+            deleteButton.type = "button";
+            deleteButton.textContent = "删除";
+
+            // 7. 创建按钮容器，让修改和删除按钮保持在同一组
+            const taskActions = document.createElement("div");
+            taskActions.classList.add("task-actions");
+
+            // 8. 把修改按钮和删除按钮放入按钮容器
+            taskActions.append(editButton, deleteButton);
+
+            // 9. 把任务文字和按钮容器放入任务项
+            taskItem.append(taskText, taskActions);
+
+            // 10. 把组装完成的任务项放入任务列表
+            taskList.append(taskItem);
+
+            // 11. 清空输入框
+            taskInput.value = "";
+
+            // 12. 为下一条任务准备新的id
+            nextTaskId++;
+            updateEmptyMessage()
+        });
+
+
+        // 修改和删除事件只绑定在共同的父元素taskList上
+        taskList.addEventListener("click", function (event) {
+            // event.target表示真正被点击的元素
+            // closest()从被点击元素开始向上寻找最近的修改按钮
+            const editButton = event.target.closest(".edit-button");
+
+            // 如果找到了修改按钮，执行修改逻辑
+            if (editButton !== null) {
+                // 找到修改按钮所属的任务项
+                const taskItem = editButton.closest(".task-item");
+
+                // 只在当前任务项内查询任务文字
+                const taskText = taskItem.querySelector(".task-text");
+
+                // 打开输入框，并将原任务内容作为默认值
+                const newContent = prompt(
+                    "请输入新任务内容",
+                    taskText.textContent
+                );
+
+                // 点击取消时，prompt返回null，不修改任务
+                if (newContent === null) {
+                    return;
+                }
+
+                // 删除新内容两端的空格
+                const trimmedContent = newContent.trim();
+
+                // 新内容不是空字符串时，更新任务文字
+                if (trimmedContent !== "") {
+                    taskText.textContent = trimmedContent;
+                }
+
+                // 修改完成后结束，避免继续执行删除逻辑
+                return;
+            }
+
+            // 没有点击修改按钮时，再判断是否点击了删除按钮
+            const deleteButton = event.target.closest(".delete-button");
+
+            // 没有找到删除按钮，说明点击的不是需要处理的元素
+            if (deleteButton === null) {
+                return;
+            }
+
+            // 找到删除按钮所属的任务项
+            const taskItem = deleteButton.closest(".task-item");
+
+            // 删除整个任务项
+            taskItem.remove();
+            updateEmptyMessage()
+        });
+        taskInput.addEventListener("keydown", function (event) {
+            // 判断按下的键是不是Enter
+            if (event.key === "Enter") {
+                addButton.click();
+            }
+            // 如果是，触发添加按钮的点击事件
+        });
+
+        function updateEmptyMessage() {
+            // 获取当前任务数量
+            const taskCount = taskList.children.length;
+
+            // 如果任务数量为0，显示提示
+            if (taskCount === 0) {
+                // 填写
+                emptyMessage.style.display = "block";
+            } else {
+                // 否则隐藏提示
+                // 填写
+                emptyMessage.style.display = "none";
+            }
+        }
+
+
+
+
+        // 1. 事件实际绑定在哪个元素上？                    ul
+
+        // 2. 点击删除按钮时，事件为什么能到达taskList？     因为事件冒泡
+
+        // 3. 新增的任务为什么不需要重新绑定删除事件？        因为事件绑定在ul新增的任务在ul中冒泡事件都会触发ul事件
+
+        // 4. 为什么使用event.target，而不是event.currentTarget？          event.target找到点击的是谁         event.currentTarget这个是找到绑定事件的是谁
+
+        // 5. 为什么优先使用closest(".delete-button")？ 点击按钮内部的文字或图标时，event.target 可能不是按钮；closest() 可以从实际点击元素开始向上找到最近的删除按钮，也不受其他类名影响。
+
+
+        // 1. taskList.children.length表示什么？          返回 taskList 直接子元素的数量
+
+        // 2. 为什么添加和删除后都要调用updateEmptyMessage？    因为添加和删除都导致列表更新 不知道列表里面还有没有
+
+        // 3. 修改任务后为什么不用调用updateEmptyMessage？      修改任务没有进行列表个数变更
+
+        // 4. event.key如何判断Enter键？                            event.code === "Enter"
+
+        // 5. 为什么使用addButton.click()，而不是重新写一遍添加代码？       因为可以直接调用 重新写是增加代码量
+
+
+
+        // 1. querySelector和querySelectorAll有什么区别？     querySelector找第一个    querySelectorAll找所有并返回NodeList
+
+        // 2. querySelector找不到元素时返回什么？               null
+
+        // 3. createElement、append和remove分别负责什么？       创建节点   添加元素  删除元素
+
+        // 4. event.target与event.currentTarget有什么区别？  event.target真正被点击的元素    event.currentTarget当前正在执行事件处理函数的绑定元素
+
+        // 5. 什么是事件冒泡？什么是事件捕获？                   事件从真正触发的目标元素开始，逐层向父元素传播，并执行父元素上对应类型的事件处理函数，这个过程叫事件冒泡   事件捕获是从最外层获取事件到最底层
+
+        // 6. stopPropagation与preventDefault有什么区别？      stopPropagation阻止事件传播    preventDefault阻止默认行为
+
+        // 7. 什么是事件委托？                                  就是自身不写事件而是把事件写在最外层元素上利用冒泡完成绑定事件
+
+        // 8. 为什么新增任务后不需要重新绑定修改和删除事件？            因为也是利用事件委托冒泡
+
+    </script>
+</body>
+
+</html>
