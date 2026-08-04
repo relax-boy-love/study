@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防抖练习</title>
+
+    <style>
+        body {
+            padding: 40px;
+            font-family: Arial, sans-serif;
+            height: 2000px;
+        }
+
+        .search-input {
+            width: 320px;
+            height: 42px;
+            padding: 0 12px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .result {
+            margin-top: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <input class="search-input" type="text" placeholder="请输入搜索内容">
+
+    <p class="result">等待输入</p>
+
+    <script>
+        const searchInput = document.querySelector(".search-input");
+        const resultElement = document.querySelector(".result");
+
+        function search(keyword) {
+            console.count("执行搜索");
+            resultElement.textContent = "正在搜索：" + keyword;
+        }
+
+        // searchInput.addEventListener("input", function (event) {
+        //     search(event.target.value);
+        // });
+        // 1. input事件什么时候触发？   输入框的值发生变化时触发
+
+        // 2. 快速输入10个字符，普通search大约会执行几次？      10次
+
+        // 3. 防抖是在第一次输入时立即执行，还是停止输入后执行？        停止输入
+
+        // 4. 用户在等待时间内再次输入，原来的定时器应该保留还是取消？      取消
+
+        // 5. 防抖最终需要执行第一次传入的参数，还是最后一次参数？          最后一次参数
+
+        // 6. 搜索框为什么适合使用防抖？                        因为输入框每输入一次发请求浪费资源使用防可以减少
+
+
+        let timerId;
+
+        // searchInput.addEventListener("input", function (event) {
+        //     // 保存本次最新的输入内容
+        //     const keyword = event.target.value;
+
+        //     // 第一步：取消上一次定时器
+        //     // 即使timerId一开始是undefined，也不会报错
+        //     clearTimeout(timerId);
+
+        //     // 第二步：创建新定时器
+        //     // 500毫秒后执行search，并传入最新keyword
+        //     timerId = setTimeout(function () {
+        //         // 填写
+        //         console.log(keyword)
+
+        //         search(keyword);
+        //     }, 500);
+
+        // }); 
+        // timerId为什么必须定义在事件函数外面？   如果定义在里面每次输入都会创建一个全新的局部 timerId
+
+        // 为什么每次都要先clearTimeout？          因为你每输入一次都要增加一个定时器 前一个就清除
+
+        // 最后执行的search为什么能得到最新输入内容？           每一次搜索框变化keyword都保存了最新值
+
+        const debouncedSearch = debounce(search, 500);
+
+        searchInput.addEventListener("input", function (event) {
+            debouncedSearch(event.target.value);
+        });
+
+        function debounce(fn, delay) {
+            let timerId;
+
+            return function (...args) {
+                // 保存这次调用时的this
+                const context = this;
+
+                clearTimeout(timerId);
+
+                timerId = setTimeout(function () {
+                    fn.apply(
+                        context,
+                        args
+                    );
+                }, delay);
+            };
+        }
+
+
+        // debounce(search, 500)执行时，search会立即运行吗？   执行 debounce(search, 500) 时，search 不会运行；调用 debouncedSearch() 并且之后连续 500ms 没有再次调用时，search 才执行。
+
+        // debouncedSearch("js")中的"js"会保存在哪里？          ...args里
+
+        // 为什么timerId不能写在返回的新函数内部？                  因为写在里面每次调用debouncedSearch()会创建一个新的timerId第二次找不到第一个timerId
+
+        // 为什么调用fn时需要使用...args，而不能固定写keyword？     这个 debounce 只能服务于拥有 keyword 参数的搜索函数 （如果写keyword)
+
+
+        // apply的第二个参数为什么直接传args数组？                      因为apply的传参要求就是要数组
+
+        // 为什么不能在这里写fn.apply(context, ...args)？                   因为args = ["",""] ...args = ("","","")
+
+        // context保存的是定义debounce时的this，还是调用debouncedShow时的this？     调用debouncedShow时的this
+
+
+
+        // 节流
+        function handleScroll() {
+            console.count("执行滚动处理");
+        }
+
+        const throttledScroll = throttle(handleScroll, 500);
+
+        window.addEventListener("scroll", throttledScroll);
+
+        function throttle(fn, delay) {
+            // true表示现在允许执行
+            let canRun = true;
+
+            return function (...args) {
+                // 如果当前不允许执行，直接结束
+                if (canRun === false) {
+                    // 填写
+                    return
+                }
+
+                // 执行前关闭开关
+                canRun = false;
+                const context = this;
+                // 立即执行原函数，并保留this和参数
+                fn.apply(
+                    context,
+                    args
+                );
+
+                // delay毫秒后重新打开开关
+                setTimeout(function () {
+                    canRun = true;
+                }, delay);
+            };
+        }
+
+        // canRun为什么要定义在返回函数外面？  canRun 定义在外层，是为了让每次调用节流函数都能共享并保存同一个执行状态
+
+        // 第一次触发时为什么可以立即执行？ 因为进来节流开关是true
+
+        // 等待时间内再次触发为什么会直接return？       因为等待时间定时函数没有执行所以节流开关还是false
+
+        // 定时器到期后为什么要把canRun改回true？       不改回去一直会return 没有函数触发达不到节流效果
+
+        // 1. 用户持续滚动3秒，防抖大约执行几次？    //0次
+
+        // 2. 用户持续滚动3秒，500ms节流大约执行几次？   // 6次
+
+        // 3. 防抖适合搜索框还是持续监听页面滚动？  //搜索框
+
+        // 4. 节流适合搜索框最终请求，还是滚动位置更新？//滚动位置更新
+
+        // 5. 节流在等待时间内再次触发，应该重新计时，还是忽略这次触发？忽略
+
+        // 6. 防抖和节流最核心的区别是什么？
+        // 防抖：                                       节流：
+        //    连续触发时不断重新计时，                        连续触发期间不重新计时，
+        //   停止触发一段时间后只执行最后一次。                  每隔固定时间最多执行一次。
+
+
+
+
+        // 深拷贝
+
+        const original = {
+            name: "小明",
+            address: {
+                city: "上海"
+            }
+        };
+
+        const copied = { ...original };
+
+        copied.name = "小红";
+        copied.address.city = "北京";
+
+        console.log(original.name);
+        console.log(original.address.city);
+
+        // 1. original.name最终是什么？     我猜小明
+
+        // 2. original.address.city最终是什么？  我猜北京
+
+        // 3. 修改copied.name为什么不会影响original.name？    original.name → 独立的"小明"   copied.name   → 独立的"小明"
+
+        // 4. 修改copied.address.city为什么可能影响original.address.city？   address 是对象，浅拷贝只复制了它的引用：
+
+        // 5. copied === original是什么结果？   false
+
+        // 6. copied.address === original.address是什么结果？       true
+
+        // 7. 什么是浅拷贝？你先尝试用自己的话解释。        我认为是新建一个同样类型的 把需要拷贝的内荣放进新建的  浅拷贝会创建一个新的外层对象，但只复制第一层属性；如果属性值仍然是对象或数组，复制的是它们的引用，所以嵌套数据仍然与原对象共享
+
+        // function deepClone(value, cache = new WeakMap()) {
+        //     // 基本类型和null直接返回
+        //     if (value === null || typeof value !== "object") {
+        //         return value;
+        //     }
+
+        //     // 如果这个对象之前已经复制过
+        //     if (cache.has(value)) {
+        //         // 返回之前创建的新对象
+        //         return cache.get(value);
+        //     }
+
+        //     // 如果value是Date实例
+        //     if (value instanceof Date) {
+        //         // 使用原日期时间戳创建新Date
+        //         return new Date(value.getTime());
+        //     }
+
+        //     // 根据value类型创建新数组或新对象
+
+        //     const result = Array.isArray(value) ? [] : {};
+
+        //     // 获取对象自身可枚举属性名
+        //     const keys = Object.keys(value);
+
+        //     for (let i = 0; i < keys.length; i++) {
+        //         const key = keys[i];
+
+        //         // 每一层都继续调用deepClone
+        //         result[key] = deepClone(value[key]);
+
+        //     }
+
+        //     return result;
+        // }
+        function deepClone(value, cache = new WeakMap()) {
+            // 基本类型和null直接返回
+            if (value === null || typeof value !== "object") {
+                return value;
+            }
+
+            // 如果这个对象之前已经复制过
+            if (cache.has(value)) {
+                // 返回之前创建的新对象
+                return cache.get(value);
+            }
+
+            // 处理Date
+            if (value instanceof Date) {
+                const copiedDate = new Date(value.getTime());
+
+                // 保存原Date与新Date的对应关系
+                cache.set(value, copiedDate);
+
+                return copiedDate;
+            }
+
+            // 创建数组或对象
+            const result = Array.isArray(value) ? [] : {};
+
+            // 必须在递归属性之前保存
+            cache.set(value, result);
+
+            const keys = Object.keys(value);
+
+            for (let i = 0; i < keys.length; i++) {
+                const key = keys[i];
+
+                // 递归时必须把同一个cache继续传下去
+                result[key] = deepClone(
+                    value[key],
+                    cache
+                );
+            }
+
+            return result;
+        }
+        // const originalData = {
+        //     name: "小明",
+        //     skills: ["HTML", "JavaScript"],
+        //     address: {
+        //         city: "上海"
+        //     }
+        // };
+
+        // const copiedData = deepClone(originalData);
+
+        // copiedData.skills.push("Vue");
+        // copiedData.address.city = "北京";
+
+        // console.log(originalData.skills);   // ["HTML", "JavaScript"]
+        // console.log(originalData.address.city); //  "上海"
+
+        // console.log(copiedData === originalData); // false
+        // console.log(copiedData.skills === originalData.skills); //false
+        // console.log(copiedData.address === originalData.address); // false
+        const originalWithDate = {
+            createdAt: new Date("2026-08-04")
+        };
+
+        const copiedWithDate = deepClone(originalWithDate);
+
+        console.log(copiedWithDate.createdAt instanceof Date);
+        console.log(
+            copiedWithDate.createdAt.getTime() ===
+            originalWithDate.createdAt.getTime()
+        );
+        console.log(
+            copiedWithDate.createdAt === originalWithDate.createdAt
+        );
+        // 为什么日期的时间值应该相同？  因为获取的时间戳是同一个所以值相同  时间值相同：深拷贝后的日期应该表示与原日期相同的时间点，所以复制相同的时间戳。
+
+        // 为什么两个Date对象的引用应该不同？   因为是创建了一个对象内又创建了一个对象  不是只创建了一层  引用不同：new Date() 创建了一个新的日期实例。
+
+        // Date判断为什么要放在普通对象处理之前？   因为date的类型也是object  提前判断 Date：如果按普通对象处理，Array.isArray(date) 是 false，会创建 {}；而且 Object.keys(date) 通常为空，日期值会丢失。
+
+        const originalUser = {
+            name: "小明"
+        };
+
+        originalUser.self = originalUser;
+
+        const copiedUser = deepClone(originalUser);
+
+        console.log(copiedUser === originalUser);  // false
+        console.log(copiedUser.name);    // 小明
+        console.log(copiedUser.self === copiedUser);  //  true
+        console.log(copiedUser.self === originalUser); // false
+
+
+        const sharedInfo = {
+            score: 100
+        };
+
+        const originalData = {
+            name: "小明",
+
+            skills: [
+                "HTML",
+                {
+                    name: "JavaScript",
+                    level: 1
+                }
+            ],
+
+            createdAt: new Date("2026-08-04"),
+
+            firstInfo: sharedInfo,
+            secondInfo: sharedInfo
+        };
+
+        originalData.self = originalData;
+
+        const copiedData = deepClone(originalData);
+
+        console.log(copiedData === originalData); //false
+
+        console.log(
+            copiedData.skills === originalData.skills //false
+        );
+
+        console.log(
+            copiedData.skills[1] === originalData.skills[1]  // false
+        );
+
+        console.log(
+            copiedData.createdAt instanceof Date // true
+        );
+
+        console.log(
+            copiedData.createdAt.getTime() ===
+            originalData.createdAt.getTime()    //  true
+        );
+
+        console.log(
+            copiedData.createdAt === originalData.createdAt  // false
+        );
+
+        console.log(
+            copiedData.self === copiedData   //true
+        );
+
+        console.log(
+            copiedData.firstInfo === copiedData.secondInfo   //true
+        );
+
+        console.log(
+            copiedData.firstInfo === sharedInfo   //false
+        );
+
+
+        // 1. 防抖是什么？适合什么场景？                    连续触发时不断重新计时，停止触发一段时间后只执行最后一次。             输入框 等 还要输入不立马执行 等输入停止后在传最后一次的值
+
+        // 2. 节流是什么？适合什么场景？                     连续触发期间不重新计时，每隔固定时间最多执行一次。 网页滚动等               
+
+        // 3. 防抖和节流最核心的区别是什么？            一个不断重新计时一个不重新计时
+
+        // 4. debounce中的timerId为什么形成了闭包？    debounce返回内部函数 因为内部函数保存了timerId和search, 500  外部又在调用 所以形成了闭包
+
+        // 5. 浅拷贝为什么不能解决嵌套对象共享引用的问题？      因为浅拷贝只拷贝了外面的一层
+
+        // 6. 深拷贝为什么需要递归？                                如果里面还有对象数组需要拷贝所以要一层一次递归
+
+        // 7. Date为什么需要单独处理？                              Date：如果按普通对象处理，Array.isArray(date) 是 false，会创建 {}；而且 Object.keys(date) 通常为空，日期值会丢失。
+
+        // 8. WeakMap在循环引用深拷贝中保存了什么？                 原数据和新数据
+
+        // 9. 为什么必须在递归属性前执行cache.set(value, result)？      必须在递归属性前登记原对象和新对象的关系，因为递归过程中可能再次遇到当前原对象；提前登记后才能直接返回新对象，避免无限递归。
+
+    </script>
+
+
+</body>
+
+</html>
