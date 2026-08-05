@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        const promiseA = new Promise(function (resolve, reject) {
+            console.log("开始执行");
+
+            setTimeout(function () {
+                resolve("请求成功");
+            }, 1000);
+        });
+
+        promiseA.then(function (result) {
+            console.log(result);
+        });
+
+        console.log("同步代码结束");
+        // 1. new Promise传入的函数会立即执行，还是等待then时执行？   立即执行
+
+        // 2. 三次输出的先后顺序是什么？   开始执行  同步代码结束  请求成功
+
+        // 3. 调用resolve("请求成功")以后，Promise变成什么状态？  fulfilled
+
+        // 4. result的值来自哪里？    resolve("请求成功");   
+
+        const promiseB = new Promise(function (resolve, reject) {
+            resolve("第一次成功");
+            reject("后来失败");
+            resolve("第二次成功");
+        });
+
+        promiseB
+            .then(function (value) {
+                console.log("成功：", value);
+            })
+            .catch(function (error) {
+                console.log("失败：", error);
+            });
+        // 1. 最终执行then还是catch？  then 
+
+        // 2. 最终得到哪个值？          成功：第一次成功
+
+        // 3. 后面的reject和第二次resolve是否还能改变状态？  不能发生改变只有一次状态变化 
+
+        // 4. 这段代码说明Promise状态具有什么特点？   状态改变是一次性的。  状态改变后不可逆。  第一次调用 resolve 或 reject 有效，后面的调用无效。
+
+
+
+        const promiseC = new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                reject("服务器出现错误");
+            }, 500);
+        });
+
+        promiseC
+            .then(function (value) {
+                console.log("成功：", value);
+            })
+            .catch(function (error) {
+                console.log("失败：", error);
+            });
+        // 1. reject执行后，Promise变成什么状态？   rejected
+
+        // 2. then中的成功函数会不会执行？  不会
+
+        // 3. catch中的error是什么？        reject("服务器出现错误");
+
+        // 4. resolve与reject分别表示什么？   resolve(value)：把 Promise 从等待状态变为成功状态，并提供成功结果 value。  reject(reason)：把 Promise 从等待状态变为失败状态，并提供失败原因 reason。
+
+
+        Promise.resolve(10)
+            .then(function (value) {
+                console.log("第一个then：", value);
+                return value + 5;
+            })
+            .then(function (value) {
+                console.log("第二个then：", value);
+                return value * 2;
+            })
+            .then(function (value) {
+                console.log("第三个then：", value);
+            });
+        // 1. 第一个then中的value是多少？ 10
+
+        // 2. 第二个then中的value是多少？来自哪里？ 第一个then中的return
+
+        // 3. 第三个then中的value是多少？来自哪里？  第二个then中的return
+
+        // 4. 三次输出分别是什么？     10 15 30 
+
+        Promise.resolve("开始")
+            .then(function (value) {
+                console.log(value);
+                const nextValue = "处理中";
+            })
+            .then(function (value) {
+                console.log(value);
+            });
+        // 1. 第一个then输出什么？  开始
+
+        // 2. 第二个then接收到的是"处理中"吗？ 不是
+
+        // 3. 如果函数没有写return，默认返回什么？ undefined
+
+        // 4. 第二个then最终输出什么？  undefined
+        // 这后面三个回答都是猜的
+
+        Promise.resolve(2)
+            .then(function (value) {
+                console.log("第一步：", value);
+
+                return new Promise(function (resolve) {
+                    setTimeout(function () {
+                        resolve(value * 10);
+                    }, 1000);
+                });
+            })
+            .then(function (value) {
+                console.log("第二步：", value);
+            });
+
+        console.log("同步代码");
+        // 1. 三次输出的顺序是什么？ 同步代码  第一步：2    第二步：20   
+
+        // 2. 第二个then会立即执行，还是等待新的Promise完成？  等Promise完成
+
+        // 3. 第二个then中的value是多少？  20
+
+        // 4. 这个value来自哪一个resolve？  resolve(value * 10);
+
+
+        Promise.resolve("开始")
+            .then(function (value) {
+                console.log("第一步：", value);
+                throw new Error("处理失败");
+            })
+            .then(function (value) {
+                console.log("第二步：", value);
+            })
+            .catch(function (error) {
+                console.log("捕获错误：", error.message);
+            });
+        // 1. 第一个then是否执行？  执行
+
+        // 2. 抛出错误后，第二个then是否执行？  不执行
+
+        // 3. catch是否执行？  执行
+
+        // 4. error.message是什么？ 处理失败
+
+        // 5. 最终输出哪些内容？  第一步：开始    捕获错误：处理失败
+
+        Promise.reject("网络错误")
+            .then(function () {
+                console.log("第一次处理");
+            })
+            .then(function () {
+                console.log("第二次处理");
+            })
+            .catch(function (error) {
+                console.log("错误：", error);
+                return "恢复成功";
+            })
+            .then(function (value) {
+                console.log("恢复后的结果：", value);
+            });
+        // 1. 前两个then是否执行？ 否
+
+        // 2. catch中的error是多少？  网络错误
+
+        // 3. catch返回"恢复成功"以后，Promise链是成功还是失败？ 成功
+
+        // 4. 最后一个then是否执行？ 执行
+
+        // 5. 最终输出哪些内容？错误：网络错误  恢复后的结果：恢复成功
+
+        Promise.reject("请求失败")
+            .then(function (value) {
+                console.log("成功：", value);
+            })
+            .catch(function (error) {
+                console.log("失败：", error);
+            })
+            .finally(function () {
+                console.log("请求结束");
+            });
+        // 1. then、catch、finally分别哪些会执行？  catch、finally
+
+        // 2. finally是在catch之前还是之后执行？ 之后
+
+        // 3. Promise成功时，finally会不会执行？ 会
+
+        // 4. finally适合处理什么工作？  关闭加载动画  恢复按钮可点击状态  隐藏加载提示  清理临时资源
+
+        function createTask(name, delay, shouldFail = false) {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    if (shouldFail) {
+                        reject(name + "失败");
+                    } else {
+                        resolve(name + "成功");
+                    }
+                }, delay);
+            });
+        }
+
+        const taskA = createTask("任务A", 1000);
+        const taskB = createTask("任务B", 500);
+        const taskC = createTask("任务C", 1500);
+        Promise.all([taskA, taskB, taskC])
+            .then(function (results) {
+                console.log(results);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        // 1. 大约等待多长时间后得到最终结果？ 1.5秒
+
+        // 2. results按照完成顺序排列，还是按照传入数组的顺序排列？   传入数组的顺序排列
+
+        // 3. 最终results是什么？       【任务A成功    任务B成功      任务C成功】
+
+        // 4. 如果taskB失败，then还会不会执行？ 不会
+
+        // 5. Promise.all适合什么场景？ 多个相互独立的任务可以同时进行，并且只有全部成功，后续工作才有意义。 渲染页面
+        const taskD = createTask("任务D", 300);
+        const taskE = createTask("任务E", 500, true);
+        const taskF = createTask("任务F", 200);
+
+        Promise.allSettled([taskD, taskE, taskF])
+            .then(function (results) {
+                console.log(results);
+            });
+        // 1. taskE失败后，allSettled是否会立即结束？  不会
+
+        // 2. 它会不会等待taskD和taskF全部结束？ 会
+
+        // 3. 最终results中会不会同时包含成功和失败结果？ 会
+
+        // 4. allSettled适合什么场景？ 每个任务都需要得到最终结果，即使部分任务失败，也不能影响其他任务。  批量上传多个文件
+        const taskG = createTask("任务G", 100, true);
+        const taskH = createTask("任务H", 500);
+        const taskI = createTask("任务I", 300);
+
+        Promise.race([taskG, taskH, taskI])
+            .then(function (value) {
+                console.log("race成功：", value);
+            })
+            .catch(function (error) {
+                console.log("race失败：", error);
+            });
+
+        Promise.any([taskG, taskH, taskI])
+            .then(function (value) {
+                console.log("any成功：", value);
+            })
+            .catch(function (error) {
+                console.log("any失败：", error);
+            });
+        // 1. race最先遇到的是哪个任务？            taskG
+
+        // 2. race最终成功还是失败？结果是什么？  失败        race失败：任务G失败
+
+        // 3. any会不会因为taskG最先失败就立即失败？  不会
+
+        // 4. any最终使用哪个任务的结果？   taskI
+
+        // 5. race与any判断“最快”的标准有什么区别？ race一个是谁最先完成   any一个是谁最先成功
+
+        // 四种组合方法总结
+        // 方法	                    成功条件	            失败条件	                    关注点
+        // Promise.all	            全部成功	            任意一个失败	                全部都要成功
+        // Promise.allSettled	    等待全部结束	        不会因单个失败提前结束	          收集全部结果
+        // Promise.race	            最先结束的是成功	    最先结束的是失败	              第一个结束
+        // Promise.any	            任意一个成功	        全部失败	                    第一个成功
+
+        function request(name, delay) {
+            return new Promise(function (resolve) {
+                setTimeout(function () {
+                    console.log(name + "完成");
+                    resolve(name + "结果");
+                }, delay);
+            });
+        }
+
+        request("请求A", 1000)
+            .then(function (resultA) {
+                console.log("收到：", resultA);
+                return request("请求B", 500);
+            })
+            .then(function (resultB) {
+                console.log("收到：", resultB);
+                return request("请求C", 800);
+            })
+            .then(function (resultC) {
+                console.log("收到：", resultC);
+            });
+        // 1. 请求A、B、C是同时开始，还是一个完成后再开始下一个？  完成一个后在开始下一个
+
+        // 2. 请求B为什么要写在第一个then中？           只有请求 A 成功并执行第一个 then 时，才会调用 request("请求B", 500)，因此请求 B 会在请求 A 完成后才开始。
+        // 3. 第一个then为什么需要return request("请求B", 500)？    把请求 B 返回的 Promise 交给 Promise 链，让下一个 then 等待请求 B 完成，并接收请求 B 的结果。
+
+        // 4. 三个请求全部完成大约需要多长时间？   约2.3秒
+
+        // 5. 这种方式适合任务之间存在什么关系的场景？ 先登录  ↓  取得用户身份  ↓  根据用户身份查询订单
+
+
+        const requestA = request("请求A", 1000);
+        const requestB = request("请求B", 500);
+        const requestC = request("请求C", 800);
+
+        Promise.all([requestA, requestB, requestC])
+            .then(function (results) {
+                console.log("全部结果：", results);
+            });
+        // 1. 三个请求是什么时候开始的？  requestA = request("请求A", 1000);已经开始后面一样
+
+        // 2. 完成顺序是什么？ requestB requestC requestA
+
+        // 3. results中的顺序是什么？ 请求B结果   请求C结果   请求A结果
+
+        // 4. 全部完成大约需要多长时间？  1秒
+
+        // 5. 什么情况下适合并行，不适合串行？  页面的加载
+
+        // 串行：第一个执行完了在执行下一个
+        // 并行：全部一起执行
+
+        let requestCount = 0;
+
+        function unstableRequest() {
+            return new Promise(function (resolve, reject) {
+                requestCount++;
+
+                console.log("第" + requestCount + "次请求");
+
+                setTimeout(function () {
+                    if (requestCount < 10) {
+                        reject("请求失败");
+
+                    } else {
+
+                        resolve("请求成功");
+                    }
+                }, 500);
+            });
+        }
+
+        function retry(fn, maxAttempts) {
+            let attempts = 0;
+
+            function execute() {
+                attempts++;
+
+                console.log("当前尝试次数：", attempts);
+
+                return fn().catch(function (error) {
+                    if (attempts >= maxAttempts) {
+                        // 达到最大次数后，继续向外传播错误
+                        // 你来填写
+
+                        throw error;
+
+                    }
+
+                    // 还有机会时，再执行一次并让Promise链等待它
+                    // 你来填写
+                    return execute();
+                });
+            }
+
+            return execute();
+        }
+
+        retry(unstableRequest, 3)
+            .then(function (result) {
+
+                console.log("最终成功：", result);
+            })
+            .catch(function (error) {
+                console.log("最终失败：", error);
+            });
+
+
+        // 1. unstableRequest一共执行几次？ 3
+
+        // 2. 前两次是成功还是失败？ 失败
+
+        // 3. 第三次是什么结果？ 成功
+
+        // 4. 最终执行外面的then还是catch？then
+
+        // 5. 最终result是什么？请求成功
+
+
+        // 第一组最终进入then还是catch？  then
+
+        // 第二组最终进入then还是catch？    catch
+
+        // 第二组实际请求了几次？是否超过maxAttempts？  3 否
+
+
+        function myPromiseAll(promises) {
+            return new Promise(function (resolve, reject) {
+                const results = [];
+                let completedCount = 0;
+
+                // 空数组应该立即成功
+                if (promises.length === 0) {
+                    resolve([]);
+                    return;
+                }
+
+                promises.forEach(function (item, index) {
+                    // Promise.all也允许传入普通值
+                    Promise.resolve(item)
+                        .then(function (value) {
+
+                            // 1. 按照原下标保存value
+                            results[index] = value;
+
+                            // 2. 成功数量增加1
+                            completedCount++;
+
+                            // 3. 如果成功数量等于数组长度
+                            if (promises.length === completedCount) {
+                                // 4. 把全部结果交给外面的then
+                                resolve(results)
+                            }
+                        })
+                        .catch(function (error) {
+                            // 任意一个失败，整个myPromiseAll失败
+                            reject(error);
+                        });
+                });
+            });
+        }
+
+        const promise1 = new Promise(function (resolve) {
+            setTimeout(function () {
+                resolve("A");
+            }, 1000);
+        });
+
+        const promise2 = new Promise(function (resolve) {
+            setTimeout(function () {
+                resolve("B");
+            }, 300);
+        });
+
+        const promise3 = Promise.resolve("C");
+
+        myPromiseAll([promise1, promise2, promise3])
+            .then(function (results) {
+                console.log("全部成功：", results);
+            })
+            .catch(function (error) {
+                console.log("存在失败：", error);
+            });
+
+        // 1. 三个任务的完成顺序是什么？ promise3 promise2 promise1
+
+        // 2. 最终results的顺序是什么？ ['A','B','C']
+
+        // 3. completedCount最终是多少？3
+
+        // 4. 大约等待多长时间后执行外面的then？  1秒
+
+        // 5. 为什么item外面需要使用Promise.resolve(item)？   item本来是Promise → Promise.resolve保留并采用它的状态 item是普通值      → 包装成成功Promise
+
+
+        const successTask = new Promise(function (resolve) {
+            setTimeout(function () {
+                resolve("成功任务");
+            }, 1000);
+        });
+
+        const failedTask = new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                reject("失败任务");
+            }, 300);
+        });
+
+        const slowTask = new Promise(function (resolve) {
+            setTimeout(function () {
+                console.log("慢任务仍然完成了");
+                resolve("慢任务");
+            }, 2000);
+        });
+
+        myPromiseAll([successTask, failedTask, slowTask])
+            .then(function (results) {
+                console.log("全部成功：", results);
+            })
+            .catch(function (error) {
+                console.log("捕获失败：", error);
+            });
+
+
+        // 1. 大约多长时间后进入catch？  300ms
+
+        // 2. catch中的error是什么？  失败任务
+
+        // 3. 外面的then是否执行？      否
+
+        // 4. failedTask失败后，已经启动的slowTask会被自动取消吗？  不会
+
+        // 5. “慢任务仍然完成了”是否还会打印？   会
+
+
+        // 1. Promise有哪三种状态？状态可以怎样变化？ fulfilled  rejected  pending
+
+        // 2. new Promise传入的执行器函数什么时候执行？ new的同时执行
+
+        // 3. resolve和reject分别负责什么？        resolve：将 Promise 确定为成功，并传递成功结果。  reject：将 Promise 确定为失败，并传递失败原因。
+
+        // 4. Promise状态改变以后，还能再次改变吗？             不能
+
+        // 5. 前一个then返回普通值时，下一个then会收到什么？    普通值
+
+        // 6. 前一个then没有写return时，下一个then会收到什么？ undefined
+
+        // 7. 前一个then返回Promise时，下一个then什么时候执行？ 等返回的Promise执行完执行
+
+        // 8. 为什么串行请求中必须return下一个请求？        因为不return它不会等直接执行then
+
+        // 9. 两次console.log分别输出什么？                     10 13
+
+        // 10. 第二个then返回Promise后，第三个then收到的值来自哪里？  返回的Promise
+ 
+        // 11. then中抛出错误后，错误会怎样传播？           then抛错 → 跳过成功then → 向后寻找catch
+
+        // 12. catch返回普通值以后，Promise链是成功还是失败？           成功
+
+        // 13. 达到最大重试次数后，为什么使用throw error而不是return error？    return会把链条恢复成成功状态，throw会让错误继续向外传播。
+
+        // 14. finally是否只在请求失败时执行？适合做什么？      finally 在成功和失败时通常都会执行  清除缓存 按钮重置等
+
+        // 15. Promise.all的成功和失败条件分别是什么？      成功是里面的每一个promise全部都要成功 失败只有有一个失败就失败
+
+        // 16. Promise.allSettled适合什么场景？                   批量上传多个文件
+
+        // 17. Promise.race判断的是“第一个成功”还是“第一个结束”？       第一个结束的 Promise。
+
+        // 18. Promise.any在什么情况下才会失败？                没有一个成功的
+
+        // 19. Promise.all的结果顺序由完成顺序还是传入顺序决定？        传入
+
+        // 20. 串行和并行有什么区别，各自适合什么场景？         串行是等上一个结束在执行下一个 适合在登录获取信息   并行是全部一起执行 适合登录成功后加载页面
+
+        // 21. myPromiseAll为什么需要completedCount？                   判断传入的是否已经全部都执行完了
+
+        // 22. 为什么要写results[index] = value，而不是results.push(value)？            因为all是按照传入顺序不是完成顺序
+
+        // 23. 为什么要使用Promise.resolve(item)？                              传入的可能有普通值Promise.resolve会把普通值包装成Promise
+
+        // 24. Promise.all中一个任务失败后，其他已经启动的任务会自动取消吗？        不会
+
+        // 25. retry中的attempts为什么要保存在execute外面？                        因为重新return execute attempts会重置起不到计数效果
+
+
+
+        // Promise链中的返回值，是如何传给下一个then的？
+
+        // 需要分别说明：
+        // 1. 返回普通值   直接返回普通值
+        // 2. 没有return       返回undefined
+        // 3. 返回Promise   下一个 then 会等待该 Promise 确定状态；成功时接收成功结果，失败时向后寻找 catch
+        // 4. 抛出错误       Promise 链变为失败，跳过后面的成功 then，直到错误被 catch 捕获
+    </script> 
+</body>
+
+</html>
