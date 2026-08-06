@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        async function getNumber() {
+            return 100;
+        }
+
+        const result = getNumber();
+
+        console.log(result);
+
+        result.then(function (value) {
+            console.log(value);
+        });
+
+        // 1. result是数字100，还是Promise？  Promise
+
+        // 2. 第一个console.log大致会显示什么？ Promise { 100 }
+
+        // 3. then中的value是多少？     100
+
+        // 4. async函数返回普通值时，JavaScript会怎样处理这个值？   我猜Promise.resolve()
+
+        async function getUser() {
+            throw new Error("用户不存在");
+        }
+
+        const userPromise = getUser();
+
+        userPromise
+            .then(function (value) {
+                console.log("成功：", value);
+            })
+            .catch(function (error) {
+                console.log("失败：", error.message);
+            });
+
+        // 1. getUser()返回的还是Promise吗？   是
+
+        // 2. 这个Promise最终是fulfilled还是rejected？  rejected
+
+        // 3. then是否执行？        不会执行
+
+        // 4. catch是否执行？ 执行
+
+        // 5. error.message是什么？ 用户不存在
+
+
+        function delayResult(value, delay) {
+            return new Promise(function (resolve) {
+                setTimeout(function () {
+                    resolve(value);
+                }, delay);
+            });
+        }
+
+        async function run() {
+            console.log("run开始");
+
+            const result = await delayResult("异步结果", 1000);
+
+            console.log(result);
+            console.log("run结束");
+        }
+
+        console.log("全局开始");
+        run();
+        console.log("全局结束");
+        // 1. 五次输出的完整顺序是什么？  全局开始  run开始 全局结束  异步结果 run结束 
+
+        // 2. 执行到await时，整个JavaScript程序都会停止吗？ 不会
+
+        // 3. await后面的代码什么时候继续执行？  在await执行完后执行
+
+        // 4. result最终是多少？    异步结果
+
+        // 5. await通常等待的是普通值还是Promise？  Promise
+
+        //  async：保证函数返回Promise
+        //  await：暂停当前async函数后面的代码，不会阻塞整个页面
+
+
+        function getSuccessData() {
+            return new Promise(function (resolve) {
+                setTimeout(function () {
+                    resolve({
+                        name: "小明",
+                        age: 20
+                    });
+                }, 1000);
+            });
+        }
+
+        async function loadUser() {
+            console.log("开始加载");
+
+            const user = await getSuccessData();
+
+            console.log(user.name);
+            console.log("加载完成");
+        }
+
+        loadUser();
+        // 1. user是什么？是Promise还是最终的数据对象？ user是{name: "小明",age: 20}
+
+        // 2. user.name输出什么？   小明
+
+        // 3. “加载完成”是在等待前还是等待后输出？ 等待后
+
+        // 4. await替代了之前Promise链中的哪种写法？  getSuccessData().then(function (user) {  console.log(user.name);});
+
+
+
+        function getFailedData() {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    reject(new Error("网络连接失败"));
+                }, 1000);
+            });
+        }
+
+        async function loadData() {
+            console.log("开始请求");
+
+            try {
+                const data = await getFailedData();
+                console.log("成功：", data);
+            } catch (error) {
+                console.log("失败：", error.message);
+            } finally {
+                console.log("请求结束");
+            }
+        }
+
+        loadData();
+        // 1. await等待的Promise最终是成功还是失败？ 失败
+
+        // 2. await后面的“成功”输出是否执行？ 不会
+
+        // 3. catch是否执行？error.message是什么？ 网络连接失败
+
+        // 4. finally是否执行？ 是
+
+        // 5. 四处可能输出的内容中，实际输出哪些？顺序是什么？ 开始请求 失败：网络连接失败   请求结束
+
+        function loadByPromise() {
+            getSuccessData()
+                .then(function (data) {
+                    console.log(data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+                .finally(function () {
+                    console.log("结束");
+                });
+        }
+
+        async function loadByAwait() {
+            try {
+                const data = await getSuccessData();
+                console.log(data);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                console.log("结束");
+            }
+        }
+
+        // 1. await取得的data对应then中的什么？  .then(function(data){})中的data
+
+        // 2. try中的代码主要对应Promise链中的哪部分？  getSuccessData().then(function (data) {console.log(data);})
+                
+        // 3. catch分别负责什么？  错误处理
+
+        // 4. 两种写法的底层是否都使用Promise？   是
+
+        // 5. async/await的主要优势是什么？  它能让异步代码看起来更接近普通的从上到下执行
+
+
+
+        
+        // 1. fetch()返回的是最终数据，还是Promise？  Promise
+
+        // 2. await fetch(url)得到的是最终用户数组，还是Response响应对象？Response响应对象
+
+        // 3. response.json()返回的是普通数据，还是Promise？Promise
+
+        // 4. 为什么response.json()前面也需要await？  因为读取并解析响应体也需要时间，所以还要等待
+
+        // 5. 为什么需要检查response.ok？   遇到 404、500 等 HTTP 错误时，通常不会自动进入 catch
+
+        // 6. response.ok为false时，怎样让代码进入catch？ 主动抛出错误
+
+        // 7. 网络断开时，错误通常会进入try、catch还是finally？  catch
+
+        // 8. 无论成功或失败都要关闭加载状态，应该放在哪里？ finally 
+
+
+
+
+
+    </script>
+</body>
+
+</html>
