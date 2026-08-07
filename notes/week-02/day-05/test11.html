@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //  1
+        function a() {
+            console.log("a开始");
+            b();
+            console.log("a结束");
+        }
+
+        function b() {
+            console.log("b开始");
+            c();
+            console.log("b结束");
+        }
+
+        function c() {
+            console.log("c");
+        }
+
+        console.log("全局开始");
+        a();
+        console.log("全局结束");
+        // 1. 七次输出的完整顺序是什么？ （全局开始  c  b开始 b结束 a开始 a结束  全局结束）错误看来控制台修改（（全局开始 a开始 b开始 c b结束 a结束 全局结束））
+
+        // 2. 调用a()时，哪个函数进入调用栈？   a
+
+        // 3. 执行到c()时，调用栈从下到上有哪些内容？ a(),b(),c()
+
+        // 4. c执行完成后，接下来继续执行哪个函数？ 执行b函数
+
+        // 5. 为什么a结束不会在b开始之前输出？  因为调用栈是上面执行完后在执行下面的越先调用的在栈底
+
+
+        // 2
+        console.log("A");
+
+        setTimeout(function () {
+            console.log("B");
+        }, 0);
+
+        console.log("C");
+        // 1. 输出顺序是什么？ A,C,B
+
+        // 2. setTimeout设置为0毫秒，B为什么不能立即输出？  因为定时器是宏任务需要等待同步代码完成后检查全部微任务才进行
+
+        // 3. 定时器回调属于宏任务还是微任务？  宏任务
+
+        // 4. 执行同步代码时，B的回调会去哪里等待？    定时器计时结束后，它的回调进入宏任务队列等待。
+
+
+        // 3
+        console.log("A");
+
+        setTimeout(function () {
+            console.log("B");
+        }, 0);
+
+        Promise.resolve().then(function () {
+            console.log("C");
+        });
+
+        console.log("D");
+
+        // 1. A、B、C、D的输出顺序是什么？  A，D，C，B
+
+        // 2. 哪些属于同步代码？ console.log("A");   setTimeout(function () {}   Promise.resolve().then （） console.log("D");
+
+        // 3. 哪个回调进入微任务队列？ .then(function () {console.log("C")； });
+
+        // 4. 哪个回调进入宏任务队列？setTimeout
+
+        // 5. 同步代码结束后，先执行C还是B？为什么？c 因为同步代码后是微任务全部执行完才是宏任务
+
+
+        // 4
+        console.log("1");
+
+        Promise.resolve().then(function () {
+            console.log("2");
+        });
+
+        Promise.resolve().then(function () {
+            console.log("3");
+        });
+
+        setTimeout(function () {
+            console.log("4");
+        }, 0);
+
+        console.log("5");
+        // 1. 完整输出顺序是什么？ 1,5,2,3,4
+
+        // 2. 两个then回调按照什么顺序进入微任务队列？ 先后顺序
+
+        // 3. 微任务队列遵循先进先出还是后进先出？ 先进先出
+
+        // 4. 为什么4最后输出？ 因为定时器的回调函数是宏任务
+
+
+        // 5
+        console.log("A");
+
+        Promise.resolve().then(function () {
+            console.log("B");
+
+            Promise.resolve().then(function () {
+                console.log("C");
+            });
+        });
+
+        Promise.resolve().then(function () {
+            console.log("D");
+        });
+
+        console.log("E");
+        // 1. 完整输出顺序是什么？ A,E,B,D,C
+
+        // 2. 同步代码结束时，微任务队列里最初有哪些任务？    同步代码结束时，队列中最初有两个任务：微任务1：输出B的then回调 微任务2：输出D的then回调      执行微任务1时，才创建输出 C 的新微任务，并排到队尾：
+
+        // 3. 输出B时，新创建的C会进入哪里？ 微任务等待区
+
+        // 4. C会在D之前还是之后执行？  之后
+
+        // 5. 为什么事件循环不会执行一个微任务后立刻进入宏任务？   因为需要执行完全部微任务
+
+
+        // 6
+        console.log("开始");
+
+        setTimeout(function () {
+            console.log("定时器1");
+
+            Promise.resolve().then(function () {
+                console.log("定时器1中的微任务");
+            });
+        }, 0);
+
+        setTimeout(function () {
+            console.log("定时器2");
+        }, 0);
+
+        Promise.resolve().then(function () {
+            console.log("全局微任务");
+        });
+
+        console.log("结束");
+        // 1. 完整输出顺序是什么？ 开始 结束 全局微任务 定时器1 定时器1中的微任务  定时器2
+
+        // 2. 同步代码结束后先执行哪个任务？   Promise.resolve().then();
+
+        // 3. 定时器1执行完成后，是先执行它创建的微任务，还是先执行定时器2？ 它创建的微任务
+
+        // 4. 为什么两个定时器之间可以插入一个微任务？  因为执行完一个宏任务就要在把里面的微任务执行完在执行
+
+        // 5. 一轮基础事件循环可以怎样描述？        同步代码执行 -> 全部微任务->一个宏任务->全部微任务->下一个宏任务
+
+
+        // 7
+
+        console.log("1");
+
+        setTimeout(function () {
+            console.log("2");
+
+            Promise.resolve().then(function () {
+                console.log("3");
+            });
+        }, 0);
+
+        Promise.resolve().then(function () {
+            console.log("4");
+
+            setTimeout(function () {
+                console.log("5");
+            }, 0);
+        });
+
+        console.log("6");
+
+        //         阶段1：执行同步代码
+
+        // 输出：1、6
+        // 调用栈：全局代码
+        // 微任务队列：输出4的Promise回调
+        // 宏任务队列：输出2的定时器回调
+
+
+        // 阶段2：同步代码执行完毕
+
+        // 当前输出： 
+        // 微任务队列： 第二个Promise的回调
+        // 宏任务队列：第一个setTimeout的回调  
+
+
+        // 阶段3：执行第一个微任务
+
+        // 输出了：4
+        // 这个微任务又创建了什么任务：  一个宏任务
+        // 执行后微任务队列：无
+        // 执行后宏任务队列：第一个setTimeout的回调  第二个setTimeout的回调
+
+
+        // 阶段4：执行第一个宏任务
+
+        // 输出了：2
+        // 这个宏任务又创建了什么任务：  微任务
+        // 执行后微任务队列：   第1个Promise的回调
+        // 剩余宏任务队列：  第二个setTimeout的回调
+
+
+        // 阶段5：清空本轮微任务
+
+        // 输出了：3
+        // 微任务队列：无
+
+
+        // 阶段6：执行下一个宏任务第二个setTimeout的回调
+        // 输出：5
+        // 最终顺序：1 → 6 → 4 → 2 → 3 → 5
+
+        // 最终完整顺序：
+        // 1. 完整输出顺序是什么？ 1，6，4，2，3，5
+
+        // 2. 输出4时创建的定时器，会排在输出2的定时器之前还是之后？  之后
+
+        // 3. 输出2以后，为什么不能马上输出5？  因为第一个定时器的回调里面有一个微任务
+
+        // 4. 输出3属于宏任务还是微任务？ 微任务
+
+
+
+        // 8
+        console.log("A");
+
+        const promise = new Promise(function (resolve) {
+            console.log("B");
+
+            resolve();
+
+            console.log("C");
+        });
+
+        promise.then(function () {
+            console.log("D");
+        });
+
+        console.log("E");
+        // 1. 完整输出顺序是什么？A B C E D
+
+        // 2. new Promise中的执行器是同步还是异步执行？  同步
+
+        // 3. 调用resolve()以后，console.log("C")还会不会执行？  会
+
+        // 4. resolve()是立即执行then回调，还是把then回调安排为微任务？  安排为微任务
+
+
+
+        // 9
+        async function runTask() {
+            console.log("1");
+
+            await Promise.resolve();
+
+            console.log("2");
+
+            await 0;
+
+            console.log("3");
+        }
+
+        console.log("4");
+
+        runTask();
+
+        console.log("5");
+
+        Promise.resolve().then(function () {
+            console.log("6");
+        });
+        // 1. 完整输出顺序是什么？4，1，5，2，6，3
+
+        // 2. runTask调用后，await之前的代码是否同步执行？    是
+
+        // 3. 第一个await后面的console.log("2")属于同步代码还是微任务中的代码？  微任务
+
+        // 4. await 0是否仍然会让后面的代码等待到微任务阶段？   是
+
+        // 5. 输出2时遇到第二个await，新任务会排在输出6之前还是之后？之前
+
+
+        //10
+        console.log("开始");
+
+        Promise.resolve()
+            .then(function () {
+                console.log("A");
+            })
+            .then(function () {
+                console.log("B");
+            });
+
+        Promise.resolve().then(function () {
+            console.log("C");
+        });
+
+        console.log("结束");
+        // 1. 完整输出顺序是什么？   开始，结束，A，C，B
+
+        // 2. 同步代码结束时，微任务队列最初是[A, C]还是[A, B, C]？  [A, C]
+
+        // 3. B是在什么时候进入微任务队列的？ 第一个then的Promise返回成功
+
+        // 4. B和C谁先执行？为什么？   c因为b是后面加进队列的
+
+        // 5. 为什么链式then中的后一个then不会与前一个then同时进入队列？ 链式 then 的后一个回调不能提前进入队列，因为它必须等待前一个 then 执行完成，并确定前一个 then 返回的新 Promise 是成功还是失败。
+
+
+
+        // 1. 浏览器为什么需要在事件循环中考虑页面渲染，而Node.js通常不需要？  浏览器负责网页界面，拥有 DOM、CSS 和渲染引擎，因此事件循环除了执行 JavaScript，还要寻找合适的机会计算样式、布局并绘制页面。Node.js 主要运行服务器或工具程序，没有普通网页界面，所以通常不负责浏览器页面渲染。
+
+        // 2. Promise.then在浏览器和Node.js中都属于什么任务？    微任务
+
+        // 3. process.nextTick主要存在于浏览器还是Node.js？   Node.js
+
+        // 4. 为什么不能简单认为setTimeout(0)永远早于setImmediate？因为setTimeout是宏任务
+
+
+
+
+        console.log("1");
+
+        setTimeout(function () {
+            console.log("2");
+
+            Promise.resolve().then(function () {
+                console.log("3");
+            });
+        }, 0);
+
+        async function test() {
+            console.log("4");
+
+            await null;
+
+            console.log("5");
+
+            Promise.resolve().then(function () {
+                console.log("6");
+            });
+        }
+
+        test();
+
+        Promise.resolve().then(function () {
+            console.log("7");
+
+            setTimeout(function () {
+                console.log("8");
+            }, 0);
+        });
+
+        console.log("9");
+
+
+        // 1. 完整输出顺序： 1,4,9,5,7,6,2,3,8
+
+        // 2. 同步代码输出：1,4,9
+
+        // 3. 同步代码结束时，最初的微任务队列： 5 7
+
+        // 4. 同步代码结束时，最初的宏任务队列： 2
+
+        // 5. 输出5时又创建了什么任务？ 微任务
+
+        // 6. 输出7时又创建了什么任务？ 宏任务
+
+        // 7. 输出2后为什么先输出3，而不是8？ 因为新微任务会直接添加当前微任务队列中  它不会打断当前正在执行的定时器回调而是在当前宏任务执行完成后、下一个宏任务开始前被清空。
+
+        // 1. 什么是调用栈？  调用栈用来记录当前正在执行的全局代码和函数。函数被调用时入栈，执行完成后出栈，遵循后进先出。
+
+        // 2. 什么是宏任务和微任务？ 微任务是await 后面的继续执行通常进入微任务 .then catch finally 这些 宏任务是定时器等
+
+        // 3. 一轮基础事件循环怎样执行？     同步代码 全部微任务 一个宏函数 全部微任务 后面的一个宏函数
+
+        // 4. 微任务执行过程中继续创建微任务，新任务什么时候执行？ 新微任务会直接添加当前微任务队列中下一个宏任务开始前被清空
+
+        // 5. Promise执行器和then回调分别是同步还是异步？ Promise执行器同步 then回调异步
+
+        // 6. 为什么链式then中的后一个then不能提前进入微任务队列？  因为下一个then需要上一个then的返回结果promise成功还是失败
+
+        // 7. await暂停的是整个程序还是当前async函数？         当前async
+
+        // 8. 浏览器和Node.js事件循环最基础的区别是什么？ 一个需要渲染页面一个不需要
+
+        // 1. 如果一个微任务不断创建新的微任务，可能产生什么问题？  下一个宏任务迟迟不能执行  点击和定时器无法及时响应  页面出现卡顿  浏览器无法及时渲染
+
+        // 2. setTimeout(fn, 0)的真正含义是什么？  等待时间达到最低要求后，把 fn 安排为一个任务等待执行；它必须等当前调用栈清空，并等前面的微任务执行完。
+
+        // 3. 为什么很长的同步循环会导致页面卡顿？   正在执行很长的同步循环时，调用栈一直没有清空。事件循环无法去处理：用户点击 输入事件  定时器 Promise 后续任务 页面渲染
+
+        // 4. 为什么事件循环与昨天学习的网络请求、Promise和async/await有关？ 网络请求本身由浏览器环境处理，不需要 JavaScript 一直等待。
+    </script>
+</body>
+
+</html>

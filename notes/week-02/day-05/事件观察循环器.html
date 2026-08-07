@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件循环综合练习</title>
+</head>
+
+<body>
+    <main>
+        <h1>事件循环执行记录</h1>
+
+        <button id="run-button" type="button">
+            开始运行
+        </button>
+
+        <button id="clear-button" type="button">
+            清空记录
+        </button>
+
+        <ol id="log-list"></ol>
+    </main>
+
+    <script>
+        const runButton = document.querySelector("#run-button");
+
+        const clearButton = document.querySelector("#clear-button");
+
+        const logList = document.querySelector("#log-list");
+
+        let step = 0;
+
+        function logStep(message) {
+            step++;
+
+            const logItem =
+                document.createElement("li");
+
+            logItem.textContent =
+                step + ". " + message;
+
+            logList.append(logItem);
+
+            console.log(step + ". " + message);
+        }
+
+        clearButton.addEventListener("click", function () {
+            logList.innerHTML = "";
+            step = 0;
+            console.clear();
+        });
+
+        async function runAsyncTask() {
+            logStep("async开始");
+
+            await Promise.resolve();
+
+            logStep("async第一次恢复");
+
+            setTimeout(function () {
+                logStep("async中的定时器");
+
+                Promise.resolve().then(function () {
+                    logStep("async定时器中的微任务");
+                });
+            }, 0);
+
+            await 0;
+
+            logStep("async第二次恢复");
+        }
+
+        runButton.addEventListener("click", function () {
+            logStep("点击事件开始");
+
+            setTimeout(function () {
+                logStep("定时器1");
+
+                queueMicrotask(function () {
+                    logStep("定时器1中的微任务");
+                });
+            }, 0);
+            runAsyncTask();
+            Promise.resolve()
+                .then(function () {
+                    logStep("Promise微任务1");
+
+                    setTimeout(function () {
+                        logStep("定时器2");
+                        Promise.resolve().then(function () {
+                            logStep("定时器2中的微任务");
+                        });
+                    }, 0);
+                })
+                .then(function () {
+                    logStep("Promise微任务2");
+                });
+
+            //runAsyncTask();
+
+            queueMicrotask(function () {
+                logStep("queueMicrotask");
+            });
+
+            logStep("点击事件结束");
+        });
+
+        // 点击事件回调：同步代码 / 微任务 / 宏任务？同步代码
+
+        // “点击事件开始”：同步执行 / 微任务 / 宏任务？同步执行
+
+        // “定时器1”：微任务 / 宏任务？宏任务
+
+        // “定时器1中的微任务”：微任务 / 宏任务？微任务
+
+        // “Promise微任务1”：微任务 / 宏任务？微任务
+
+        // “Promise微任务2”：微任务 / 宏任务？微任务
+
+        // “async开始”：同步执行 / 微任务 / 宏任务？ 同步执行
+
+        // “async第一次恢复”：同步执行 / 微任务 / 宏任务？微任务
+
+        // “async第二次恢复”：同步执行 / 微任务 / 宏任务？微任务
+
+        // “queueMicrotask”：微任务 / 宏任务？微任务
+
+        // “async中的定时器”：微任务 / 宏任务？宏任务
+
+        // “async定时器中的微任务”：微任务 / 宏任务？微任务
+        // 第1条输出：点击事件开始
+
+        // 第2条输出：async开始
+
+        // 第3条输出：点击事件结束
+
+        // 同步代码结束时的微任务队列：
+
+        // 第1个：Promise微任务1
+        // 第2个：async第一次恢复
+        // 第3个：queueMicrotask
+
+        // 执行第1个微任务：
+
+        // 输出：4.Promise微任务1
+        // 它创建了哪个宏任务： 定时器2宏任务
+        // 它执行完成后，又让哪个微任务进入队尾：Promise微任务2
+
+
+        // 执行第2个微任务：
+
+        // 输出：5.async第一次恢复
+        // 它创建了哪个宏任务：async中的定时器宏任务
+        // 遇到await 0后，又让哪个微任务进入队尾：async第二次恢复微任务
+
+
+        // 此时还没有执行的微任务队列顺序：
+
+        // 第1个：queueMicrotask
+        // 第2个：Promise微任务2
+        // 第3个：async第二次恢复微任务
+        // 微任务输出1：Promise微任务1
+        // 微任务输出2：async第一次恢复
+        // 微任务输出3：queueMicrotask
+        // 微任务输出4：Promise微任务2
+        // 微任务输出5：async第二次恢复微任务
+
+
+        // 宏任务队列：
+
+        // 第1个：定时器1
+        // 第2个：定时器2
+        // 第3个：async中的定时器
+
+        // 第一个宏任务输出：定时器1
+
+        // 它又创建了什么任务：微任务
+
+        // 这个新任务会在第二个宏任务之前还是之后执行： 之前
+
+        // 第二个宏任务输出： 定时器2
+
+        // 它是否创建了新的微任务：否
+
+        // 第三个宏任务输出：async中的定时器
+
+        // 它又创建了什么任务：微任务
+
+        // 这个新任务什么时候执行：在这个宏任务结束后排进微任务中
+        // 1.点击事件开始
+        // 2.async开始
+        // 3.点击事件结束
+        // 4.Promise微任务1
+        // 5.async第一次恢复
+        // 6.queueMicrotask
+        // 7.Promise微任务2
+        // 8.async第二次恢复微任务
+        // 9.定时器1
+        // 10.定时器1中的微任务
+        // 11.定时器2
+        // 12.async中的定时器
+        // 13.async定时器中的微任务
+
+
+        // 改变runAsyncTask();位置在promise之前
+        // 1. 前三条同步输出是否改变？ 不会改变
+
+        // 2. 同步结束时，最初的微任务队列顺序是什么？  async第一次恢复 Promise微任务1 queueMicrotask
+
+        // 3. async第一次恢复与Promise微任务1谁先执行？async第一次恢复
+
+        // 4. async中的定时器与定时器2谁先进入宏任务队列？async中的定时器先
+
+        // 5. 三个定时器最终按什么顺序执行？ 定时器1 async中的定时器 定时器2
+
+        //改造2 在定时器2加微任务
+
+        // 1. 现在总共会输出多少条记录？  14
+
+        // 2. “定时器2中的微任务”在定时器2之前还是之后？ 之后
+
+        // 3. 它在下一个定时器之前还是之后？  之前
+
+        // 4. 为什么新微任务不会等所有定时器执行完才执行？   因为新微任务会直接添加当前微任务队列中  它不会打断当前正在执行的定时器回调而是在当前宏任务执行完成后、下一个宏任务开始前被清空。
+    </script>
+</body>
+
+</html>
