@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户搜索</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <main class="search-app">
+        <header class="app-header">
+            <h1>用户搜索</h1>
+            <p>使用原生 JavaScript 搜索并查看用户信息</p>
+        </header>
+
+        <section class="search-section">
+            <label for="search-input">搜索用户</label>
+
+            <div class="search-form">
+                <input id="search-input" class="search-input" type="search" placeholder="请输入用户姓名" autocomplete="off">
+
+                <button id="cancel-button" class="cancel-button" type="button" disabled>
+                    取消请求
+                </button>
+            </div>
+        </section>
+
+        <section id="status-panel" class="status-panel" aria-live="polite">
+            <p id="status-message">
+                请输入姓名开始搜索
+            </p>
+        </section>
+
+        <section class="content-layout">
+            <section class="result-section">
+                <h2>搜索结果</h2>
+
+                <ul id="user-list" class="user-list"></ul>
+            </section>
+
+            <aside id="detail-panel" class="detail-panel">
+                <h2>用户详情</h2>
+
+                <div id="user-detail">
+                    <p>选择一名用户查看详情</p>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <script type="module" src="./js/main.js"></script>
+</body>
+
+</html>

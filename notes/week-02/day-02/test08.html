@@ -96,7 +96,7 @@
             return function (...args) {
                 // 保存这次调用时的this
                 const context = this;
-
+                console.log(this)
                 clearTimeout(timerId);
 
                 timerId = setTimeout(function () {
