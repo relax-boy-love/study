@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="page-content">
+        <h1>页面内容</h1>
+        <button type="button">打开弹窗</button>
+    </div>
+
+    <div class="modal-overlay">
+        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <button class="modal-close" type="button">×</button>
+            <h2 id="modal-title">确认操作</h2>
+            <p>确定要继续吗？</p>
+        </section>
+    </div>
+</body>
+<style>
+    .modal-overlay {
+    position: fixed;
+
+    /* 覆盖整个视口，相当于top/right/bottom/left都为0 */
+    inset: 0;
+
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0 0 0 / 50%);
+}
+
+.modal {
+    position: relative;
+    width: min(90%, 420px);
+    padding: 24px;
+    border-radius: 12px;
+    background-color: #ffffff;
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+</style>
+<script>
+// 17. overlay为什么适合使用fixed？  因为需要把其他都遮住除了弹框 然后需要全屏幕 
+
+// 18. inset: 0有什么作用？     实现全屏遮盖正确。它等价于：top: 0; right: 0; bottom: 0; left: 0;
+
+// 19. modal为什么设置position: relative？   为后面的按钮组合使用
+
+// 20. close按钮为什么使用absolute？   让按钮脱离普通文档流，并定位在弹窗右上角。
+
+// 21. close按钮最终相对于谁定位？   section
+</script>
+</html>

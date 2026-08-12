@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+        <div class="card">
+            <button class="close-button">×</button>
+            <h2>弹窗标题</h2>
+        </div>
+</body>
+<style>
+.card {
+    position: relative;
+    width: 300px;
+    height: 200px;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+</style>
+<script>
+    //     .box {
+    //     width: 200px;
+    //     padding: 20px;
+    //     border: 5px solid #333;
+    //     margin: 30px;
+    // }
+    //      1. padding位于content的里面还是外面？    外面
+
+    //      2. border位于padding的里面还是外面？   外面
+
+    //      3. margin是否属于元素的背景区域？先预测。不属于
+
+    //      4. 想增加文字与边框之间的距离，应该使用padding还是margin？ padding
+
+    //      5. 想增加两个元素之间的距离，一般使用padding还是margin？   margin
+
+
+    // width: 200px;
+    // padding: 20px;
+    // border: 5px solid;
+    // margin: 30px;
+
+    // 1. content的宽度是多少？  200
+
+    // 2. 左右padding合计是多少？  40
+
+    // 3. 左右border合计是多少？ 10
+
+    // 4. 不计算margin，盒子的可见总宽度是多少？   250
+
+    // 5. 再计算左右margin后，这个元素水平方向总共占据多少空间？   310
+
+    // 6. margin会不会增加元素自身的背景和边框宽度？不会
+
+    //     .box {
+    //     box-sizing: border-box;
+    //     width: 200px;
+    //     padding: 20px;
+    //     border: 5px solid;
+    // }
+
+    // 1. 盒子的可见总宽度是多少？   200
+
+    // 2. 左右padding合计是多少？ 40
+
+    // 3. 左右border合计是多少？ 10
+
+    // 4. 实际content宽度是多少？150
+
+    // 5. margin是否包含在width: 200px中？  没有
+
+    // 6. 为什么项目中经常统一设置box-sizing: border-box？  设置的 width 已经包含 padding 和 border。以后增加内边距或边框时，元素的最终宽度不会意外变大，布局更容易计算和控制。
+
+    //     .parent {
+    //     width: 500px;
+    // }
+
+    // .child {
+    //     box-sizing: content-box;
+    //     width: 100%;
+    //     padding: 20px;
+    //     border: 2px solid;
+    // }
+
+    // 1. child的content宽度是多少？  500px
+
+    // 2. 左右padding和左右border分别合计多少？  44px
+
+    // 3. child的可见总宽度是多少？   544px
+
+    // 4. 它是否会超过500px宽的父元素？超过多少？ 会 超过 44px
+
+    // 5. 改成border-box后，child的可见总宽度是多少？   500px
+
+    // 6. 这个例子说明border-box解决了什么常见问题？  盒子会因为padding border撑大的问题
+
+
+
+    // <div class="parent">
+    //     <div class="content-box">content-box</div>
+    //     <div class="border-box">border-box</div>
+    // </div>
+
+    //      .parent {
+    //     width: 500px;
+    //     padding: 10px;
+    //     background-color: #e5e7eb;
+    // }
+
+    // .content-box,
+    // .border-box {
+    //     width: 100%;
+    //     padding: 20px;
+    //     border: 2px solid #2563eb;
+    //     margin-bottom: 20px;
+    // }
+
+    // .content-box {
+    //     box-sizing: content-box;
+    //     background-color: #fee2e2;
+    // }
+
+    // .border-box {
+    //     box-sizing: border-box;
+    //     background-color: #dcfce7;
+    // }
+    // 1. content-box显示的最终宽度是多少？   544px
+
+    // 2. border-box显示的最终宽度是多少？    500px
+
+    // 3. 哪一个元素超出了父元素的内容区域？   <div class="content-box">content-box</div>
+
+    // 4. parent自身设置了padding: 10px，它的默认box-sizing是什么？    content-box
+
+    // 5. parent的可见总宽度是多少？  520px
+
+    // 6. 如果给所有元素设置box-sizing: border-box，parent的可见总宽度会变成多少？   500px
+
+
+    //     <div class="box-a">A</div>
+    //     <div class="box-b">B</div>
+
+    //     .box-a {
+    //     height: 100px;
+    //     margin-bottom: 30px;
+    //     background-color: #fee2e2;
+    // }
+
+    // .box-b {
+    //     height: 100px;
+    //     margin-top: 50px;
+    //     background-color: #dcfce7;
+    // }
+
+    // 1. A和B之间的最终距离是多少？ 50px
+
+    // 2. 是A的margin消失了吗？  没有 是折叠了
+
+    // 3. 如果margin-bottom是60px，margin-top是20px，最终距离是多少？  60px
+
+    // 4. 水平方向的margin通常会发生这种折叠吗？   不会
+
+    // 5. 外边距折叠通常发生在水平方向还是垂直方向？  垂直
+
+
+    // <div class="parent">
+    //     <div class="child">子元素</div>
+    // </div>
+    // .parent {
+    //     background-color: #e5e7eb;
+    //     margin-top: 1px;
+    // }
+
+    // .child {
+    //     margin-top: 40px;
+    //     height: 100px;
+    //     background-color: #bfdbfe;
+    // }
+    // 1. child的margin-top一定会留在parent内部吗？  不会
+
+    // 2. 页面上可能表现为谁整体向下移动？  父盒子一起
+ 
+    // 3. 给parent增加padding-top，能否把父子外边距分隔开？    不会 
+
+    // 4. 给parent增加border-top，能否把父子外边距分隔开？可以
+
+    // 5. 后面学习的BFC能否处理这种问题？先预测。不知道
+
+
+//     <div class="container">
+//             <div class="float-item">浮动元素</div>
+//         </div>
+//         <p class="next-content">后面的内容</p>
+
+// .container {
+//     background-color: #fee2e2;
+//     display: flow-root;
+// }
+
+// .float-item {
+//     float: left;
+//     width: 200px;
+//     height: 120px;
+//     background-color: #bfdbfe;
+// }
+
+// .next-content {
+//     background-color: #dcfce7;
+// }
+
+    // 1. float-item是否仍在普通文档流中占据原来的位置？ 不能  浮动元素会脱离普通文档流，不再按普通流方式为父元素贡献高度，但元素本身仍然存在、仍然显示，并没有变成0。
+
+    // 2. container没有设置固定高度，它能否正常被浮动子元素撑高？   不能
+
+    // 3. 什么叫“高度塌陷”？  是子盒子使用了浮动设置了高度 但是父盒子没有设置 会导致父盒子没有高度 而盒子有  父元素没有固定高度，而内部子元素全部浮动时，父元素无法被这些浮动元素正常撑高，这种现象称为高度塌陷。
+
+    // 4. 高度塌陷是浮动子元素高度变成0，还是父元素没有被撑高？父元素没有被撑高
+
+    // 5. 如果直接给container写固定height: 120px，当前示例可能正常，但为什么不是通用解决方案？因为子盒子不知道有多高  内容高度可能变化  子元素数量可能变化  文本可能换行   响应式页面在不同宽度下高度可能变化
+
+
+    // 6. BFC可以先理解为什么样的布局区域？    独立的块级布局区域
+
+    // 7. 现代专门用于创建BFC、且副作用较少的属性是什么？    display: flow-root;
+
+    // 8. overflow: hidden虽然能创建BFC，但可能有什么副作用？    会裁剪溢出的内容
+
+    // 9. 让container形成BFC后，能否包含内部浮动元素的高度？    可以
+
+    // 10. BFC除了处理浮动高度塌陷，还能处理前面哪种margin问题？   折叠
+
+    // 11. 添加前container高度是多少？   0px
+
+// 12. 添加后container高度是多少？    120px
+
+// 13. 添加后背景是否包住浮动元素？   包住了
+
+// 14. 后面的next-content位置是否恢复正常？   正常
+
+
+
+ 
+// 1. 元素默认的position是什么？  static
+
+// 2. static元素设置top: 20px通常会移动吗？  不会
+
+// 3. relative元素相对于谁进行偏移？  自己原来位置
+
+// 4. relative元素移动后，原来的空间是否保留？   保留
+
+// 5. relative是否会让元素完全脱离普通文档流？  没有
+    
+
+// 6. absolute元素是否脱离普通文档流？  是
+
+// 7. absolute元素原来的空间是否保留？   没有
+
+// 8. close-button相对于哪个元素定位？   card
+
+// 9. 为什么card需要设置position: relative？     让 card 成为一个定位祖先，使绝对定位的关闭按钮以 card 为参照。
+
+// 10. 如果删除card的position: relative，按钮一定还会相对于card定位吗？   不会
+
+// 11. absolute是不是永远相对于父元素定位？   最近的、position 不是 static 的祖先元素。
+
+// 12. absolute真正寻找的是什么样的祖先元素？    最近的、position 不是 static 的祖先元素。
+
+// 13. target相对于outer还是middle定位？  outer
+
+// 14. 为什么不会相对于middle定位？  因为middle没有设置position: relative;
+
+// 15. 如果给middle添加position: relative，target改为相对于谁定位？ middle
+
+// 16. fixed元素是否脱离普通文档流？     是 
+
+// 17. 页面滚动时，fixed元素是否通常跟随页面内容离开视口？   不会
+
+// 18. sticky元素从页面加载开始就一定固定在视口顶部吗？   不是
+
+// 19. sticky通常需要配合哪个偏移属性才能知道吸附位置？  top、bottom 等偏移属性
+
+// 20. sticky吸顶元素是否会永远超出祖先容器范围继续固定？   不会
+
+// 21. 返回顶部按钮适合fixed还是sticky？    fixed
+
+// 22. 表格标题或导航栏滚动到顶部后吸附，适合fixed还是sticky？  sticky
+
+// 23. 只写position: sticky，不写top，是否容易看出吸顶效果？ 不容易
+
+// 24. 某个祖先设置overflow: hidden或auto，sticky的滚动参照可能会不会改变？   会改变
+
+// 25. 如果页面根本没有足够内容产生滚动，能否观察吸顶过程？    不能
+
+
+// 第四部分：z-index 与层叠上下文
+
+// <div class="box-a">A</div>
+// <div class="box-b">B</div>
+// .box-a,
+// .box-b {
+//     width: 150px;
+//     height: 150px;
+// }
+
+// .box-a {
+//     position: relative;
+//     z-index: 1;
+//     background-color: #ef4444;
+// }
+
+// .box-b {
+//     position: relative;
+//     z-index: 2;
+//     margin-top: -80px;
+//     margin-left: 60px;
+//     background-color: #3b82f6;
+// }
+// 1. A和B发生重叠时，谁显示在上面？   b在a上面
+
+// 2. 为什么？  因为b的z-index比a的大
+
+// 3. z-index值越大，是否在整个页面中永远越靠上？先预测。   不是
+
+// 4. 如果两个元素z-index相同，后写在HTML中的元素通常显示在上面还是下面？   在上面
+
+// 5. z-index主要在元素不重叠时发挥作用，还是重叠时发挥作用？   重叠
+
+// <div class="parent-a">
+//     <div class="child-a">z-index: 9999</div>
+// </div>
+
+// <div class="parent-b">
+//     <div class="child-b">z-index: 1</div>
+// </div>
+        
+// .parent-a {
+//     position: relative;
+//     z-index: 1;
+// }
+
+// .parent-b {
+//     position: relative;
+//     z-index: 2;
+// }
+
+// .child-a {
+//     position: absolute;
+//     z-index: 9999;
+// }
+
+// .child-b {
+//     position: absolute;
+//     z-index: 1;
+// }
+
+// 6. 浏览器会先比较child的z-index，还是两个父级层叠上下文？  父级的
+
+// 7. child-a的9999能否直接越过parent-a，与parent-b比较？   不能
+
+// 8. 最终更可能显示在上面的是child-a还是child-b？   child-b
+
+// 9. 为什么9999可能输给1？  child-a 的 9999 只能在 parent-a 的层叠上下文内部比较。两个父级之间比较时，parent-a 的层级1低于 parent-b 的层级2，所以整个 parent-a 都位于 parent-b 下方
+
+// 10. 遇到z-index很大仍被遮挡，应该只继续增加数值，还是检查祖先层叠上下文？   检查祖先层叠上下文
+
+// 11. position: relative是否单独一定创建层叠上下文？   不一定
+
+// 12. position: relative配合z-index: 1是否会创建？  会
+
+// 13. opacity: 0.9可能会不会创建层叠上下文？  会
+
+// 14. transform是否可能让元素创建新的层叠上下文？  会
+
+// 15. 子元素被祖先overflow: hidden裁剪时，继续增加z-index能解决吗？  不能
+
+// 16. z-index问题应该同时检查元素自身还是祖先？  元素自身和祖先都要检查
+</script>
+
+</html>

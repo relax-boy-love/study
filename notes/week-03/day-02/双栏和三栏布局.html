@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 双栏 -->
+    <!-- <div class="two-column-layout">
+    <aside class="sidebar">侧边栏</aside>
+    <main class="content">主要内容</main>
+</div> -->
+
+<!-- 三栏 -->
+ <div class="three-column-layout">
+    <aside class="left-sidebar">左侧导航</aside>
+    <main class="main-content">主要内容</main>
+    <aside class="right-sidebar">相关推荐</aside>
+</div>
+</body>
+<style>
+    /* 父元素横向排列
+两栏间距为 20px
+侧边栏固定宽度 220px
+侧边栏不能被压缩
+主内容占据剩余宽度
+主内容允许缩小，不能被长内容撑破布局 */
+    .two-column-layout {
+    display: flex;
+    gap: 20px;
+}
+
+.sidebar {
+    width: 220px;
+
+    /* 不放大，也不缩小 */
+    flex: 0 0 220px;
+}
+
+.content {
+    /* 占据剩余空间 */
+    flex: 1;
+
+    /* 允许内容区域缩小 */
+    min-width: 0;
+}
+
+/* 三栏 */
+/* 左侧栏：固定180px
+中间内容：占据剩余空间
+右侧栏：固定240px
+间距：20px */
+.three-column-layout {
+    display: flex;
+    gap: 20px;
+}
+
+.left-sidebar {
+    flex: 0 0 180px;
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.right-sidebar {
+    flex: 0 0 240px;
+}
+@media (max-width: 768px) {
+    .three-column-layout {
+        /* 从横向排列改为纵向排列 */
+        flex-direction: column;
+    }
+
+    .left-sidebar,
+    .right-sidebar {
+        /* 允许宽度根据内容或容器自动计算 */
+        flex-basis:auto;
+    }
+}
+/* // 1. 哪两栏是固定宽度？ flex: 0 0 180px;    flex: 0 0 240px;
+
+// 2. 哪一栏负责占据剩余空间？   flex: 1;
+
+// 3. 为什么main-content仍然需要min-width: 0？   长内容可能把 .content 和整个布局撑宽，产生横向滚动或挤压侧栏
+
+// 4. 如果容器总宽度小于两侧栏加间距，页面可能出现什么问题？   容器宽度不足时，三栏可能被挤压、内容溢出，并产生横向滚动条。
+
+// 5. 手机屏幕下，应该继续保持三栏，还是通过媒体查询改成单栏？  通过媒体查询改成单栏 */   
+
+/* // 1. flex-direction应填写row还是column？  colum
+
+// 2. flex-basis应填写固定宽度还是auto？  auto
+
+// 3. 进入单栏布局后，三个区域按照什么顺序显示？  上下
+
+// 4. 这个顺序由CSS类名决定，还是HTML中的元素顺序决定？ html元素 */
+</style> 
+</html>

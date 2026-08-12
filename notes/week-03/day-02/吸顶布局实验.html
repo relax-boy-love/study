@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="page">
+        <header class="page-header">
+            <h1>前端文章</h1>
+        </header>
+
+        <nav class="sticky-nav">
+            <a href="#html">HTML</a>
+            <a href="#css">CSS</a>
+            <a href="#javascript">JavaScript</a>
+        </nav>
+
+        <main class="article-content">
+            <section id="html">
+                <h2>HTML</h2>
+                <p>这里放入多段内容，使页面产生滚动。</p>
+            </section>
+
+            <section id="css">
+                <h2>CSS</h2>
+                <p>这里放入多段内容，使页面产生滚动。</p>
+            </section>
+
+            <section id="javascript">
+                <h2>JavaScript</h2>
+                <p>这里放入多段内容，使页面产生滚动。</p>
+            </section>
+        </main>
+    </div>
+</body>
+<style>
+    body {
+        margin: 0;
+    }
+   
+    .page-header {
+        height: 160px;
+        padding: 24px;
+        background-color: #dbeafe;
+    }
+
+    .sticky-nav {
+        position: sticky;
+
+        /* 吸附在滚动区域顶部 */
+        top: 0;
+
+        /* 避免后面的内容覆盖导航 */
+        z-index: 10;
+
+        padding: 16px 24px;
+        background-color: #ffffff;
+        border-bottom: 1px solid #d1d5db;
+    }
+
+    .sticky-nav a {
+        margin-right: 20px;
+    }
+
+    .article-content {
+        padding: 24px;
+    }
+
+    .article-content section {
+        min-height: 600px;
+    }
+</style>
+<script>
+    // 1. 现在滚动的是整个浏览器页面，还是.page内部？  整个浏览器
+
+// 2. sticky-nav吸附在浏览器顶部，还是.page滚动区域顶部？   浏览器顶部
+
+// 3. 删除position: relative，吸顶是否仍然有效？   是
+
+// 4. 这个结果能否说明sticky不依赖position: relative？   是的
+
+// 1. 页面刚打开时，导航是否在header下面？   在
+
+// 2. 向下滚动后，导航在什么位置开始吸附？   距离浏览器顶部0px时
+
+// 3. 继续滚动时，导航是否保持在视口顶部？   会
+
+// 4. 暂时删除top: 0后，是否还能看到吸顶效果？   不能
+
+// 5. 给.page添加overflow: hidden后，吸顶是否发生变化？   会
+
+// 6. 本例使用z-index: 10的目的是什么？  提供显示权重
+</script>
+</html>
