@@ -1,0 +1,141 @@
+/* 页面背景为浅灰色
+头部和底部有白色背景
+注册卡片居中
+表单控件纵向排列
+输入框宽度一致
+单选框和复选框与文字横向排列
+按钮具有明显的悬停和键盘焦点状态 */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    /* 让header、main、footer纵向排列 */
+    display: flex;
+    flex-direction: column;
+
+    font-family: Arial, "Microsoft YaHei", sans-serif;
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+.page-header,
+.page-footer {
+    padding: 16px 24px;
+    background-color: #ffffff;
+}
+
+.page-main {
+    /* 占据页面剩余空间 */
+    flex: 1;
+
+    /* 让注册卡片水平居中 */
+    display: flex;
+    justify-content: center;
+
+    padding: 40px 16px;
+}
+
+.register-card {
+    width: 100%;
+    max-width: 640px;
+    padding: 32px;
+    background-color: #ffffff;
+    border-radius: 12px;
+}
+
+
+.register-card h1 {
+    margin-top: 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+fieldset {
+    margin: 0;
+    padding: 20px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+}
+
+legend {
+    padding: 0 8px;
+    font-weight: 700;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.form-field:last-child {
+    margin-bottom: 0;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #9ca3af;
+    border-radius: 6px;
+    font: inherit;
+}
+
+.form-field textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+}
+
+button {
+    padding: 10px 20px;
+    border: 0;
+    border-radius: 6px;
+    font: inherit;
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+button[type="reset"] {
+    background-color: #e5e7eb;
+    color: #1f2937;
+}
+
+/* 鼠标悬停 */
+button:hover {
+    filter: brightness(0.92);
+}
+
+/* 键盘焦点 */
+input:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+    outline: 3px solid #f59e0b;
+    outline-offset: 2px;
+}

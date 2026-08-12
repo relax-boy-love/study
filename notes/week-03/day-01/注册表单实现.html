@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册账号 - 前端学习社区</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <!-- 页面头部 -->
+    <header class="page-header">
+        <p class="site-name">前端学习社区</p>
+    </header>
+
+    <!-- 页面主要内容 -->
+    <main class="page-main">
+        <section class="register-card" aria-labelledby="title">
+            <h1 id="title">注册账号</h1>
+            <p>填写以下信息，创建你的学习账号。</p>
+
+            <form action="/register" method="post" id="registerForm">
+
+                <!-- 账户信息分组 -->
+                <fieldset>
+                    <legend>账户信息</legend>
+                    <div class="form-field">
+                        <label for="username">用户名</label>
+                        <input id="username" type="text" name="username" required minlength="3" maxlength="20">
+                    </div>
+                    <div class="form-field">
+                        <label for="email">邮箱</label>
+                        <input id="email" type="email" name="email" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="password">密码</label>
+                        <input id="password" type="password" name="password" required minlength="8" maxlength="20">
+                    </div>
+
+
+                    <div class="form-field">
+                        <label for="confirmPassword">确认密码</label>
+                        <input id="confirmPassword" type="password" name="confirmPassword" required minlength="8"
+                            maxlength="20">
+                    </div>
+                </fieldset>
+
+                <!-- 求职方向分组 -->
+                <fieldset>
+                    <legend>请选择求职方向</legend>
+                    <div class="option-item">
+                        <div>
+                            <label for="front">前端开发</label>
+                            <input id="front" type="radio" name="direction" value="frontend" required>
+                        </div>
+
+                        <div>
+                            <label for="after">后端开发</label>
+                            <input id="after" type="radio" name="direction" value="backend">
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <!-- 技能分组 -->
+                <fieldset>
+                    <legend>技能分组</legend>
+                    <div class="option-item">
+                        <div>
+                            <label for="html">html</label>
+                            <input id="html" type="checkbox" name="skills" value="html" >
+                        </div>
+                        <div>
+                            <label for="css">css</label>
+                            <input id="css" type="checkbox" name="skills" value="css">
+                        </div>
+                        <div>
+                            <label for="javascript">javascript</label>
+                            <input id="javascript" type="checkbox" name="skills" value="javascript">
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <!-- 个人介绍 -->
+                <div class="form-field">
+                    <label for="bio">个人介绍</label>
+                    <textarea name="bio" id="bio"></textarea>
+                </div>
+
+
+                <!-- 操作按钮 -->
+                <div class="form-actions">
+                    <button type="submit">提交</button>
+                    <button type="reset">重置</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="page-footer">
+        <p>前端学习社区</p>
+    </footer>
+</body>
+<script>
+    // 1. required有什么作用？ 必须填写或选择
+
+    // 2. minlength="6"限制的是最少6个字符，还是最多6个字符？最少6个字符
+
+    // 3. maxlength="20"会限制什么？   最多20个字符
+
+    // 4. type="email"除了显示普通输入框，还提供什么能力？   判断是否是邮箱
+
+    // 5. min和max通常适合限制字符长度，还是数字或日期范围？    数字或日期范围
+
+    // 6. 表单字段校验失败时，浏览器会继续提交吗？  不会
+
+    // 7. HTML原生校验能否代替服务器校验？先预测。  不能
+    const registerForm = document.querySelector("#registerForm");
+    const passwordInput = document.querySelector("#password");
+    const confirmPasswordInput = document.querySelector("#confirmPassword");
+    const skillInputs = document.querySelectorAll(
+        'input[name="skills"]'
+    );
+    registerForm.addEventListener("submit", function (event) {
+        const skills = Array.from(skillInputs);
+
+        const hasSelectedSkill = skills.some(function (skill) {
+            return skill.checked;
+        });
+
+        if (hasSelectedSkill === false) {
+            skillInputs[0].setCustomValidity(
+                "请至少选择一项技能"
+            );
+
+            skillInputs[0].reportValidity();
+            event.preventDefault();
+            return;
+        }
+
+        skillInputs[0].setCustomValidity("");
+
+        // 判断密码和确认密码是否不相等
+
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            // 设置自定义错误信息
+            confirmPasswordInput.setCustomValidity(
+                "两次输入的密码不一致"
+            );
+
+            // 让浏览器立即展示这个字段的错误提示
+            confirmPasswordInput.reportValidity();
+
+            // 阻止本次表单提交 
+            event.preventDefault();
+
+            return;
+        }
+
+        // 两次密码相同时，清除以前的自定义错误
+        confirmPasswordInput.setCustomValidity("");
+
+        event.preventDefault();
+console.log("表单校验通过，可以提交数据");
+    });
+    confirmPasswordInput.addEventListener("input", function () {
+        confirmPasswordInput.setCustomValidity("");
+    });
+</script>
+
+</html>

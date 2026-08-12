@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <!-- 求职方向分组 -->
+    <fieldset>
+        <legend>请选择求职方向</legend>
+
+        <input id="front" type="radio" name="direction" value="frontend">
+        <label for="front">前端开发</label>
+
+        <input id="after" type="radio" name="direction" value="backend">
+        <label for="after">后端开发</label>
+    </fieldset>
+
+    <!-- 技能分组 -->
+    <fieldset>
+        <legend>请选择掌握的技能</legend>
+
+        <input id="html" type="checkbox" name="skills" value="html">
+        <label for="html">HTML</label>
+
+        <input id="css" type="checkbox" name="skills" value="css">
+        <label for="css">CSS</label>
+
+        <input id="js" type="checkbox" name="skills" value="javascript">
+        <label for="js">JavaScript</label>
+    </fieldset>
+
+    <!-- 个人介绍 -->
+    <div>
+        <label for="person">个人介绍</label>
+        <textarea id="person" name="bio"></textarea>
+    </div>
+
+
+
+
+</body>
+<script>
+
+
+
+    // <header>
+    //             <h1>前端学习平台</h1>
+
+    //             <nav>
+    //                 <a href="/">首页</a>
+    //                 <a href="/courses">课程</a>
+    //             </nav>
+    //         </header>
+
+    //         <main>
+    //             <section>
+    //                 <h2>推荐课程</h2>
+    //             </section>
+    //         </main>
+
+    //         <footer>
+    //             <p>版权所有</p>
+    //         </footer>
+
+    //      // 1. header通常表示页面的什么部分？ 头部
+
+    //     // 2. nav应该放普通文字，还是主要导航链接？ 导航链接
+
+    //     // 3. 一个页面中最主要的内容应该放在哪个标签中？ main
+
+    //     // 4. footer只能放在body最底部吗？你先预测。 不是footer 不一定只能作为整个页面的底部，它也可以作为 article、section 等区域的底部，例如放作者、更新时间等信息
+
+    //     // 5. div和语义化标签最主要的区别是什么？ div可以任意使用 而语义标签必须是适合这个语义才能使用
+
+    //     页面头部
+    //     <header class="page-header">
+    //         <h1>前端学习社区</h1>
+
+    //         主要导航
+    //         <nav class="navigation">
+    //             <a href="/">首页</a>
+    //             <a href="/articles">文章</a>
+    //             <a href="/register">注册</a>
+    //         </nav>
+    //     </header>
+
+    //      页面主要内容
+    //     <main class="page-content">
+    //          注册区域
+    //         <section class="register-area">
+    //             <h2>注册账号</h2>
+    //             <p>填写以下信息创建账号。</p>
+    //         </section>
+
+    //          学习文章，可以独立阅读
+    //         <article class="article-card">
+    //             <h2>如何学习前端</h2>
+    //             <p>每天保持练习并及时复习。</p>
+
+    //             文章尾部信息
+    //             <footer class="article-footer">
+    //                 <p>作者：小明</p>
+    //             </footer>
+    //         </article>
+    //     </main>
+
+    //     页面底部
+    //     <footer class="page-footer">
+    //         <p>版权所有</p>
+    //     </footer>
+
+
+
+    //     <input type="text">
+    //     <input type="email">
+    //     <input type="password">
+    //     <input type="date">
+    //     <input type="checkbox">
+    //     <input type="radio">
+
+    //     <select>
+    //         <option>前端开发</option>
+    //         <option>后端开发</option>
+    //     </select>
+
+    //     <textarea></textarea>
+
+    //     <button type="submit">注册</button>
+    //     <button type="reset">重置</button>
+    //     <button type="button">普通按钮</button>
+
+    //      // 1. 用户名适合使用什么type？ text
+
+    //     // 2. 邮箱适合使用什么type？ email
+
+    //     // 3. 密码适合使用什么type？ password
+
+    //     // 4. 多行个人介绍应该使用input还是textarea？ textarea
+
+    //     // 5. 多个选项中只能选择一个，适合checkbox还是radio？ radio
+
+    //     // 6. 可以同时选择多个兴趣，适合checkbox还是radio？ checkbox
+
+    //     // 7. submit、reset、button三种按钮分别有什么作用？ submit注册 reset重置 button普通按钮
+
+
+    //      <input type="text" name="username" value="小明">
+
+    //     <input type="radio" name="gender" value="male">
+    //     <input type="radio" name="gender" value="female">
+
+    //     <input type="checkbox" name="skills" value="html">
+    //     <input type="checkbox" name="skills" value="css">
+    //     <input type="checkbox" name="skills" value="javascript">
+
+    //     // 1. name和value分别表示什么？ name是键 value是值
+    //     // 2. 输入框没有name，原生提交表单时通常会提交它吗？ 不会
+    //     // 3. 为什么一组radio需要使用相同的name？ radio使用相同name：把多个单选框划分到同一组，只能选择一个。
+    //     // 4. 用户看到“JavaScript”，提交给服务器的值一定也是“JavaScript”吗？ 不一定
+    //     // 5. 三个技能复选框为什么可以使用相同的name？ checkbox使用相同name：表示多个选中的值都属于同一个数据字段。
+
+
+    //      <fieldset>
+    //         <legend>请选择求职方向</legend>
+
+    //         <input type="radio" name="direction" value="frontend">
+    //         前端开发
+
+    //         <input type="radio" name="direction" value="backend">
+    //         后端开发
+    //     </fieldset>
+
+    //     // 1. fieldset负责什么？用于把有关联的表单控件分成一组
+
+    //     // 2. legend负责什么？ 标题
+
+    //     // 3. 一组“求职方向”单选框适合使用普通div还是fieldset？ fieldset
+
+    //     // 4. fieldset是否只是为了显示边框？ 不是
+
+    //     <main>
+    //         <h1>注册账号</h1>
+
+    //         <form action="/register" method="post">
+
+    //             <!-- 账户信息分组 -->
+    //             <fieldset>
+    //                 <legend>账户信息</legend>
+    //                 <input type="text" name="username"> 用户名
+    //                 <input type="email" name="email">邮箱
+    //                 <input type="password" name="password">密码
+
+    //             </fieldset>
+
+    //             <!-- 求职方向分组 -->
+    //             <fieldset>
+    //                 <legend>请选择求职方向</legend>
+
+    //                 <input type="radio" name="direction" value="frontend">
+    //                 前端开发
+
+    //                 <input type="radio" name="direction" value="backend">
+    //                 后端开发
+    //             </fieldset>
+
+    //             <!-- 技能分组 -->
+    //             <fieldset>
+    //                 <legend>技能分组</legend>
+    //                 <input type="checkbox" name="skills" value="html">html
+    //                 <input type="checkbox" name="skills" value="css">css
+    //                 <input type="checkbox" name="skills" value="javascript">javascript
+
+    //             </fieldset>
+
+    //             <!-- 个人介绍 -->
+    //             <textarea name="bio" id="bio"></textarea>
+
+    //             <!-- 操作按钮 -->
+    //             <button type="submit">提交</button>
+    //             <button type="reset">重置</button>
+    //         </form>
+    //     </main>
+
+
+
+
+    // <fieldset>
+    //     <legend>账户信息</legend>
+
+    //     <div>
+    //         <label for="username">用户名</label>
+    //         <input id="username" type="text" name="username">
+    //     </div>
+
+    //     <div>
+    //         <label for="email">邮箱</label>
+    //         <input id="email" type="email" name="email">
+    //     </div>
+
+    //     <div>
+    //         <label for="password">密码</label>
+    //         <input id="password" type="password" name="password">
+    //     </div>
+    // </fieldset>
+
+    // 1. label的for应该对应input的name还是id？ id
+
+    // 2. 点击正确关联的label文字时，会发生什么？     焦点到输入框
+
+    // 3. label只是为了在输入框旁边显示文字吗？   不是  label是文字提示用户 并 关联input for“name” == input的id
+
+    // 4. 两个不同输入框可以使用相同的id吗？为什么？     不可以 因为 id具有唯一性
+
+
+
+    // 1. 为什么提交操作应该优先使用button，而不是带样式的div？  因为button就是按钮 而且功能就是点击
+
+    // 2. 按Tab键通常有什么作用？   移动到下一个可操作元素
+
+    // 3. Shift + Tab有什么作用？   返回上一个可操作元素
+
+    // 4. 同一组radio获得焦点后，一般使用什么按键切换？  方向键
+
+    // 5. checkbox获得焦点后，一般使用什么按键选中或取消？  space
+
+    // 6. 原生button是否需要手动添加tabindex="0"才能通过Tab访问？    不需要
+
+    // 7. tabindex="0"表示什么？            进入页面正常的键盘焦点顺序
+
+    // 8. tabindex="-1"能否通过Tab键访问？   不能
+
+    // 9. 为什么一般不建议使用tabindex="1"、"2"等正数？ 因为会打乱顺序正数
+
+    // 10. 如果页面的Tab顺序不合理，应该先调整HTML顺序，还是添加大量正数tabindex？  先调整HTML顺序
+</script>
+
+</html>
