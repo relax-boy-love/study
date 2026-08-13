@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+    <div class="item">A</div>
+    <div class="item">B</div>
+    <div class="item">C</div>
+</div>
+</body>
+<style>
+    .container {
+    display: flex;
+}
+</style>
+<script>
+    // 1. display: flex应该设置在父元素还是每个子元素上？  父盒子
+ 
+    // 2. 谁是Flex容器？    <div class="container">
+
+    // 3. 谁是Flex项目？        <div class="item">A</div>     <div class="item">B</div>    <div class="item">C</div>
+
+    // 4. 默认情况下，三个项目横向排列还是纵向排列？    横向
+
+    // 5. display: flex会直接应用到孙子元素吗？    不会
+
+    // 6. flex-direction: row时，主轴通常是什么方向？   水平    
+
+    // 7. row时，交叉轴通常是什么方向？             垂直
+
+    // 8. flex-direction: column时，主轴是什么方向？   垂直
+
+    // 9. column时，交叉轴是什么方向？   水平
+
+    // 10. 主轴是否永远代表水平方向？为什么？    不是 可以根据flex-direction进行修改
+
+//     .box {
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: center;
+//     align-items: center;
+//     width: 600px;
+//     height: 300px;
+// }
+        // 11. justify-content控制水平方向还是垂直方向？   水平
+
+        // 12. align-items控制水平方向还是垂直方向？  垂直
+
+        // 13. 子元素最终是否水平居中？   是
+
+        // 14. 子元素最终是否垂直居中？是
+
+//         .box {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: flex-end;
+//     width: 600px;
+//     height: 300px;
+// }
+
+
+// 15. 此时主轴是什么方向？   垂直
+
+// 16. justify-content: center让项目在哪个方向居中？   垂直
+
+// 17. align-items: flex-end让项目靠近右侧还是底部？   右侧
+ 
+// 18. 为什么不能把justify-content永远记成“水平对齐”？   因为根据flex-direction进行判断 justify-content是主轴   align-items是交叉轴
+
+
+// 1. 一行导航链接：Flex还是Grid？  flex    使用flex一维
+// 2. 按钮中的图标与文字垂直居中：Flex还是Grid？    Flex
+// 3. 后台页面的header、sidebar、main、footer整体框架：Flex还是Grid？ Grid因为 后台页面行列都要调整所以是二维
+// 4. 规则的商品卡片行列：Flex还是Grid？Grid
+// 5. 固定左侧栏、右侧占据剩余空间的简单双栏：Flex还是Grid？Flex
+// 6. 一个弹窗内部的标题、正文和按钮从上到下排列：Flex还是Grid？Flex
+// 7. 需要某个内容同时跨两行和两列：Flex还是Grid？Grid
+// 8. 自动换行的标签列表，每项宽度主要由内容决定：Flex还是Grid？Flex
+
+
+</script>
+</html>

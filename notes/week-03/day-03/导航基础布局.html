@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <header class="site-header">
+    <a class="logo" href="/">前端学习</a>
+
+    <nav class="main-nav" aria-label="主要导航">
+        <a href="/">首页</a>
+        <a href="/courses">课程</a>
+        <a href="/articles">文章</a>
+    </nav>
+
+    <a class="login-link" href="/login">登录</a>
+</header>
+<main class="login-page">
+        <section class="login-card" aria-labelledby="login-title">
+            <article class="user-card">
+                <header class="user-card__header">
+                    <img class="user-card__avatar" src="avatar.png" alt="小明的头像">
+        
+                    <div>
+                        <h2>小明</h2>
+                        <p>前端开发学生</p>
+                    </div>
+                </header>
+        
+                <p class="user-card__description">
+                    正在学习Flex和Grid布局。
+                </p>
+        
+                <footer class="user-card__footer">
+                    <span>学习中</span>
+                    <a href="/users/1">查看详情</a>
+                </footer>
+            </article>
+            
+        </section>
+        
+    </main>
+</body>
+
+
+<script>
+    // 1. 为什么site-header和main-nav都要设置display: flex？ 因为给site-header设置display: flex不会给孙子元素也设置  main-nav里面的元素也要水平排列
+
+// 2. site-header的直接Flex项目有哪些？   <a class="logo" href="/">前端学习</a>  <nav class="main-nav" aria-label="主要导航"></nav> <a class="login-link" href="/login">登录</a>
+
+// 3. main-nav的直接Flex项目有哪些？ <a href="/">首页</a>  <a href="/courses">课程</a>   <a href="/articles">文章</a>
+ 
+// 4. align-items: center为什么能让导航内容垂直居中？   因为交叉轴是垂直的 align-items设置交叉轴的位置
+
+// 5. gap与给每个链接写margin-right相比有什么优势？    gap 只产生项目之间的间距，不会在第一个或最后一个项目外侧留下多余距离。  不需要针对最后一个元素额外清除 margin-right。
+
+
+
+// 6. margin-left: auto会吸收登录链接哪一侧的剩余空间？   左侧
+
+// 7. 登录链接最终会靠近左侧还是右侧？   右侧
+
+// 8. Logo和导航之间的gap是否仍然保留？   保留
+
+// 9. 使用space-between时，三个区域之间的距离是否一定保持24px？   不是
+
+// 10. 这个导航更适合space-between还是margin-left: auto？为什么？  这里希望 Logo 和导航保持固定的 gap，只把登录链接推到最右侧，因此 margin-left: auto 更合适。space-between 会重新分配三个直接项目之间的剩余空间。
+
+    // 11. login-page默认flex-direction是什么？    row
+
+    // 12. 此时主轴是什么方向？   水平
+
+    // 13. justify-content: center负责哪种居中？  水平
+
+    // 14. align-items: center负责哪种居中？   垂直
+
+    // 15. 为什么login-page需要具有足够的高度？   如果 .login-page 的高度几乎等于卡片自身高度，就没有多余的垂直空间可供分配，垂直居中看起来不会生效。因此需要让登录区域至少占据页面的大部分可视高度。
+
+    // 16. calc(100vh - 72px)大致表示什么？  登录区域的最小高度等于“整个视口高度减去顶部导航高度”。
+
+    // 17. width: min(100%, 420px)表示卡片宽度怎样选择？   容器足够宽时，卡片最多宽 420px   容器不足 420px 时，卡片使用可用宽度的 100%   可以避免卡片在窄屏上超过容器
+
+// 1. 为什么user-card使用column？   因为卡片是从上到下
+
+// 2. header为什么又使用一层Flex？    header里面的元素需要水平排列
+
+// 3. 头像为什么设置flex: 0 0 56px？    设置不放大 不缩小  基础尺寸56px
+
+// 4. description使用flex: 1后有什么作用？    占据剩余空间
+
+// 5. footer使用什么属性让两个元素分别靠左右两端？    justify-content: space-between;
+
+// 6. 一个组件内部能否嵌套多层Flex？为什么？   可以因为flex不会给孙子辈设置
+
+</script>
+</html>

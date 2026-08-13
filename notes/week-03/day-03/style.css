@@ -1,0 +1,81 @@
+    .site-header {
+    display: flex;
+
+    /* 让Logo、导航、登录在垂直方向居中 */
+    align-items: center;
+
+    gap: 24px;
+    padding: 16px 24px;
+    
+}
+.login-link {
+    margin-left: auto;
+}
+.main-nav {
+    display: flex;
+
+    /* 导航链接之间的距离 */
+    gap: 16px;
+}
+
+.login-page {
+    min-height: 260px;
+        /* 假设导航高度约为72px */
+        min-height: calc(100vh - 72px);
+
+        display: flex;
+
+        /* 主轴水平居中 */
+        justify-content: center;
+
+        /* 交叉轴垂直居中 */
+        align-items: center;
+
+        padding: 24px;
+    }
+
+    .login-card {
+        width: min(100%, 420px);
+        padding: 32px;
+        border-radius: 12px;
+        background-color: #ffffff;
+    }
+
+    .user-card {
+    display: flex;
+
+    /* 卡片中的头部、介绍和底部纵向排列 */
+    flex-direction: column;
+
+    padding: 20px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+}
+
+.user-card__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-card__avatar {
+    /* 不放大、不缩小、基础尺寸56px */
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+}
+
+.user-card__description {
+    /* 占据卡片中间剩余的垂直空间 */
+    flex: 1;
+}
+
+.user-card__footer {
+    display: flex;
+    align-items: center;
+
+    /* 标签与链接分别靠两端 */
+    justify-content: space-between;
+}
+

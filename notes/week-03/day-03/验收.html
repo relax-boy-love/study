@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="work-layout">
+    <aside class="work-sidebar">
+        左侧导航
+    </aside>
+
+    <main class="work-content">
+        右侧主要内容
+    </main>
+</div>
+</body>
+<style>
+    .work-layout {
+    /* 你来完成 */
+    display: flex;
+    gap: 20px;
+}
+
+.work-sidebar {
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    flex-basis: 240px;
+
+}
+
+.work-content {
+    flex: 1;
+    min-width: 0;
+}
+</style>
+<script>
+// 1. 左侧固定宽度主要由哪三个Flex值共同实现？   flex-grow: 0      → 不放大  flex-shrink: 0    → 不缩小   flex-basis: 240px → 基础宽度为240px
+
+// 2. 右侧为什么使用flex: 1？   剩下的内容全占
+
+// 3. 右侧为什么使用min-width: 0？    可以缩小 长内容  不会撑破布局
+
+// 4. 这个双栏为什么更适合Flex？    这个布局只需要沿水平方向排列两个区域，属于以一个方向为主的一维布局，所以 Flex 更合适。
+
+// 5. 如果加入横跨两栏的header和footer，为什么Grid更清楚？   行列grid可以一次完成设置
+
+// 6. Flex和Grid分别更擅长一维还是二维布局？   Flex更擅长一维 Grid更擅长二维
+
+// 7. repeat(auto-fit, minmax(220px, 1fr))表示什么？   auto-fit：根据容器可用宽度自动决定列数    minmax(220px, 1fr)：每列最小为 220px    1fr：有剩余空间时，各列平均分配  容器变窄、放不下更多列时，后续项目排列到下一行   如果一行只有一列，这一列可以占满该行
+
+// 8. 外层Grid、组件内部Flex为什么不会冲突？   因为只管自己子元素
+</script>
+</html>

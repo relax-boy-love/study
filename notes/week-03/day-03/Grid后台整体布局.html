@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="dashboard">
+        <header class="dashboard-header">
+            后台管理系统
+        </header>
+
+        <aside class="dashboard-sidebar">
+            侧边导航
+        </aside>
+
+        <main class="dashboard-main">
+            <h1>数据概览</h1>
+
+            <section class="statistics-grid" aria-label="数据统计">
+                <article class="stat-card">
+                    <h2>用户数量</h2>
+                    <p>1280</p>
+                </article>
+
+                <article class="stat-card">
+                    <h2>文章数量</h2>
+                    <p>356</p>
+                </article>
+
+                <article class="stat-card">
+                    <h2>访问数量</h2>
+                    <p>8960</p>
+                </article>
+
+                <article class="stat-card">
+                    <h2>待办数量</h2>
+                    <p>12</p>
+                </article>
+            </section>
+        </main>
+
+        <footer class="dashboard-footer">
+            页面底部
+        </footer>
+    </div>
+</body>
+<style>
+    .dashboard {
+        /* 至少占满整个视口高度 */
+        min-height: 100vh;
+
+        display: grid;
+
+        /* 侧栏固定240px，主区域占据剩余宽度 */
+        grid-template-columns:
+            240px 1fr;
+
+        /* header 64px，中间占剩余高度，footer 48px */
+        grid-template-rows:
+            64px 1fr 48px;
+
+        grid-template-areas:
+            "header  header"
+            "sidebar main"
+            "footer  footer";
+    }
+
+    .dashboard-header {
+        grid-area: header;
+    }
+
+    .dashboard-sidebar {
+        grid-area: sidebar;
+    }
+
+    .dashboard-main {
+        grid-area: main;
+        min-width: 0;
+    }
+
+    .dashboard-footer {
+        grid-area: footer;
+    }
+
+    .dashboard-header {
+        padding: 20px;
+        background-color: #1e3a8a;
+        color: #ffffff;
+    }
+
+    .dashboard-sidebar {
+        padding: 20px;
+        background-color: #dbeafe;
+    }
+
+    .dashboard-main {
+        min-width: 0;
+        padding: 24px;
+        background-color: #f3f4f6;
+    }
+
+    .dashboard-footer {
+        padding: 14px 20px;
+        background-color: #e5e7eb;
+    }
+
+
+    .statistics-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(auto-fit,
+                minmax(200px, 1fr));
+
+        gap: 20px;
+    }
+
+    .stat-card {
+        padding: 20px;
+        border-radius: 12px;
+        background-color: #ffffff;
+    }
+
+    @media (max-width: 768px) {
+        .dashboard {
+            grid-template-columns: 1fr;
+
+            grid-template-rows:
+                64px auto 1fr 48px;
+
+            grid-template-areas:
+                "header "
+                "sidebar"
+                "main"
+                "footer";
+        }
+    }
+</style>
+<script>
+    // 1. 这个后台布局是一维布局还是同时具有行和列的二维布局？  二维布局
+
+    // 2. 顶部导航应该占据左侧栏和主内容两列，还是只占一列？  2
+
+    // 3. footer应该占据几列？   2
+
+    // 4. 中间区域包含哪两个并排区域？  sidebar    main
+
+    // 5. 这个整体结构更适合Flex还是Grid？为什么？  也就是说需要同时处理行和列，是典型的二维布局，因此 Grid 更直观。
+
+    // 6. grid-template-columns控制什么？   列
+
+    // 7. grid-template-rows控制什么？  行
+
+    // 8. grid-template-areas中的每一行为什么写两个名字？   因为有两列
+
+    // 9. 第一行为什么写成"header header"？    后台 Grid 一共有两列，两个位置都写 header，表示同一个 header 区域横跨两列。
+
+    // 10. main为什么设置min-width: 0？          Grid 项目默认可能不愿意缩得比内部内容更窄。长文本、表格或图表可能撑宽 main，导致整个布局溢出。min-width: 0 允许 main 在可用空间内缩小。
+
+    // 11. grid-area: main中的main来自哪里？    grid-template-areas:"sidebar main";
+
+    // 12. 如果把dashboard-main误写成grid-area: content，会发生什么？.dashboard-main 无法进入原本命名为 main 的区域，浏览器可能为 content 创建隐式网格区域，导致该元素出现在意外位置，原来的 main 区域则可能空着。
+    // 13. header是否横跨页面顶部？ 是
+
+    // 14. sidebar是否固定为240px？ 是
+
+    // 15. main是否占据剩余宽度？  是
+
+    // 16. footer是否横跨页面底部？  是
+
+    // 17. 内容很少时，dashboard是否仍至少占满整个视口？   是
+
+
+
+    // 18. 外层dashboard和内层statistics-grid能否都使用Grid？   是
+
+    // 19. 两个Grid分别负责什么？   第一个负责header aside main footer  第二个负责 article
+
+    // 20. 哪个值让列数根据可用空间自动变化？  auto-fit
+
+    // 21. 哪个值规定每列不能小于200px？  minmax(200px, 1fr)
+
+    // 22. 1fr在这里有什么作用？   1fr 表示每一列可以平均分配剩余空间，不是单纯表示“大于 200px
+
+    // 23. main变窄时，统计卡片会被无限压缩还是减少列数？   减少列数
+
+    // 24. 为什么嵌套两个Grid不会冲突？   每个 Grid 容器只排列自己的直接子元素。外层 .dashboard 管理四个页面区域，内层 .statistics-grid 只管理四张统计卡片，因此不会冲突。
+
+    // 25. 内层statistics-grid会直接排列dashboard的header和sidebar吗？   不会
+
+
+    // 26. 单列布局的grid-template-columns应该写什么？   1fr
+
+// 27. sidebar所在行为什么使用auto，而不是固定240px？    sidebar 的菜单数量和内容高度可能变化，使用 auto 可以让这一行根据内容自动撑高，避免固定高度造成溢出或空白。
+
+// 28. 窄屏时四个区域按照什么顺序显示？   header aside main footer
+
+// 29. 外层变成单列后，statistics-grid还能否自动改变列数？    可以
+
+// 30. 响应式切换是否需要修改HTML顺序？   不需要
+</script>
+
+</html>

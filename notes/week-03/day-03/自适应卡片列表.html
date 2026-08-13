@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+  <main class="page-main">
+    <h1>用户列表</h1>
+
+    <section class="card-list" aria-label="用户列表">
+        <article class="user-card">卡片1</article>
+        <article class="user-card">卡片2</article>
+        <article class="user-card">卡片3</article>
+        <article class="user-card">卡片4</article>
+    </section>
+</main>
+
+</body>
+
+<style>
+/* 卡片横向排列
+空间不足时自动换行
+卡片间距 20px
+每张卡片基础宽度 260px
+有剩余空间时，卡片可以均匀放大
+空间不足时，卡片可以缩小
+卡片最小宽度 220px */
+
+.page-main {
+    padding: 24px;
+}
+
+/* .card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+} */
+.card-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(220px, 1fr)
+        );
+
+    gap: 20px;
+}
+.user-card {
+    /*
+     * 可以放大
+     * 可以缩小
+     * 基础宽度260px
+     */
+    flex: 1 1 260px;
+
+    min-width: 220px;
+}
+.user-card {
+    flex: 1 1 260px;
+    min-width: 220px;
+    min-height: 120px;
+    padding: 20px;
+    border: 1px solid #2563eb;
+    background-color: #dbeafe;
+    box-sizing: border-box;
+}
+</style>
+<script>
+// 1. flex-wrap: wrap有什么作用？   宽度不够自动换行
+
+// 2. 默认flex-wrap是什么？空间不足时会先换行还是尝试挤压？  nowrap   尝试挤压
+
+// 3. flex: 1 1 260px中的三个值分别表示什么？ 表示一行中存在剩余空间时，各卡片可以共同分配这些空间，避免右侧留下大块空白。 表示空间稍微不足时，卡片可以从基础宽度 260px 开始缩小，避免立即溢出。  基础宽度260px
+
+// 4. 为什么卡片允许flex-grow为1？   不知道
+
+// 5. 为什么卡片允许flex-shrink为1？ 不知道
+
+// 6. min-width: 220px限制了什么？  最低宽度
+
+// 7. gap: 20px是否同时产生横向和纵向间距？   同时
+
+// 8. 当前login-page为什么可能让login-card和card-list横向排列？  因为card-list   display: flex;
+
+
+//  1. 三张卡片按基础宽度排列，总共需要多少px？  780px 
+// 2. 880px容器放下三张后，还剩多少px？      60px 
+// 3. flex-grow都是1，这些剩余空间会怎样分配？   会给每一个卡片多20px 
+// 4. 每张卡片最终大约是多少px？          280px 
+// 5. 四张卡片按基础宽度加三个间距，需要多少px？   1080px 
+// 6. 880px能否在一行放下四张基础宽度为260px的卡片？  不能 
+// 7. 放不下时，第四张卡片通常会怎样？换行
+</script>
+</html>

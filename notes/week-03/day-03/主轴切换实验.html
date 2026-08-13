@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主轴切换实验</title>
+</head>
+<body>
+    <div class="axis-demo">
+    <div>A</div>
+    <div>B</div>
+    <div>C</div>
+</div>
+</body>
+<style>
+    .axis-demo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+
+    width: 600px;
+    height: 300px;
+    border: 2px solid #111827;
+}
+
+.axis-demo div {
+    width: 60px;
+    height: 60px;
+    background-color: #93c5fd;
+    border: 1px solid #2563eb;
+}
+</style>
+<script>
+    // 1. row时，A、B、C沿哪个方向排列？    水平
+
+// 2. row时，三个项目为什么位于容器底部？    因为交叉轴设置为了align-items: flex-end;在底部显示
+
+// 3. 改成column后，A、B、C沿哪个方向排列？    纵向
+
+// 4. column后，justify-content: center控制哪个方向？    纵向
+
+// 5. column后，align-items: flex-end为什么让项目靠近右侧？    交叉轴变为了水平轴
+
+// 6. 这个实验能否说明对齐方向取决于flex-direction？       可以
+</script>
+</html>

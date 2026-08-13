@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="grid-container">
+    <div>A</div>
+    <div>B</div>
+    <div>C</div>
+    <div>D</div>
+    <div>E</div>
+    <div>F</div>
+</div>
+</body>
+<style>
+    .grid-container {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    gap: 20px;
+}
+</style>
+<script>
+    // 1. display: grid应该设置在父元素还是子元素？ 父元素
+
+// 2. grid-template-columns负责定义行还是列？    列
+
+// 3. 200px 1fr 1fr一共创建几列？  3
+
+// 4. 哪一列固定宽度？  1
+
+// 5. 第2列和第3列的宽度关系怎样？ 相同
+
+// 6. 六个项目会形成几行？   2
+
+// 7. gap: 20px会产生哪些方向的间距？  列与列之间的横向间距  行与行之间的纵向间距
+
+
+// .grid-container {
+//     width: 1000px;
+//     display: grid;
+//     grid-template-columns: 200px 1fr 2fr;
+//     gap: 20px;
+// }
+
+// 8. 固定列占多少px？  200px
+
+// 9. 三列之间共有几个列间距？合计多少px？   2个  40px
+
+// 10. 可以分配给fr的剩余空间是多少px？   760px
+
+// 11. 1fr和2fr合计多少份？  3份
+ 
+// 12. 每一份是多少px？  253.33px
+
+// 13. 第二列（1fr）最终宽度是多少？ 约253.33px
+
+// 14. 第三列（2fr）最终宽度是多少？   约506.67px
+
+// 15. 三列和间距相加，是否正好等于1000px？  1000px
+
+// 16. repeat(3, 1fr)表示什么？     repeat(3, 1fr) 表示重复三次 1fr
+
+// 17. minmax(220px, 1fr)中的220px表示什么？  最小宽度为220px
+
+// 18. 1fr表示这一列能否分配剩余空间？    是 
+
+// 19. auto-fit负责固定列数，还是根据空间自动安排列数？  根据空间自动安排列数
+
+// 20. 容器变窄且无法容纳原来的列数时，项目会怎样？      当一行无法继续容纳新列时，后续项目会自动排列到下一行。
+
+// 21. 这种Grid写法是否必须为每个屏幕宽度都写媒体查询？  不需要
+
+// 22. 与刚才Flex卡片列表相比，这种Grid更强调一维排列还是规则的行列结构？  规则行列
+
+// 23. card-list改成Grid后，user-card内部还能继续使用Flex吗？ 能
+// 24. 为什么要删除user-card的flex: 1 1 260px？  这是 .user-card 作为 Flex 项目时使用的伸缩设置。.card-list 改成 Grid 后，卡片成为 Grid 项目，列宽已经由 grid-template-columns 决定，所以这条 Flex 项目属性不再负责卡片宽度。
+// 25. 是谁负责决定卡片列表的列数？       repeat(auto-fit, minmax(220px, 1fr))
+// 26. 是谁负责排列卡片内部的头像、介绍和底部？   flex
+// 27. 你实际观察到宽屏时有几列？   4
+// 28. 窄屏时有几列？1列或者2列
+</script>
+</html>
