@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <div class="dashboard">
+        <header class="dashboard-header">
+            <strong>后台管理系统</strong> 
+        </header>
+
+    <aside class="dashboard-sidebar">
+        <nav class="sidebar-nav" aria-label="后台导航">
+            <a href="#">首页</a>
+            <a href="#">用户</a>
+            <a href="#">文章</a>
+            <a href="#">设置</a>
+            
+        </nav>
+    </aside>
+
+        <main class="dashboard-main">
+            <h1>数据概览</h1>
+
+            <section class="statistics-grid" aria-label="数据统计">
+                <article class="stat-card">
+                    <h2>用户数量</h2>
+                    <p>1280</p>
+                </article>
+
+                <article class="stat-card">
+                    <h2>文章数量</h2>
+                    <p>356</p>
+                </article>
+
+                <article class="stat-card">
+                    <h2>访问数量</h2>
+                    <p>8960</p>
+                </article>
+
+                <article class="stat-card">
+                    <h2>待办数量</h2>
+                    <p>12</p>
+                </article>
+                
+            </section>
+        </main>
+
+        <footer class="dashboard-footer">
+            页面底部
+        </footer>
+    </div>
+</body>
+</html>
+<style>
+ /* =========================
+   1. 全局变量
+========================= */
+
+:root {
+    color-scheme: light;
+
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-header: #172554;
+    --color-sidebar: #eff6ff;
+    --color-page: #f3f4f6;
+    --color-card: #ffffff;
+    --color-footer: #e5e7eb;
+    --color-text: #1f2937;
+    --color-text-light: #6b7280;
+    --color-border: #d1d5db;
+
+    --radius-small: 8px;
+    --radius-medium: 12px;
+
+    --shadow-card:
+        0 8px 24px rgb(15 23 42 / 8%);
+}
+
+
+/* =========================
+   2. 基础重置
+========================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-family:
+        Arial,
+        "Microsoft YaHei",
+        sans-serif;
+
+    color: var(--color-text);
+    background-color: var(--color-page);
+}
+
+body {
+    margin: 0;
+    min-width: 0;
+    line-height: 1.5;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+img,
+video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* =========================
+   3. 手机默认整体布局
+========================= */
+
+.dashboard {
+    min-height: 100vh;
+
+    display: grid;
+    grid-template-columns: 1fr;
+
+    grid-template-rows:
+        auto auto 1fr auto;
+
+    grid-template-areas:
+        "header"
+        "sidebar"
+        "main"
+        "footer";
+
+    background-color: var(--color-page);
+}
+
+
+/* =========================
+   4. 顶部区域
+========================= */
+
+.dashboard-header {
+    grid-area: header;
+
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+    padding: 16px;
+
+    color: #ffffff;
+    background-color: var(--color-header);
+
+    box-shadow:
+        0 2px 8px rgb(15 23 42 / 15%);
+}
+
+.dashboard-header strong {
+    min-width: 0;
+
+    overflow-wrap: anywhere;
+
+    font-size: 1.125rem;
+    letter-spacing: 0.02em;
+}
+
+
+/* =========================
+   5. 侧边导航
+========================= */
+
+.dashboard-sidebar {
+    grid-area: sidebar;
+
+    min-width: 0;
+    padding: 12px 16px;
+
+    background-color: var(--color-sidebar);
+
+    border-bottom:
+        1px solid var(--color-border);
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.sidebar-nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 12px;
+
+    border-radius:
+        var(--radius-small);
+
+    color: #1e3a8a;
+    font-weight: 600;
+
+    transition:
+        color 160ms ease,
+        background-color 160ms ease,
+        transform 160ms ease;
+}
+
+.sidebar-nav a:hover {
+    color: #ffffff;
+    background-color: var(--color-primary);
+}
+
+.sidebar-nav a:active {
+    transform: translateY(1px);
+}
+
+.sidebar-nav a:focus-visible {
+    outline: 3px solid #f59e0b;
+    outline-offset: 2px;
+}
+
+
+/* =========================
+   6. 主要内容
+========================= */
+
+.dashboard-main {
+    grid-area: main;
+
+    min-width: 0;
+
+    padding:
+        clamp(16px, 4vw, 32px);
+
+    background-color: var(--color-page);
+}
+
+.dashboard-main h1 {
+    margin-top: 0;
+    margin-bottom: 20px;
+
+    overflow-wrap: anywhere;
+
+    font-size:
+        clamp(1.75rem, 4vw, 2.5rem);
+
+    line-height: 1.2;
+}
+
+
+/* =========================
+   7. 手机统计卡片单列
+========================= */
+
+.statistics-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.stat-card {
+    min-width: 0;
+    padding: 20px;
+
+    overflow-wrap: anywhere;
+
+    border:
+        1px solid var(--color-border);
+
+    border-radius:
+        var(--radius-medium);
+
+    background-color:
+        var(--color-card);
+
+    box-shadow:
+        var(--shadow-card);
+
+    transition:
+        transform 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 30px rgb(15 23 42 / 14%);
+}
+
+.stat-card h2 {
+    margin-top: 0;
+    margin-bottom: 12px;
+
+    color: var(--color-text-light);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.stat-card p {
+    margin: 0;
+
+    color: var(--color-primary-dark);
+
+    font-size:
+        clamp(1.75rem, 5vw, 2.5rem);
+
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+
+/* =========================
+   8. 页面底部
+========================= */
+
+.dashboard-footer {
+    grid-area: footer;
+
+    min-width: 0;
+    padding: 16px;
+
+    color: var(--color-text-light);
+    background-color: var(--color-footer);
+
+    border-top:
+        1px solid var(--color-border);
+
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+
+/* =========================
+   9. 键盘焦点
+========================= */
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 3px solid #f59e0b;
+    outline-offset: 2px;
+}
+
+.dashboard {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr;
+
+    grid-template-rows:
+        auto auto 1fr auto;
+
+    grid-template-areas:
+        "header"
+        "sidebar"
+        "main"
+        "footer";
+}
+
+.dashboard-header {
+    grid-area: header;
+    padding: 16px;
+}
+
+.dashboard-sidebar {
+    grid-area: sidebar;
+    padding: 12px 16px;
+}
+
+.dashboard-main {
+    grid-area: main;
+    min-width: 0;
+    padding: clamp(16px, 4vw, 32px);
+}
+
+.dashboard-footer {
+    grid-area: footer;
+    padding: 16px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.statistics-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+@media (min-width: 768px) {
+    .dashboard-main {
+        /* 平板左右内边距增大 */
+        padding: 24px;
+    }
+
+    .statistics-grid {
+        /* 两列平均分配 */
+        grid-template-columns: repeat(2,1fr);
+        gap: 20px;
+    }
+}
+
+
+@media (min-width: 1200px) {
+    .dashboard {
+        grid-template-columns:
+            240px 1fr;
+
+        grid-template-rows:
+            auto 1fr auto;
+
+        grid-template-areas:
+            "header  header"
+            "sidebar main"
+            "footer  footer";
+    }
+
+    .dashboard-sidebar {
+        /* 桌面侧栏不再需要底部边框 */
+        border-bottom: none;
+
+        /* 改为右侧边框 */
+        border-right:
+            1px solid var(--color-border);
+    }
+
+    .sidebar-nav {
+        /* 导航改成纵向 */
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .dashboard-main {
+        padding: 32px;
+    }
+
+    .statistics-grid {
+        grid-template-columns:
+            repeat(4, 1fr);
+    }
+}
+
+.stat-card,
+.sidebar-nav a {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+</style>
+<script>
+    // 1. 为什么统一使用border-box？  这样可以防止padding撑大盒子
+
+// 2. body的margin通常先设置多少？  0 
+ 
+// 3. body是否应该设置很大的固定min-width？  不应该
+
+// 4. 图片的max-width应该写多少？   100%;
+
+// 5. 图片高度应该使用固定值还是auto？   auto
+
+// 6. 为什么不应该一开始就用overflow-x: hidden掩盖横向滚动？  固定宽度太大  100% 又加了额外 padding  使用不合理的 min-width  长内容不能换行    绝对定位超出视口
+
+// 7. 固定宽度一定错误吗？哪些元素仍适合固定宽度？  不一定   图标  头像  桌面端侧栏  关闭按钮  有明确尺寸的小控件
+
+// 8. absolute一定不能用于响应式页面吗？什么时候可以使用？   可以  弹窗右上角关闭按钮  卡片角标  头像上的状态标志   输入框内部图标
+
+// 9. 为什么手机默认只有一列？  因为手机宽度小
+
+// 10. 四个grid-template-areas应该按什么顺序？   "header" -> "sidebar" -> "main" -> "footer"
+
+// 11. 手机sidebar为什么改成横向可换行菜单？  因为只有一列所以改变  手机横向空间有限     横向菜单更紧凑  空间不足时可以换到下一行，避免溢出
+
+
+// 12. flex-wrap应写什么？ wrap
+
+// 13. 统计卡片手机默认应写几列？  1列
+
+// 14. main为什么需要min-width: 0？  因为main内容可能过长 撑坏盒子 设置这个可以进行缩小
+
+// 21. 768px媒体查询会不会同时在1440px生效？  会
+
+// 22. 为什么平板可以显示两列统计卡片？   因为在大于等于768px的时候设置了main里面的内容2列显示
+
+// 23. 两列使用1fr 1fr表示什么？   两列平均分配剩余宽度
+
+// 24. 能否使用repeat()简写？   可以
+
+// 25. sidebar为什么暂时仍放在main上面，而不是固定在左侧？   因为现在要求就是导航栏还是在main上面显示
+
+// 26. 平板断点是否需要重新声明所有手机样式？   不需要
+
+// 33. 为什么1200px规则也会继承768px规则？  当两个媒体查询都修改同一个属性且优先级相同时，1200px规则可以覆盖768px规则。
+
+// 34. 桌面为什么适合固定240px侧栏？    因为需要两栏显示这样更美观
+
+// 35. header和footer为什么分别重复写两次区域名？     因为是两列布局
+ 
+// 36. sidebar导航为什么改成column？   需要纵向显示
+
+// 37. align-items: stretch会让导航链接怎样显示？   stretch 会让导航链接在水平方向拉伸，默认占满侧栏可用宽度，不是居中。
+
+// 38. 桌面统计卡片为什么可以使用4列？   足够宽
+
+// 39. 1200px媒体查询是否需要重新写display: grid？  不需要
+
+// 40. 如果1440px下四列太挤，应该怎样调整？  应该自动换行
+
+
+// 1. 375px：整体几列？统计卡片几列？有无横向滚动？  1列 1列 无
+
+// 2. 768px：整体几列？统计卡片几列？有无横向滚动？  1列 2列 无
+
+// 3. 1440px：整体几列？统计卡片几列？有无横向滚动？ 2列 4列 无
+
+// 4. 三种宽度下，图片是否都不会超出容器？   是
+
+// 5. 三种宽度下，长文字是否都能换行？   是
+
+// 6. 375px下，按钮和导航是否可以正常点击？   可以
+
+// 7. 在375px到1440px之间缓慢拖动，是否出现某个中间宽度突然错位？    没有
+
+// 8. viewport中的width=device-width和initial-scale=1.0分别有什么作用？ width=device-width让页面的布局视口宽度等于设备屏幕的 CSS 宽度  initial-scale=1.0缩放比例为1
+
+// 9. width: 100%与max-width: 100%有什么区别？     width: 100%会要求图片始终占满容器，即使原图或实际设计不需要那么宽。  max-width: 100%只在图片超过容器时缩小，不会强制小图片放大。
+
+// 10. %、rem、em、vw分别主要相对于什么？  %父容器   rem根html字符大小  em当前元素的字体大小   vw视口宽度
+
+// 11. clamp(16px, 4vw, 40px)表示什么？   最小值16px 理想值4vw  最大值40px
+
+// 12. 移动优先主要使用min-width还是max-width？  min-width
+
+// 13. 为什么1200px会同时匹配768px的min-width规则？ 1200px大于等于768px → min-width: 768px规则也满足   1200px规则写在后面，并且选择器优先级相同  → 同一属性由1200px规则覆盖
+
+
+// 14. 响应式断点应该根据设备名称还是内容变化选择？   内容变化
+
+// 15. object-fit: cover与contain有什么区别？   cover保持图片原比例并填满容器；图片与容器比例不同时，可能裁剪部分内容。   contain保持图片原比例并完整显示；图片与容器比例不同时，可能留下空白。
+
+// 16. 为什么图片常使用max-width: 100%和height: auto？    max-width: 100% 限制图片不能超过容器宽度，但不会强制小图片放大；height: auto 按原始比例计算高度，减少图片变形。
+
+// 17. 为什么不能用overflow-x: hidden假装解决横向滚动？         使用只是把超出的部分切掉，没有修复真正的布局问题，还可能让按钮或文字无法看到
+
+// 18. 页面出现横向滚动时，你会按什么顺序排查？  固定宽度太大  100% 又加了额外 padding    使用不合理的 min-width   长内容不能换行  绝对定位超出视口
+
+// 19. 今天页面在375px、768px、1440px下分别怎样布局？    375px：整体单列，统计卡片1列，导航横向换行。   768px：整体仍为单列，统计卡片2列。   1440px：整体为固定240px侧栏和自适应main两列，统计卡片4列，header和footer横跨两列。
+ 
+
+
+
+
+
+
+
+</script>

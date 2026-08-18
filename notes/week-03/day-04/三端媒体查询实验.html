@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <section class="responsive-layout">
+        <article>卡片1</article>
+        <article>卡片2</article>
+        <article>卡片3</article>
+        <article>卡片4</article>
+    </section>
+</body>
+
+</html>
+<style>
+    .responsive-layout article {
+        min-width: 0;
+        padding: 20px;
+        background-color: #dbeafe;
+        border: 1px solid #2563eb;
+    }
+
+    .responsive-layout {
+        /* 手机：默认单栏 */
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+        .responsive-layout {
+            /* 平板：两列 */
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .responsive-layout {
+            /* 桌面：四列 */
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+</style>
+<script>
+    // 21. 375px时有几列？是否出现横向滚动？   1列  没有
+
+// 22. 768px时有几列？是否出现横向滚动？   2列 没有
+
+// 23. 1440px时有几列？是否出现横向滚动？  4列 没有
+
+// 24. 从767px切换到768px时发生什么变化？  从1列变为两列
+
+// 25. 从1199px切换到1200px时发生什么变化？  从2列变为4列
+</script>

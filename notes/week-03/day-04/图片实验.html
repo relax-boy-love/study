@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="image-card">
+    <img
+        class="card-image"
+        src="https://ts1.tc.mm.bing.net/th/id/R-C.39b15eb7e37b0c17911274dcc5b3637a?rik=UXuGSDUWsv1OFw&riu=http%3a%2f%2fwww.missyuan.net%2fuploads%2fallimg%2f140711%2f1A4132218-10.jpg&ehk=5Sal6rkntnD7aCFAyyrpN7CuFOlwHIotD2rQNEsbV3A%3d&risl=&pid=ImgRaw&r=0"
+        alt="响应式图片测试"
+    >
+</div>
+</body>
+</html>
+<style>
+    .image-card {
+    width: min(100%, 600px);
+}
+
+.card-image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+background-color: #e5e7eb;
+}
+</style>
+<script>
+    // 13. cover时图片是否填满区域？  是
+
+// 14. cover时是否可能裁剪部分内容？ 会
+
+// 15. contain时是否能看到完整图片？  可以
+
+// 16. contain时是否可能出现空白区域？  是
+
+// 17. source中的media作用是什么？ 等于一个筛选器
+
+// 18. source中的srcset保存什么？  图片地址
+
+// 19. picture中的img能否删除？  不能
+
+// 20. alt应该写在source还是img上？  img
+
+// 21. 375px时会选择哪张图？  ./images/banner-mobile.jpg
+
+// 22. 768px时会选择哪张图？    ./images/banner-tablet.jpg
+
+// 23. 1440px时会选择哪张图？   ./images/banner-desktop.jpg
+
+// 24. picture适合只改变图片显示宽度，还是为不同屏幕提供不同构图的图片？  为不同屏幕提供不同构图的图片
+</script>

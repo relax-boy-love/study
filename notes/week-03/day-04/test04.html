@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="test-box">
+        移动端Viewport测试
+    </div>
+</body>
+
+</html>
+<style>
+    .test-box {
+        width: 300px;
+        padding: 20px;
+        font-size: 18px;
+        background-color: #bfdbfe;
+    }
+
+
+    .page-container {
+    /* 跟随可用宽度 */
+    width: 100%;
+
+    /* 桌面最大1200px */
+    max-width:1200px;
+
+    /* 宽屏时水平居中 */
+    margin-inline: auto;
+
+    padding-inline:
+        clamp(16px, 4vw, 40px);
+}
+
+.page-title {
+    font-size:
+        clamp(2rem, 5vw, 4rem);
+}
+</style>
+
+<script>
+
+    // 1. viewport可以先理解为什么？    浏览器中用来展示网页的可视区域。
+
+    // 2. width=device-width有什么作用？   让页面的布局视口宽度等于设备屏幕的 CSS 宽度
+
+    // 3. initial-scale=1.0有什么作用？    页面初始缩放比例为1
+
+    // 4. 缺少viewport时，手机浏览器可能怎样显示桌面页面？    把整个页面缩小
+
+    // 5. viewport标签应该放在head还是body中？     head
+
+
+    // 6. 开发者工具显示的375px通常表示CSS宽度还是物理像素总数？     CSS宽度
+
+    // 7. 一台高清手机的物理像素可能远大于CSS像素吗？    可能
+
+    // 8. 响应式媒体查询通常依据CSS视口宽度还是物理像素总数？   CSS视口宽度
+
+    // 9. 375px测试主要代表手机、平板还是桌面？    手机
+
+    // 10. 768px通常可以作为哪类设备或布局状态的测试宽度？   平板
+
+    // 11. 为什么通常不建议设置user-scalable=no？   这个是禁止缩放  会限制用户缩放页面，可能影响低视力用户阅读。
+
+    // 12. 响应式布局做得好，是否应该依赖“禁止用户缩放”来避免错位？   不应该
+
+    // 13. 今天项目应该使用哪一种viewport写法？      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    // 1. 包含viewport的页面，文字和盒子是否按照手机CSS宽度正常显示？   是
+
+    // 2. 删除viewport后，页面是否可能像桌面网页被整体缩小？     是
+
+    // 3. 哪个页面更适合作为真正的移动端响应式页面？   含有<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    // 4. 固定width: 1200px在375px手机上可能产生什么问题？  内容宽度超过视口  出现横向滚动条 用户必须左右拖动 部分内容可能显示在屏幕外
+
+    // 5. width: 100%解决了什么问题？    解决宽度自适应   
+
+    // 6. max-width: 1200px解决了什么问题？  宽屏时不超过1200px
+
+    // 7. margin-inline: auto有什么作用？   宽屏时水平居中
+
+    // 8. padding-inline控制上下还是左右内边距？  左右
+
+    // 9. 为什么流式容器仍然需要max-width？  如果在很宽的页面  内容可能会被拉到很宽 也会变形
+
+    // 10. 为什么响应式项目通常统一使用border-box？  因为border-box的宽度计算包括了padding   padding不会影响整体的宽度导致可能会出现的显示不完全内容
+    
+    // 11. 父元素宽800px，子元素width: 50%是多少？   400px
+
+    // 12. 根字号16px，2rem是多少？     32px
+
+    // 13. 根字号16px，1.5rem是多少？   24px
+
+    // 14. 按钮字号20px，padding-left: 1em是多少？   20px
+
+    // 15. 视口宽1000px，10vw是多少？  100px
+
+    // 16. 视口高800px，50vh是多少？  400px
+
+    // 17. rem主要相对于谁？    根元素 html 的字体大小
+
+    // 18. em在按钮padding中通常相对于谁？  按钮
+
+    // 19. 百分比宽度是否永远相对于浏览器视口？  不是
+    
+    // 20. 为什么正文宽度通常不建议直接使用100vw？    100vw 依据整个视口宽度 页面出现垂直滚动条时，部分环境中的 100vw 可能把滚动条宽度也计算进去 再加 padding 或 margin 更容易产生横向溢出  普通流式容器通常优先使用 width: 100%
+
+    // 21. clamp()的三个参数分别表示什么？   最小值 理想值 最大值
+
+// 22. 根字号16px时，2rem和4rem分别是多少？  32px  64px
+
+// 23. clamp(2rem, 5vw, 4rem)在1000px视口下最终是多少？  50px
+
+// 24. 在400px视口下最终是多少？为什么？  32px 因为理想值是20px小于最小值 所以用最小值
+
+// 25. 在1600px视口下最终是多少？为什么？  64px 因为理想值是80px大于最大值 所以用最大值
+
+// 26. clamp()相比只写5vw解决了什么问题？   不论屏幕宽度怎么变化都有最大和最小值
+
+// 27. clamp()能否用于padding、gap等尺寸？   clamp() 可以用于任何接受相应长度值的属性  可以
+
+// 28. 响应式设计是否意味着所有px都必须改成rem或vw？   不是
+
+
+
+// 29. 375px视口下，4vw是多少px？     15px
+
+// 30. 因为4vw小于16px，最终padding-inline是多少？  16px
+
+// 31. 768px视口下，4vw大约是多少px？  30px
+
+// 32. 1440px视口下，4vw是多少？最终为什么只取40px？   57px  因为最大值是40px
+
+// 33. 为什么max-width与margin-inline: auto经常一起使用？   max-width 限制内容在宽屏上不超过 1200px  容器小于视口后，会产生左右剩余空间  margin-inline: auto 将这些剩余空间平均分配到左右两侧  最终让有限宽度的内容在宽屏上水平居中
+
+
+// .card-list {
+//     grid-template-columns: 1fr;
+// }
+
+// @media (min-width: 768px) {
+//     .card-list {
+//         grid-template-columns: repeat(2, 1fr);
+//     }
+// }
+
+// @media (min-width: 1200px) {
+//     .card-list {
+//         grid-template-columns: repeat(4, 1fr);
+//     }
+// }
+
+// 1. @media (min-width: 768px)在什么宽度开始生效？  大于等于768px
+
+// 2. 宽度为767px时，卡片是几列？   1列
+
+// 3. 宽度为768px时，卡片是几列？  2列
+
+// 4. 宽度为1199px时，卡片是几列？  2列
+
+// 5. 宽度为1200px时，卡片是几列？  4列
+
+// 6. 为什么这段代码属于移动优先？  因为是先写的手机默认样式 随屏幕增宽逐渐增强布局
+
+// 7. 后面的1200px规则为什么能覆盖前面的768px规则？   此时 CSS 层叠规则会让后写的声明覆盖先写的声明，因此最终使用4列。  两个都满足选后者
+
+// .card-list {
+//     grid-template-columns: repeat(4, 1fr);
+// }
+
+// @media (max-width: 1199px) {
+//     .card-list {
+//         grid-template-columns: repeat(2, 1fr);
+//     }
+// }
+
+// @media (max-width: 767px) {
+//     .card-list {
+//         grid-template-columns: 1fr;
+//     }
+// }
+
+// 8. max-width: 1199px在1199px时是否生效？  生效
+
+// 9. max-width: 767px在768px时是否生效？  不生效
+
+// 10. 桌面优先的默认样式是哪种设备布局？   4列
+
+// 11. 移动优先主要使用min-width还是max-width？   min-width
+
+// 12. 桌面优先主要使用min-width还是max-width？   max-width
+ 
+// 13. 同一个组件是否应该毫无规律地混用两种策略？为什么？   不应该   因为多个规则在同一宽度同时生效  覆盖顺序难以判断  某些宽度出现样式空档或冲突   后期维护时不知道哪个规则应该修改
+
+// 14. 桌面优先的多个max-width规则通常应该从大到小写，还是从小到大写？  从大到小
+
+// 15. 响应式断点应该完全按照设备型号选择吗？   不是
+
+// 16. 更合理的断点依据是什么？  观察内容什么时候开始显得太空、太挤或错位。  在布局真正需要改变的位置添加断点
+
+// 17. 两张260px卡片加20px间距，最低需要多少内容宽度？540px
+
+// 18. 再加左右各16px页面padding，视口最低大约需要多少px？  572px
+
+// 19. 如果在560px时两列已经挤压错位，应该坚持等到768px才改变布局吗？   不是 应该加一个断点
+
+// 20. 375px、768px、1440px只是唯一需要测试的宽度吗？   不是
+
+
+// 1. 大图为什么可能造成页面横向滚动？  如果图片像素大于容器  会造成容器被撑破出现横向滚动
+
+// 2. max-width: 100%中的百分比通常相对于什么？   容器宽度
+
+// 3. height: auto为什么能减少图片变形？   高度根据原始比例自动计算，避免图片变形
+
+// 4. width: 100%与max-width: 100%的主要区别是什么？   width: 100%会要求图片始终占满容器，即使原图或实际设计不需要那么宽。  max-width: 100%只在图片超过容器时缩小，不会强制小图片放大。
+
+// 5. 原图宽200px、容器宽800px时，max-width: 100%会强制把图片放大到800px吗？不会
+
+// 6. 原图宽1600px、容器宽375px时，图片最大显示宽度大约是多少？  375px
+
+// 7. aspect-ratio: 16 / 9控制什么？  图像显示区域的比例
+
+// 8. cover会优先保证填满区域，还是保证图片完全不裁剪？    填满区域
+
+// 9. contain会不会裁剪图片？  不会
+
+// 10. contain为什么可能留下空白？   因为完整显示图片保持原比例   可能图片小于容器会留下空白
+
+// 11. 商品卡片封面通常更适合cover还是contain？先判断并说明场景。  cover   商品卡片需要全部占满所以需要把空白覆盖
+
+// 12. 商品本体必须完整显示时，更适合cover还是contain？   contain
+
+</script>
