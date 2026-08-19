@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+// 1. --color-primary应该放在哪个文件？   variables.css
+
+// 2. * { box-sizing: border-box; }应该放在哪个文件？  base.css
+
+// 3. .button--danger应该放在哪个文件？button.css
+
+// 4. .page-container的页面整体宽度应该放在哪个文件？   layout.css
+
+// 5. @keyframes skeleton-loading应该放在哪个组件文件？   components/skeleton.css
+
+// 6. HTML为什么只需要引入main.css？  因为其他css样式已经引入了main.css中
+
+// 7. 如果modal.css直接大量修改.button，可能造成什么问题？   会导致也是上所有button全部被修改
+
+// 8. CSS拆成多个文件以后，是否代表它们之间绝对不会互相影响？   不是 
+
+// 1. .title为什么容易污染其他组件？       .title 会匹配页面中所有使用该类名的元素，导致其他组件的标题也被应用相同样式，或者与其他 .title 规则发生覆盖冲突。
+
+// 2. modal.css中的.button为什么仍可能影响页面全部按钮？   css不会只在自己的层找样式 在modal设置一样会影响所有button
+
+// 3. .modal__title是否明确说明了它属于哪个组件？   .modal   
+
+// 4. 文件名是否会自动限制CSS选择器的作用范围？  不会
+
+// 5. 如果只需要排列弹窗底部的两个按钮，   
+//    更适合修改.button，还是设置.modal__actions的布局？   .modal__actions
+
+</script>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bem.css">
+</head>
+
+<body>
+    <article class="product-card">
+        <img class="product-card__image" src="product.jpg" alt="无线耳机">
+
+        <div class="product-card__body">
+            <h2 class="product-card__title">
+                无线耳机
+            </h2>
+
+            <p class="product-card__price">
+                ¥299
+            </p>
+
+            <button class="button button--primary">
+                加入购物车
+            </button>
+        </div>
+    </article>
+
+    <div class="message message--success">
+        <p class="message__content">
+            商品已加入购物车
+        </p>
+
+        <button class="message__close" type="button">
+            ×
+        </button>
+    </div>
+
+
+
+</body>
+
+</html>
+
+<script>
+// 1. product-card属于Block、Element还是Modifier？  Block
+
+// 2. product-card__title中的两个下划线表示什么？  product-card的标题   元素
+
+// 3. message--success中的两个短横线表示什么？   修饰符
+
+// 4. button button--primary为什么需要同时写两个类名？一个是button的通用属性  另一个是不同的版本 
+
+// 5. product-card__title可以直接改成.title吗？    语法上可以 但是不推荐 因为头部可能有title  尾部也可能有都用.title会导致影响两个的css样式
+//    从语法上是否可以？从样式隔离角度是否推荐？
+
+// 6. product-card内部的按钮为什么可以继续使用独立的button组件？      因为一个组件内部可以嵌套另一个独立组件。
+
+// 7. BEM能否彻底禁止所有CSS污染？它主要降低了哪类冲突？不能彻底避免   BEM主要降低“类名太普通导致的选择器冲突”
+
+
+
+   
+
+
+</script>

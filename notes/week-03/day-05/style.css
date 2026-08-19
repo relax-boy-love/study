@@ -1,0 +1,68 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --color-primary: #2563eb;
+    --color-danger: #dc2626;
+    --color-surface: #ffffff;
+    --color-text: #1f2937;
+    --color-border: #d1d5db;
+
+    --space-small: 8px;
+    --space-medium: 16px;
+    --space-large: 24px;
+
+    --radius-small: 6px;
+    --radius-large: 12px;
+}
+
+body {
+    margin: 0;
+    padding: var(--space-large);
+    background-color: #f3f4f6;
+    color: var(--color-text);
+}
+
+.theme-demo {
+    display: flex;
+    flex-wrap: wrap;
+
+    /* 使用变量设置24px间距 */
+    gap: var(--space-large);
+}
+
+.button {
+    /* 上下8px，左右16px */
+    padding:
+        var(--space-small)
+        var(--space-medium);
+
+    border: 0;
+
+    /* 使用6px圆角变量 */
+    border-radius: var(--radius-small);
+
+    color: var(--color-surface);
+    cursor: pointer;
+}
+
+.button--primary {
+    /* 使用主题色变量 */
+    background-color: var(--color-primary);
+}
+
+.button--danger {
+    /* 使用危险色变量 */
+    background-color: var(--color-danger);
+}
+
+.card {
+    flex-basis: 100%;
+    padding: var(--space-medium);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-large);
+    background-color: var(--color-surface);
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="theme-demo">
+    <button class="button button--primary">
+        保存
+    </button>
+
+    <button class="button button--danger">
+        删除
+    </button>
+
+    <article class="card">
+        <h2 class="card__title">CSS变量</h2>
+        <p class="card__content">
+            使用变量统一管理重复的设计值。
+        </p>
+    </article>
+</div>
+</body>
+</html>
+<script>
+    // 1. CSS变量名为什么以两个短横线开头？   这是 CSS 自定义属性规定的语法  两个短横线用来告诉浏览器：这是开发者自己定义的 CSS 属性
+
+// 2. var(--color-primary)负责声明变量还是读取变量？ 读取
+
+// 3. 把变量放在:root中的主要好处是什么？   root是根元素 文档大多数元素都可以使用
+
+// 4. --space-large的实际值是多少？   24px
+
+// 5. 如果修改--color-primary，哪些使用该变量的元素会发生变化？  所有使用 var(--color-primary) 的元素都会改变。
+
+// 6. var(--unknown-color, black)中的black有什么作用？   备用值 前面--unknown-color没有声明 就使用black
+
+// 7. 子元素可以使用祖先元素声明的CSS变量吗？   可以
+
+// 8. CSS变量只能保存颜色吗？还可以保存哪些内容？   不是   可以保存所有css属性值
+</script>

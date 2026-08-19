@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>transition按钮过渡练习</title>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: #2563eb;
+            --color-primary-dark: #1d4ed8;
+
+            --color-danger: #dc2626;
+            --color-danger-dark: #b91c1c;
+
+            --color-surface: #ffffff;
+            --color-text: #1f2937;
+
+            --space-small: 8px;
+            --space-medium: 16px;
+            --space-large: 24px;
+
+            --radius-small: 6px;
+            --radius-large: 12px;
+
+            --duration-fast: 200ms;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: var(--space-large);
+            font-family:
+                Arial,
+                "Microsoft YaHei",
+                sans-serif;
+
+            background-color: #f3f4f6;
+            color: var(--color-text);
+        }
+
+        .button-demo {
+            width: min(100%, 520px);
+            padding: var(--space-large);
+
+            border-radius: var(--radius-large);
+            background-color: var(--color-surface);
+
+            box-shadow:
+                0 8px 24px
+                rgb(0 0 0 / 10%);
+        }
+
+        .button-demo__title {
+            margin-top: 0;
+        }
+
+        .button-demo__description {
+            margin-bottom: var(--space-large);
+        }
+
+        .button-demo__actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-medium);
+        }
+
+        /* 按钮组件的公共样式 */
+        .button {
+            padding:
+                var(--space-small)
+                var(--space-medium);
+
+            border: 0;
+            border-radius: var(--radius-small);
+
+            color: var(--color-surface);
+            font: inherit;
+            cursor: pointer;
+
+            /*
+             * 请补全：
+             * 背景颜色、位移和阴影都在200ms内过渡。
+             */
+            transition:
+                background-color 200ms ease,
+                transform 200ms ease,
+                box-shadow 200ms ease;
+        }
+
+        /* 主按钮版本 */
+        .button--primary {
+            background-color:
+                var(--color-primary);
+        }
+
+        /* 危险按钮版本 */
+        .button--danger {
+            background-color:
+                var(--color-danger);
+        }
+
+        /* 主按钮的悬停颜色 */
+        .button--primary:hover {
+            background-color:
+                var(--color-primary-dark);
+        }
+
+        /* 危险按钮的悬停颜色 */
+        .button--danger:hover {
+            background-color:
+                var(--color-danger-dark);
+        }
+
+        /* 所有按钮共有的悬停效果 */
+        .button:hover {
+            /* 请让按钮向上移动2px */
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 6px 16px
+                rgb(0 0 0 / 18%);
+        }
+
+        /* 鼠标按下按钮时 */
+        .button:active {
+            /* 请让按钮回到原来的垂直位置 */
+            transform: translateY(0px);
+        }
+
+        /* 键盘焦点 */
+        .button:focus-visible {
+            outline:
+                3px solid
+                #f59e0b;
+
+            outline-offset: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="button-demo">
+        <h1 class="button-demo__title">
+            按钮过渡练习
+        </h1>
+
+        <p class="button-demo__description">
+            使用鼠标和Tab键测试按钮的不同状态。
+        </p>
+
+        <div class="button-demo__actions">
+            <button
+                class="button button--primary"
+                type="button"
+            >
+                保存
+            </button>
+
+            <button
+                class="button button--danger"
+                type="button"
+            >
+                删除
+            </button>
+        </div>
+    </main>
+</body>
+
+</html>
+
+<script>
+    // 1. transition应该主要写在基础状态.button中，
+//    还是只写在.button:hover中？   写在基础状态.button
+
+// 2. background-color 200ms ease分别表示什么？   属性名称  持续时间  速度曲线
+
+// 3. 多个过渡属性之间使用什么符号分隔？   逗号
+
+// 4. 为什么一般不推荐transition: all？  意外动画  性能浪费  后续维护困难  不知道哪些属性本来应该变化
+
+// 5. transform: translateY(-2px)会让按钮向上还是向下移动？   向上
+
+// 6. :hover、:active和:focus-visible分别在什么情况下生效？   :hover在鼠标移入   :active鼠标点击  :focus-visible通过键盘等方式获得需要显示的焦点时
+
+// 7. 为什么动画通常优先使用transform和opacity？   移动、缩放、旋转 → transform     淡入、淡出       → opacity   因为改变下面这些属性，经常会影响页面布局：width  height  浏览器可能需要重新计算元素的位置和大小，再重新绘制页面。  而下面两个属性通常更适合动画：transform   opacity
+
+// 8. transition能否在页面没有任何状态变化时自己不断播放？   不能
+
+// 9. transition与之前学习的:hover分别负责什么？   transition负责的是css状态平顺的变为另一个状态   :hover是负责如何改变状态
+
+// 1. 鼠标移入时，按钮是否平滑变色并向上移动？    是
+
+// 2. 鼠标移出时，按钮是否平滑回到原位？   是
+
+// 3. 鼠标按下时，按钮是否回到原来的垂直位置？   是
+
+// 4. 按Tab键时，按钮是否出现橙色焦点轮廓？是
+</script>

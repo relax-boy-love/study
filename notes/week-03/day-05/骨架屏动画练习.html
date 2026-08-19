@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <section
+    class="skeleton-card"
+    aria-label="内容正在加载"
+>
+    <div class="skeleton skeleton--avatar"></div>
+
+    <div class="skeleton-card__content">
+        <div class="skeleton skeleton--title"></div>
+        <div class="skeleton skeleton--text"></div>
+        <div class="skeleton skeleton--text-short"></div>
+    </div>
+</section>
+</body>
+</html>
+<style>
+    .skeleton-card {
+    display: flex;
+    gap: var(--space-medium);
+
+    width: min(100%, 520px);
+    margin-top: var(--space-large);
+    padding: var(--space-large);
+
+    border-radius: var(--radius-large);
+    background-color: var(--color-surface);
+}
+
+.skeleton-card__content {
+    flex: 1;
+}
+
+.skeleton {
+    background-color: #d1d5db;
+
+    animation:
+        skeleton-pulse
+        1.2s
+        ease-in-out
+        infinite;
+}
+
+.skeleton--avatar {
+    flex: 0 0 64px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+}
+
+.skeleton--title {
+    width: 50%;
+    height: 20px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+}
+
+.skeleton--text,
+.skeleton--text-short {
+    height: 14px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.skeleton--text {
+    width: 100%;
+}
+
+.skeleton--text-short {
+    width: 70%;
+}
+
+@keyframes skeleton-pulse {
+    0% {
+        opacity: 0%;
+    }
+
+    50% {
+        opacity: 0.45;
+    }
+
+    100% {
+        opacity: 100%;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+   
+
+    .skeleton {
+        /* 关闭骨架屏动画 */
+        animation: none;
+
+        /* 保留一个稳定可见的透明度 */
+        opacity: 65%;
+    }
+}
+</style>
+<script>
+    // 1. @keyframes负责定义什么？   动画变化的属性
+
+// 2. animation中的skeleton-pulse来自哪里？ skeleton-pulse 最初来自关键帧的命名
+
+// 3. 1.2s表示什么？  这个动画总变化时间
+
+// 4. ease-in-out表示什么？  速度曲线
+
+// 5. infinite表示什么？  表示无限重复
+
+// 6. 50%表示动画执行到什么阶段？   本次动画播放进度达到一半时的状态。
+
+// 7. 为什么骨架屏适合animation，而不只是transition？  骨架屏是直接就动画不需要用户操作什么 而transition是需要改变什么才开始
+
+// 8. opacity变成0.45时，元素是否仍然占据原来的布局空间？   是
+
+// 9. animation和transition最核心的区别是什么？   transition 需要属性状态发生变化 适合hover、打开、关闭等两个状态之间的变化  animation  可以自动播放  可以重复   可以设置多个关键阶段   适合骨架屏、加载动画、消息进入动画
+
+// 1. prefers-reduced-motion: reduce表示用户具有什么偏好？   “减少动态效果”
+
+// 2. 减少动画是否等于删除页面中的动画元素？不等于
+
+// 3. animation: none有什么作用？   关闭动画
+
+// 4. transition: none有什么作用？  它关闭属性变化过程中的过渡效果，但属性本身仍然会改变。
+
+// 5. 为什么停止骨架屏动画后还要给它设置稳定的opacity？  不设置的话透明度是0用户看不见
+
+// 6. 这个媒体查询是根据屏幕宽度判断，还是根据用户系统偏好判断？   用户系统偏好
+
+// 7. 减少动画功能主要属于性能优化，还是无障碍体验？   无障碍体验
+
+// 8. 为什么不能只考虑喜欢动画的用户？   因为页面是给所有群众看的
+</script>
