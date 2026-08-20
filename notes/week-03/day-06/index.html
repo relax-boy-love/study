@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub 定价页面还原</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="site-header__logo" href="#" aria-label="GitHub首页">
+            GitHub
+        </a>
+
+        <nav class="site-nav" aria-label="主要导航" id="site-nav">
+            <a href="#">产品</a>
+            <a href="#">解决方案</a>
+            <a href="#">资源</a>
+            <a href="#">开源</a>
+            <a href="#">企业</a>
+            <a href="#">定价</a>
+        </nav>
+
+        <div class="site-header__actions">
+            <label class="visually-hidden" for="site-search">
+                搜索
+            </label>
+
+            <input id="site-search" class="site-header__search" type="search" placeholder="搜索">
+
+            <a class="site-header__sign-in" href="#">
+                登录
+            </a>
+
+            <a class="button button--outline" href="#">
+                注册
+            </a>
+        </div>
+
+        <button class="menu-button" type="button" aria-label="打开导航菜单" aria-expanded="false" id="menu-button" aria-controls="site-nav">
+            ☰
+        </button>
+    </header>
+
+    <main>
+        <section class="pricing-hero">
+            <h1 class="pricing-hero__title">
+                选择适合你的方案
+            </h1>
+
+            <p class="pricing-hero__description">
+                无论个人还是团队，都可以找到合适的开发方案。
+            </p>
+        </section>
+
+        <section class="pricing" aria-labelledby="pricing-title">
+            <h2 class="visually-hidden" id="pricing-title">
+                定价方案
+            </h2>
+
+            <div class="pricing__grid">
+                <!-- Free方案 -->
+                <article class="pricing-card">
+                    <h3 class="pricing-card__title">
+                        Free
+                    </h3>
+            
+                    <p class="pricing-card__description">
+                        适合个人和组织的基础功能
+                    </p>
+            
+                    <p class="pricing-card__price">
+                        <span class="pricing-card__amount">
+                            $0
+                        </span>
+            
+                        <span class="pricing-card__period">
+                            每月
+                        </span>
+                    </p>
+            
+                    <a class="
+                            button
+                            button--outline
+                            pricing-card__button
+                        " href="#">
+                        免费开始
+                    </a>
+            
+                    <h4 class="pricing-card__features-title">
+                        包含功能
+                    </h4>
+            
+                    <ul class="pricing-card__features">
+                        <li class="pricing-card__feature">
+                            无限公共仓库
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            无限私有仓库
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            每月2,000分钟自动化运行时间
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            500MB软件包存储空间
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            Dependabot安全更新
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            社区支持
+                        </li>
+                    </ul>
+                </article>
+            
+                <!-- Team方案：重点推荐 -->
+                <article class="
+                        pricing-card
+                        pricing-card--featured
+                    ">
+                    <p class="pricing-card__badge">
+                        最受欢迎
+                    </p>
+            
+                    <h3 class="pricing-card__title">
+                        Team
+                    </h3>
+            
+                    <p class="pricing-card__description">
+                        适合需要高级协作的团队
+                    </p>
+            
+                    <p class="pricing-card__price">
+                        <span class="pricing-card__amount">
+                            $4
+                        </span>
+            
+                        <span class="pricing-card__period">
+                            每位用户/月
+                        </span>
+                    </p>
+            
+                    <a class="
+                            button
+                            button--primary
+                            pricing-card__button
+                        " href="#">
+                        选择Team
+                    </a>
+            
+                    <h4 class="pricing-card__features-title">
+                        包含Free全部功能，以及
+                    </h4>
+            
+                    <ul class="pricing-card__features">
+                        <li class="pricing-card__feature">
+                            GitHub Codespaces开发环境
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            仓库规则和分支保护
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            Pull Request多位审查者
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            团队访问权限管理
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            每月3,000分钟自动化运行时间
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            2GB软件包存储空间
+                        </li>
+                    </ul>
+                </article>
+            
+                <!-- Enterprise方案 -->
+                <article class="pricing-card">
+                    <h3 class="pricing-card__title">
+                        Enterprise
+                    </h3>
+            
+                    <p class="pricing-card__description">
+                        适合需要安全、合规和灵活部署的企业
+                    </p>
+            
+                    <p class="pricing-card__price">
+                        <span class="pricing-card__amount">
+                            $21起
+                        </span>
+            
+                        <span class="pricing-card__period">
+                            每位用户/月
+                        </span>
+                    </p>
+            
+                    <div class="pricing-card__actions">
+                        <a class="
+                                button
+                                button--primary
+                                pricing-card__button
+                            " href="#">
+                            免费试用
+                        </a>
+            
+                        <a class="
+                                button
+                                button--outline
+                                pricing-card__button
+                            " href="#">
+                            联系销售
+                        </a>
+                    </div>
+            
+                    <h4 class="pricing-card__features-title">
+                        包含Team全部功能，以及
+                    </h4>
+            
+                    <ul class="pricing-card__features">
+                        <li class="pricing-card__feature">
+                            企业托管用户
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            SAML单点登录
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            用户自动配置
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            企业级审计日志
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            数据驻留和合规控制
+                        </li>
+            
+                        <li class="pricing-card__feature">
+                            高级安全策略
+                        </li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script src="./js/main.js"></script>
+</body>
+</html>
+<script>
+    // 1. 页面从上到下可以划分为哪几个主要区域？    3个区域  头部  中间介绍  底部价格卡片
+
+// 2. 顶部导航中，左、中、右分别是什么内容？     左边是头像和导航栏  右边是搜索框和登录注册按钮
+
+// 3. 页面主标题是否水平居中？是
+
+// 4. 三张定价卡片在桌面端是一行还是多行？  一行
+
+// 5. 三张卡片的宽度看起来是否接近？  接近
+
+// 6. 哪张卡片是重点方案？通过哪些视觉特征体现？  最后一张  边框为蓝色提示词
+
+// 7. 三张卡片之间是否存在明显间距？    是
+
+// 8. 卡片内部从上到下有哪些内容？   价格 购买按钮  介绍
+
+// 9. 按钮是内容宽度，还是接近占满卡片宽度？   接近占满卡片宽度
+
+// 10. 页面主要使用了哪些颜色？  白色  灰色
+
+// 11. 哪些地方有圆角？哪些地方有边框？   卡片和按钮有圆角     
+ 
+// 12. 如果缩小到375px，三张卡片应该继续并排还是纵向排列？   纵向
+
+// 13. 移动端导航应该继续完整显示，还是隐藏部分链接并显示菜单按钮？   隐藏部分链接并显示菜单按钮
+
+// 14. 这个页面哪些区域适合Flex？   头部
+
+// 15. 哪个区域适合Grid？  中间部分
+</script>
