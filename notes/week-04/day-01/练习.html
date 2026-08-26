@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+
+    <link
+        rel="stylesheet"
+        href="./style.css"
+    >
+
+    <script
+        src="./defer.js"
+        defer
+    ></script>
+
+    <script
+        src="./async.js"
+        async
+    ></script>
+</head>
+
+<body>
+    <h1>商品列表</h1>
+    <ul class="product-list"></ul>
+
+    <script src="./normal.js"></script>
+</body>
+<script>
+    // 1. DOM是根据HTML构建，还是根据CSS构建？  HTML
+
+// 2. CSSOM是根据HTML构建，还是根据CSS构建？    CSS
+
+// 3. JavaScript修改price.textContent时，修改的是服务器HTML文件还是当前DOM？    当前DOM
+
+// 4. 浏览器是否必须等完整HTML下载完才开始构建DOM？   不是
+
+// 5. link stylesheet被发现后，浏览器通常会做什么？   会请求css文件并生成cssom
+
+// 6. 为什么CSS经常被称为渲染阻塞资源？  浏览器需要CSSOM才能准确知道元素最终应该怎样显示
+
+// 7. 普通normal.js可能会不会暂停HTML解析？   会
+
+// 8. defer.js下载时，HTML是否可以继续解析？   可以
+
+// 9. defer.js通常在DOM构建前还是构建完成后执行？  DOM构建后
+
+// 10. async.js和defer.js谁保证脚本书写顺序？  defer.js
+
+// 11. async脚本适合强依赖前一个脚本执行结果的代码吗？   不适合
+
+// 12. DOMContentLoaded是否一定等待所有图片加载完成？   不是
+
+// 13. load和DOMContentLoaded通常谁先发生？ DOMContentLoaded
+
+// 14. DOM和CSSOM之后，浏览器需要生成什么结构来展示页面？  渲染树
+
+// <body>
+//     <main>
+//         <h1>课程</h1>
+
+//         <section>
+//             <h2>JavaScript</h2>
+//             <p>事件循环</p>
+//         </section>
+//     </main>
+// </body>
+
+// body
+// └── main
+//     ├── h1
+//     └── section
+//         ├── h2
+//         └── p
+
+
+</script>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>浏览器渲染性能实验</title>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 32px;
+
+            font-family:
+                Arial,
+                "Microsoft YaHei",
+                sans-serif;
+
+            background-color: #f3f4f6;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .experiment {
+            max-width: 900px;
+            margin-bottom: 32px;
+            padding: 24px;
+
+            border-radius: 12px;
+            background-color: #ffffff;
+        }
+
+        .experiment__track {
+            position: relative;
+
+            height: 100px;
+            margin: 20px 0;
+
+            overflow: hidden;
+            border: 1px solid #94a3b8;
+            border-radius: 8px;
+
+            background-color: #e2e8f0;
+        }
+
+        .experiment__box {
+            position: absolute;
+            top: 20px;
+            left: 0;
+
+            width: 60px;
+            height: 60px;
+
+            border-radius: 8px;
+            background-color: #2563eb;
+        }
+
+        .button {
+            min-height: 44px;
+            padding: 8px 16px;
+
+            border: 0;
+            border-radius: 6px;
+
+            color: #ffffff;
+            background-color: #1f883d;
+
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #1a7f37;
+        }
+
+        .button:focus-visible {
+            outline: 3px solid #f59e0b;
+            outline-offset: 3px;
+        }
+
+        .layout-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+
+            margin-top: 20px;
+        }
+
+        .layout-item {
+            width: 40px;
+            height: 40px;
+
+            background-color: #f97316;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>浏览器渲染性能实验</h1>
+
+    <section class="experiment">
+        <h2>实验一：修改left</h2>
+
+        <p>
+            修改几何位置，通常会触发布局计算。
+        </p>
+
+        <div class="experiment__track">
+            <div
+                class="experiment__box"
+                id="left-box"
+            ></div>
+        </div>
+
+        <button
+            class="button"
+            id="start-left"
+            type="button"
+        >
+            运行动画
+        </button>
+    </section>
+
+    <section class="experiment">
+        <h2>实验二：修改transform</h2>
+
+        <p>
+            transform在适当条件下可能只需要合成。
+        </p>
+
+        <div class="experiment__track">
+            <div
+                class="experiment__box"
+                id="transform-box"
+            ></div>
+        </div>
+
+        <button
+            class="button"
+            id="start-transform"
+            type="button"
+        >
+            运行动画
+        </button>
+    </section>
+
+    <section class="experiment">
+        <h2>实验三：布局抖动</h2>
+
+        <p>
+            循环中交替修改宽度并读取offsetWidth。
+        </p>
+
+        <button
+            class="button"
+            id="start-thrashing"
+            type="button"
+        >
+            制造布局抖动
+        </button>
+
+        <div
+            class="layout-list"
+            id="layout-list"
+        ></div>
+    </section>
+
+    <script>
+        const leftBox =
+            document.querySelector(
+                "#left-box"
+            );
+
+        const transformBox =
+            document.querySelector(
+                "#transform-box"
+            );
+
+        const startLeftButton =
+            document.querySelector(
+                "#start-left"
+            );
+
+        const startTransformButton =
+            document.querySelector(
+                "#start-transform"
+            );
+
+        const startThrashingButton =
+            document.querySelector(
+                "#start-thrashing"
+            );
+
+        const layoutList =
+            document.querySelector(
+                "#layout-list"
+            );
+
+        const distance = 500;
+        const duration = 2000;
+
+        function runAnimation(update) {
+            const startTime =
+                performance.now();
+
+            function frame(currentTime) {
+                const elapsed =
+                    currentTime - startTime;
+
+                const progress =
+                    Math.min(
+                        elapsed / duration,
+                        1
+                    );
+
+                update(progress);
+
+                if (progress < 1) {
+                    requestAnimationFrame(
+                        frame
+                    );
+                }
+            }
+
+            requestAnimationFrame(frame);
+        }
+
+        startLeftButton.addEventListener(
+            "click",
+            function () {
+                runAnimation(
+                    function (progress) {
+                        leftBox.style.left =
+                            distance *
+                            progress +
+                            "px";
+                    }
+                );
+            }
+        );
+
+        startTransformButton.addEventListener(
+            "click",
+            function () {
+                runAnimation(
+                    function (progress) {
+                        transformBox.style.transform =
+                            "translateX(" +
+                            distance *
+                            progress +
+                            "px)";
+                    }
+                );
+            }
+        );
+
+        for (let i = 0; i < 200; i++) {
+            const item =
+                document.createElement("div");
+
+            item.classList.add(
+                "layout-item"
+            );
+
+            layoutList.append(item);
+        }
+
+        startThrashingButton.addEventListener(
+            "click",
+            function () {
+                const items =
+                    document.querySelectorAll(
+                        ".layout-item"
+                    );
+
+                items.forEach(
+                    function (item, index) {
+                        item.style.width =
+                            40 +
+                            index % 10 +
+                            "px";
+
+                        const width =
+                            item.offsetWidth;
+
+                        item.dataset.width =
+                            width;
+                    }
+                );
+            }
+        );
+
+        // 1. 修改left的记录中是否看到了Layout？   是
+
+// 2. 修改left的记录中是否看到了Paint？  是
+
+// 3. 修改transform的记录中，Layout是否更少？  是
+
+// 4. transform动画是否主要出现合成相关工作？   是
+
+// 5. 两种动画肉眼看起来是否都能移动？    是
+
+// 6. 为什么肉眼都能移动，却不能说明性能成本相同？   因为一个改变时left会导致重排 使用transform这个只会composite
+
+// 7. 布局抖动实验中是否出现多次Layout？  是
+
+// 8. 哪一行代码读取了布局信息？  const width = item.offsetWidth;           
+
+// 9. 哪一行代码修改了布局信息？  item.style.width = 新宽度;
+
+// 10. 为什么读写交替会强迫浏览器提前Layout？   浏览器原本想稍后统一执行Layout，但JavaScript修改布局后立即读取几何信息为了立刻返回准确的 offsetWidth，浏览器可能必须马上执行Layout。
+
+// 11. Performance面板中的Main代表什么？    主线程时间线
+
+// 12. 一帧为什么常用16.7ms作为参考？  通常一帧大约只有：16.7ms才能接近每秒60帧。如果主线程任务长期超过这个时间，动画可能掉帧。
+
+// 13. 只看一次短实验能否断定某个属性在所有页面都更快？   不能
+
+// 14. 优化性能前为什么应该先测量，而不是凭感觉修改？   应该先用 Performance 面板测量，确认真正耗时的是 Layout、Paint、JavaScript，还是其他任务，再针对瓶颈优化。否则可能修改了没有性能问题的代码，却没有解决真正的问题。
+
+
+
+
+    </script>
+</body>
+
+</html>
