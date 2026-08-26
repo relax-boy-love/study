@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    // https://shop.example.com:443/products/100?color=black&size=42#reviews
+
+// 1. 协议是什么？  https
+
+// 2. 域名是什么？  shop.example.com
+
+// 3. 端口是什么？   443
+
+// 4. 路径是什么？ /products/100
+
+// 5. 查询参数是什么？   ?color=black&size=42
+
+// 6. 页面片段是什么？   #reviews
+
+// 7. #reviews通常会发送给服务器吗？先预测。  不会
+
+// 8. 浏览器怎样判断地址栏输入的是URL还是搜索关键词？   看是否有域名或协议
+
+// 9. 浏览器检查缓存的目的是什么？    如果缓存仍然有效，部分资源可能直接从缓存读取，不需要重新完整下载。
+
+// 10. 命中缓存是否代表浏览器一定完全不访问服务器？   不是
+
+// A. 服务器返回HTML
+// B. 浏览器解析URL
+// C. DNS查询服务器IP
+// D. 浏览器发送HTTP请求
+// E. 建立网络连接
+// F. 用户在地址栏输入URL
+// G. 浏览器检查缓存
+
+// 预测顺序：
+// F → B → G → C → E → D → A
+
+
+// 1. DNS负责把什么转换成什么？  把域名转换为ip地址
+
+// 2. 浏览器为什么要先查DNS缓存？    如果已经缓存了域名对应的IP，就可以减少DNS查询时间。
+
+// 3. 获得IP地址以后，浏览器下一步通常做什么？   建立连接
+
+// 4. TCP三次握手的主要目的是什么？  确定 浏览器能够发送  服务器能够接收  服务器能够发送  浏览器能够接收  双方准备好通信
+
+// 5. HTTPS中的TLS主要解决什么问题？  安全问题
+
+// 6. 地址栏访问网页通常发送GET还是POST？  GET
+
+// 7. GET /products/100?color=black中包含#reviews吗？  不包含
+ 
+// 8. HTTP响应主要包含哪三部分？   状态码  响应头  响应体
+
+// 9. 200、304、404和500分别表示什么？    200请求成功      304缓存资源可以使用   404 资源不存在  500 服务器内部错误
+
+// 10. 404是否代表浏览器完全没有收到HTTP响应？  不代表
+
+// 11. 为什么Fetch遇到404时通常还要手动检查response.ok？   404和500不会自动抛出网络错误
+
+// 12. 浏览器是否一定等完整HTML下载完才开始解析？   不是
+
+// 13. 浏览器解析到link stylesheet时，可能会做什么？  开始请求css
+
+// 14. DNS、TCP、TLS、HTTP的基础顺序是什么？   DNS -> TCP -> TLS -> http
+
+// A. TLS协商
+// B. DNS获得IP
+// C. 服务器返回HTTP响应
+// D. 建立TCP连接
+// E. 浏览器发送HTTP请求
+// 正确顺序：
+// B → D → A → E → C
+
+
+
+// 1. DOM和CSSOM结合以后，浏览器首先需要确定元素的什么？  浏览器进行样式计算，确定每个需要处理的元素最终生效的计算样式。
+
+// 2. 什么是计算样式？    浏览器需要确定每个元素最终生效的样式
+
+// 3. display: none的元素是否仍然存在于DOM？   是
+
+// 4. display: none的元素是否参与布局？  否
+
+// 5. visibility: hidden的元素是否占据空间？  是
+
+// 6. opacity: 0的元素是否占据空间？   是
+
+// 7. opacity: 0的按钮是否一定无法点击？  不一定
+
+// 8. Layout主要计算元素的哪些信息？   宽度 高度 横向位置 纵向位置 元素之间的关系
+
+// 9. Paint主要负责什么？   知道元素的位置和大小以后，浏览器需要生成绘制指令。
+
+// 10. Composite主要负责什么？   合成各个图层
+
+// 11. 为什么transform动画通常比修改width更适合？   transform 动画在很多情况下可以只进行合成，不触发Layout和Paint，因此通常比修改 width 更适合动画，但不是绝对保证。
+
+// 12. transform是否绝对保证只触发合成？先回答“不一定”还是“一定”。    不一定
+
+// 13. 为什么不能给页面所有元素都添加will-change？  会影响内存占用 和后期维护
+
+// 14. 页面首次显示后，哪些情况可能让浏览器重新渲染？   JavaScript修改DOM   用户输入内容  窗口尺寸变化   图片加载完成  字体加载完成  CSS类名变化  动画执行
+
+// DOM + CSSOM
+// → 计算样式
+// → 渲染树
+// → layout
+// → paint
+// → composite
+// → 屏幕画面
+
+// 1. DOM树中的每个节点都会出现在渲染树中。对还是错？  对
+
+// 2. display: none与visibility: hidden都会让元素不占空间。对还是错？  错
+
+// 3. Paint已经知道元素应该画在哪里，因为Layout已经计算了位置。对还是错？   对
+
+// 4. 合成阶段负责重新解析HTML。对还是错？   错
+
+// 5. 修改transform和opacity永远不会触发Paint。对还是错？   错
+
+
+
+// 1. element.style.width = "500px";  重排
+//    重排 / 重绘 / 只合成？
+
+// 2. element.style.backgroundColor = "red";  重绘
+//    重排 / 重绘 / 只合成？
+
+// 3. element.style.transform = "translateX(50px)";     只合成 
+//    通常可能只进行什么？
+
+// 4. element.style.opacity = "0.5";   只合成
+//    通常可能只进行什么？
+
+// 5. element.style.fontSize = "32px";   因为改变字体大小 可能会影响到宽度变化或者高度变化
+//    为什么可能触发重排？
+
+// 6. element.style.boxShadow = "...";     重绘
+//    通常更可能触发重排还是重绘？
+
+// 7. append一个新li为什么可能触发重排？    因为页面添加了新元素 不知道其他元素是否会改变
+
+// 8. 调整浏览器窗口宽度为什么会触发重排？   也是宽度变化可能会导致媒体查询生效等导致重排
+
+// 9. 重排以后是否可能继续发生重绘和合成？   是
+
+// 10. 重绘是否一定需要重新计算元素位置？   不一定
+
+
+// for (let i = 0; i < 100; i++) {
+//     box.style.width =
+//         i + "px";
+
+//     console.log(
+//         box.offsetWidth
+//     );
+// }
+// 11. 循环中先写入了哪个布局属性？         box的宽度
+
+// 12. 随后读取了哪个几何属性？       box.offsetWidth
+ 
+// 13. 浏览器为什么可能不能一直等到循环结束后再统一Layout？   浏览器原本想稍后统一执行Layout，但JavaScript修改布局后立即读取几何信息为了立刻返回准确的 offsetWidth，浏览器可能必须马上执行Layout。
+
+// 14. 这段代码可能造成什么性能问题？  布局抖动
+
+// 15. 优化的核心思路是“读写交错”还是“先读后写”？   先读后写
+
+// width
+// height
+// margin
+// font-size
+// background-color
+// color
+// box-shadow
+// transform
+// opacity
+
+// 可能引起Layout：
+// width height margin font-size
+
+// 通常主要引起Paint：
+// background-color  color  box-shadow
+
+// 在适当条件下可能只需Composite：
+// transform  opacity
+
+
+
+// 用户在地址栏输入URL以后：
+
+// 1. 浏览器首先怎样解析URL？  识别协议、域名、端口、路径、查询参数、片段
+
+// 2. 浏览器为什么要检查缓存？   如果缓存仍然有效，部分资源可能直接从缓存读取，不需要重新完整下载。
+ 
+// 3. DNS负责完成什么工作？   把域名转换为ip地址
+
+// 4. 得到IP地址后，为什么需要建立TCP连接？   确定双方可以收发    确定 浏览器能够发送  服务器能够接收  服务器能够发送  浏览器能够接收  双方准备好通信
+
+// 5. HTTPS为什么还需要进行TLS协商？   验证服务器身份、协商加密方式并建立安全的加密通信，防止数据被窃听或篡改。
+
+// 6. 浏览器通过HTTP向服务器发送什么？    请求方式  请求头 请求体
+
+// 7. 服务器通常向浏览器返回哪些内容？  状态码  响应头  响应体
+
+// 8. 浏览器收到HTML后，是否必须等它全部下载完成才开始解析？   不是
+
+// 9. HTML和CSS分别会被构建成什么？  Dom  cssom
+
+// 10. 遇到普通script、defer script、async script时，执行方式有什么区别？    普通 script：通常暂停 HTML 解析，下载并执行脚本，然后继续解析。  defer：并行下载，不阻塞 HTML 解析；DOM 构建完成后按书写顺序执行。 async：并行下载；下载完成后尽快执行，执行时可能暂停 HTML 解析，不保证书写顺序。
+
+// 11. DOM和CSSOM结合后，接下来依次经过哪些渲染阶段？   
+// DOM + CSSOM
+// → 计算样式
+// → 渲染树
+// → layout
+// → paint
+// → composite
+// → 屏幕画面  
+
+// 12. Layout、Paint和Composite分别负责什么？   Layout：计算元素的宽度、高度和位置。      Paint：生成颜色、文字、边框、阴影等绘制指令。   Composite：把不同图层按正确位置和顺序合成最终画面。
+
+// 13. 修改width、background-color、transform通常分别可能触发什么？       重排  重绘  合成
+
+// 14. DOMContentLoaded与load有什么区别？         DOMContentLoaded不会等图片加载完就显示    load所有加载完成显现
+
+// 15. 请把“输入URL到页面显示”的完整过程连成一段话。     
+
+//  解析URL
+    // 判断已有页面或资源缓存是否仍然可用，减少网络请求和下载
+// → 检查缓存
+    // 把域名转换成服务器的 IP 地址
+// → DNS
+    // tcp进行三次握手 确定连接建立
+// → TCP
+    // 验证服务器身份、协商加密方式并建立安全的加密通信，防止数据被窃听或篡改。
+// → TLS
+    // 浏览器发送请求方式 请求头
+// → HTTP请求
+    // 服务器返回HTML
+// → HTTP响应
+
+// → 流式解析HTML
+    // 根据节点创建dom树
+// → DOM
+// → 请求并解析CSS
+    // 创建cssom树
+// → CSSOM
+    // 开始渲染  确认每个元素最终生效样式
+// → 计算样式
+    // 浏览器把DOM中的可见内容和计算后的样式结合，生成渲染树
+// → 渲染树
+    // 渲染树确定以后，浏览器需要计算元素的几何信息
+// → Layout
+    // 知道元素的位置和大小以后，浏览器需要生成绘制指令。
+// → Paint
+    // 浏览器将已经绘制好的不同图层按照位置 层级 透明度 交换组合成画面
+// → Composite
+// → 页面显示
+
+
+// 解析URL与检查缓存
+// → DNS获得IP
+// → TCP建立连接
+// → HTTPS进行TLS安全协商
+// → 发送HTTP请求
+// → 接收HTTP响应
+// → 流式解析HTML并构建DOM
+// → 下载并解析CSS，构建CSSOM
+// → 计算最终样式
+// → 生成渲染树
+// → Layout计算尺寸和位置
+// → Paint生成绘制指令
+// → Composite合成图层
+// → 页面显示
+</script>
+</html>
