@@ -1,0 +1,50 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 32px;
+
+    font-family:
+        Arial,
+        "Microsoft YaHei",
+        sans-serif;
+
+    color: #1f2937;
+    background-color: #f3f4f6;
+}
+
+.page {
+    width: min(100%, 720px);
+    margin-inline: auto;
+    padding: 32px;
+
+    border-radius: 12px;
+    background-color: #ffffff;
+}
+
+button {
+    min-height: 44px;
+    padding: 8px 16px;
+
+    border: 0;
+    border-radius: 6px;
+
+    color: #ffffff;
+    background-color: #2563eb;
+
+    font: inherit;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1d4ed8;
+}
+
+button:focus-visible {
+    outline: 3px solid #f59e0b;
+    outline-offset: 3px;
+}
