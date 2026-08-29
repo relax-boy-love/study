@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>登录鉴权与Vite代理</title>
+
+    <script
+        type="module"
+        src="/src/main.js"
+    ></script>
+</head>
+
+<body>
+    <main class="page">
+        <h1>登录鉴权与Vite代理</h1>
+
+        <section>
+            <h2>直接跨域请求</h2>
+
+            <button
+                id="direct-login"
+                type="button"
+            >
+                直接请求3000端口
+            </button>
+        </section>
+
+        <section>
+            <h2>通过Vite代理请求</h2>
+
+            <button
+                id="proxy-login"
+                type="button"
+            >
+                登录并获取用户
+            </button>
+        </section>
+
+        <pre id="result">等待操作</pre>
+    </main>
+</body>
+</html>

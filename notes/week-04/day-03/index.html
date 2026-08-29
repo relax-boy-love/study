@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    // 1. HTTP为什么需要额外机制保存登录状态？  HTTP 本身为无状态 服务器不知道两次请求来自同一个用户 所以需要额外的身份凭据
+
+// 2. Cookie主要保存在浏览器还是服务器？   浏览器
+
+// 3. Session数据主要保存在浏览器还是服务器？    服务器
+
+// 4. Session方案中，浏览器通常保存完整用户数据，还是只保存sessionId？   sessionId
+
+// 5. 服务器通过哪个响应头要求浏览器保存Cookie？  Set-Cookie
+ 
+// 6. 浏览器通过哪个请求头向服务器发送Cookie？  Cookie
+
+// 7. Cookie是否通常需要前端每次手动添加到请求头？  不需要
+
+// 8. HttpOnly有什么作用？   作用：降低身份 Cookie 被 XSS 脚本直接读取的风险。
+
+// 9. HttpOnly能否彻底解决所有XSS问题？   不能
+
+// 10. Secure表示什么？  表示 Cookie 只应通过 HTTPS 连接发送。本地开发的 localhost 在部分浏览器中可能有特殊处理，但正式环境应该使用 HTTPS
+
+// 11. SameSite主要控制什么？  控制跨站请求是否自动携带 Cookie。
+
+// 12. SameSite=None通常还需要配合什么属性？     Secure
+
+// 13. Session方案中，服务器怎样根据请求判断当前用户是谁？   根据浏览器自动携带sessionId Cookie  服务器根据sessionId查询Session确定用户
+
+// 14. 只清空前端页面上的用户信息，是否等于服务器Session已经退出？  不等于
+
+// 15. 完整的Session退出通常需要服务器做什么？  服务器删除或失效Session
+
+// 16. Cookie和Session最核心的区别是什么？  Cookie  → 浏览器的数据保存与自动携带机制  Session → 服务器保存登录状态的方案
+
+
+// 1. Token可以先理解为什么？   服务器签发给客户端的访问凭据
+
+// 2. 使用Authorization携带Token时，浏览器通常会自动添加， 还是需要前端主动添加？  前端主动添加
+
+// 3. Bearer后面通常放什么？      sessionId
+
+// 4. Token与Cookie是不是完全互斥的概念？为什么？     不是  因为Token 也可以保存到 Cookie 中。此时浏览器仍可能自动携带它 Cookie → 数据保存与发送机制  Token  → 身份凭据的一种形式
+
+// 5. JWT一定代表所有Token吗？     不是
+
+// 6. JWT通常由哪三部分组成？           Header.Payload.Signature
+
+// 7. Payload通常可以保存哪些非敏感信息？   sub：主体标识，常用作用户 ID；   iat：签发时间；   exp：过期时间；   iss：签发者；  aud：接收者。
+
+// 8. JWT的Payload经过的是普通编码还是一定经过加密？     Base64URL 编码  不加密
+
+// 9. 为什么不能把密码放进JWT Payload？因为放在Payload里别人可以解码看见
+
+// 10. JWT签名主要解决什么问题？     Token 内容被修改后，服务器能够发现签名不匹配。
+
+// 11. 只解码出JWT Payload，能否证明Token有效？    不能  必须验证签名和重要声明。
+
+// 12. 服务器验证JWT时，除了签名还应检查什么？  检查exp是否过期  检查iss、aud等声明  获取用户标识和权限
+
+// 13. Session方案中，服务器通常保存什么？   sessionId
+ 
+// 14. JWT方案中，客户端通常持有什么？    Token
+
+// 15. Session为什么比较容易主动让某个登录立即失效？   删除服务器 Session
+
+// 16. 已签发且未过期的JWT为什么不容易立即失效？   普通 JWT 可以只依靠签名和过期时间进行验证，服务器可能没有保存每一个已签发 JWT。既然服务器没有对应的 Session 记录可以直接删除，那么一个尚未过期且签名有效的 JWT 可能继续使用。
+
+// 17. localStorage保存Token的主要风险是什么？   JavaScript 可以读取；   页面发生 XSS 时，Token 可能被盗取。
+
+// 18. HttpOnly Cookie为什么能降低Token被JavaScript直接窃取的风险？     JavaScript 通常不能读取，降低 Token 被脚本直接窃取的风险。 
+
+// 19. HttpOnly Cookie是否意味着完全不需要考虑CSRF？   不是
+
+// 20. 能否简单认为“JWT一定比Session安全”？为什么？ 不能 需要结合前后端架构和威胁模型选择
+
+
+
+// 1. Access Token与Refresh Token分别负责什么？   Access Token  → 有效期较短，用于访问接口  Refresh Token → 有效期较长，用于申请新的Access Token
+
+// 2. 为什么Access Token通常设置较短有效期？      Access Token 有效期较短，可以缩短它泄露后的可利用时间。即使攻击者拿到 Token，也只能在较短时间内使用。
+
+// 3. Refresh Token为什么通常比Access Token有效期长？  因为 Refresh Token是在Access Token重新获取新的Access Token  所以有效期长
+
+// 4. 访问受保护接口时，通常携带哪一个Token？     Access Token  
+
+// 5. Access Token通常放在哪个请求头中？            Authorization
+
+// 6. Access Token过期后，服务器通常返回401还是403？   401
+
+// 7. 身份有效但权限不足，通常返回401还是403？  403
+
+// 8. 刷新接口主要接收Access Token还是Refresh Token？  Refresh Token
+
+// 9. 刷新成功后，服务器通常返回什么？     新的Access Token
+
+// 10. 为什么Refresh Token适合保存在HttpOnly Cookie中？  Refresh Token 使用频率较低、权限影响时间更长，泄露后的风险更大。放在 HttpOnly Cookie 中，可以让前端 JavaScript 无法直接读取，降低被 XSS 脚本直接盗走的风险。
+
+// 11. 前端能否通过JavaScript直接读取HttpOnly Cookie？   不能
+
+// 12. credentials: \"include\"有什么作用？  跨源携带 Cookie
+
+// 13. 前端写了credentials: \"include\"，是否就一定能跨源携带Cookie？    服务器还必须正确配置允许携带凭据的 CORS 响应头，Cookie 自身也要符合 SameSite、Secure、域名和路径等规则。   
+
+// 14. Refresh Token轮换是什么意思？       旧Refresh Token失效   服务器发新的Refresh Token 和 Access Token
+
+// 15. 为什么刷新接口失败后不能继续无限刷新？       
+// 刷新接口返回401
+// → Refresh Token本身已经无效
+// → 如果再次调用刷新接口
+// → 仍然返回401
+// → 代码继续刷新
+// → 形成无限请求循环
+
+// 16. 退出时为什么不仅要清空前端Access Token？   只清空前端 Access Token，可能无法让服务器保存的 Refresh Token 立即失效。
+
+// 17. 完整退出时，服务器应该怎样处理Refresh Token？  服务器撤销或失效 Refresh Token，并通过过期的 Set-Cookie 清除浏览器中的 Refresh Token Cookie。
+
+// 18. 请按顺序写出Access Token过期后的刷新流程。       过期->访问接口->接口返回401->浏览器携带Refresh Token-> 服务器验证->服务器返回新Access Token->重新之前的业务接口
+
+// http://localhost:5173
+// 1. http://localhost:5173/users   是
+
+// 2. http://localhost:5173/products?page=2  是
+
+// 3. http://localhost:3000/users  不是
+
+// 4. https://localhost:5173/users  不是
+
+// 5. http://127.0.0.1:5173/users  不是
+
+// 6. http://localhost:5173/admin/users  是
+
+// 7. 判断同源需要比较哪三部分？   协议  主机 端口
+
+// 8. URL路径不同是否会造成跨源？     不会
+
+// 9. localhost与127.0.0.1一定同源吗？   不一定
+
+// 10. 跨域主要是谁限制的？   浏览器
+
+// 11. JavaScript语言本身是否禁止跨域请求？   不禁止
+
+// 12. Node.js请求另一个服务器时，是否受到浏览器同源策略的限制？   不会
+
+// 13. 浏览器出现CORS错误，是否一定代表请求完全没有发出？   不一定
+
+// 14. 请求已经发出但缺少CORS许可时，谁阻止前端读取响应？    浏览器
+
+// 15. img能够显示跨源图片，是否代表JavaScript一定能读取图片像素？     不一定
+
+// 16. CORS许可由前端页面提供，还是由目标服务器通过响应头提供？   服务器响应头
+ 
+// 17. Access-Control-Allow-Origin主要表达什么？    执行和检查许可的是浏览器，许可信息由目标服务器提供  目标服务器允许来自 http://localhost:5173 这个源的网页读取响应
+
+// 18. 为什么Postman请求成功，浏览器Fetch仍可能失败？   Postman、后端程序和 Node.js 不执行浏览器页面的同源策略  浏览器Fetch没有返回正确的cors就会失败
+
+// 19. 同源策略主要保护谁的数据和安全？   用户
+
+// 20. “跨域”与“请求失败”能否永远画等号？   不能
+
+
+// 1. 当前页面5173访问接口3000为什么跨源？   端口不一样
+
+// 2. Access-Control-Allow-Origin应该由前端还是服务器设置？   服务器
+
+// 3. Access-Control-Allow-Origin: *表示什么？  表示允许任意源读取不带凭据的响应
+
+// 4. 携带Cookie凭据时，Allow-Origin能否使用*？  不能
+
+// 5. 跨源携带Cookie时，前端需要设置什么？  credentials: "include"
+
+// 6. 服务器需要返回哪两个关键CORS响应头来允许指定源携带凭据？   服务器 Access-Control-Allow-Credentials: true  服务器 Access-Control-Allow-Origin: 具体源
+
+// 7. 所有跨源请求都会先发送OPTIONS吗？   不是 简单请求不会 Content-Type application/x-www-form-urlencoded  multipart/form-data  text/plain
+
+// 8. 预检请求使用什么HTTP方法？    OPTIONS 请求
+
+// 9. 预检请求的目的是什么？  询问服务器是否允许这个源？   是否允许这种请求方法？   是否允许这些请求头？  是否允许携带凭据？
+
+// 10. GET是否一定触发预检？   不一定
+
+// 11. POST一定属于简单请求吗？   不一定
+
+// 12. Content-Type: application/json为什么常触发预检？    这个不是简单请求
+
+// 13. Authorization请求头为什么可能触发预检？    Authorization 不属于 CORS 规定的安全列出请求头，所以跨源请求携带它时通常需要先通过预检，确认服务器允许该请求头。
+
+// 14. PATCH跨源请求为什么通常会预检？   PATCH 不属于简单请求允许的方法范围，所以跨源 PATCH 通常会触发预检。
+
+// 15. 服务器没有允许PATCH时，正式PATCH是否还会发送？   不会
+
+// 16. Access-Control-Allow-Methods表示什么？  允许的方法
+
+// 17. Access-Control-Allow-Headers表示什么？  允许的请求头
+
+// 18. Origin请求头表示什么？  服务器根据 Origin 判断它是否位于允许来源列表中。
+
+// 19. CORS是否等于身份认证？  不是
+
+// 20. 接口允许跨域，是否代表当前用户一定有权访问？  不一定
+
+
+
+// 1. 3000端口的接口服务器是否成功启动？  是
+
+// 2. 5173端口的Vite页面是否成功打开？ 是
+
+// 3. 点击“直接请求3000端口”后，页面是否显示失败？  是
+
+// 4. 控制台是否出现CORS相关错误？  是
+
+// 5. Network中是否看到了OPTIONS预检请求？   是
+
+// 6. 后端终端是否记录了OPTIONS /login？   是
+
+// 7. 为什么这个POST请求会触发预检？  "Content-Type":  "application/json; charset=utf-8" 不是简单请求
+                
+// 8. 点击“登录并获取用户”后，是否显示小明的数据？    是
+
+// 9. 通过代理时，浏览器地址栏和Network中的请求地址是5173还是3000？   5173
+
+// 10. 后端终端是否收到了POST /login和GET /profile？   收到
+
+// 1. 浏览器直接请求3000时，为什么跨源？   因为端口不一样
+
+// 2. 使用代理后，前端fetch中写的请求地址是什么？   /api/login
+
+// 3. 浏览器实际向哪个端口发送请求？    5173
+
+// 4. 谁把请求从5173转发到3000？    vite
+
+// 5. Vite请求3000为什么不受浏览器同源策略限制？   Vite 是运行在 Node.js 中的开发服务器。它向 3000 端口发起的是服务器到服务器的请求，不是浏览器页面中的 JavaScript 请求，因此不受浏览器同源策略限制。
+
+// 6. rewrite为什么要删除/api？   后端只定义了 /login  不删除就是/api/login 会返回404
+
+// 7. 如果不删除/api，当前后端可能返回什么状态码？   404
+
+// 8. changeOrigin主要调整什么信息？  代理转发时会调整请求中的目标主机信息
+
+// 9. Vite代理是否关闭或绕过了浏览器安全功能？   没有
+
+// 10. 代理为什么能够解决本地接口跨域？   因为浏览器还是请求的5173 请求3000的是vite
+
+// 11. 正式生产环境通常继续使用Vite开发服务器做代理吗？  不会 使用→ Nginx  → 内部接口服务器
+
+// 12. CORS和代理分别由谁解决跨域问题？   
+// CORS：
+// 目标服务器返回许可响应头，
+// 告诉浏览器允许哪些网页来源读取响应。
+
+// 代理：
+// 浏览器请求同源的代理服务器，
+// 代理服务器再从服务器端请求目标接口。
+
+
+// 一、登录流程
+
+// 用户输入：账号 密码
+// → 前端通过什么协议发送登录请求：  前端通过HTTPS发送登录请求
+// → 服务器验证什么：      账号和密码
+// → 验证成功后签发什么：    Refresh Token  Access Token
+// → 前端怎样保存或使用凭据：   Access Token  → 保存在前端内存中  Refresh Token → 保存在HttpOnly、Secure Cookie中
+
+
+
+// 二、携带Access Token访问接口
+
+// 前端把Access Token放入哪个请求头： Authorization
+// → 请求头的基本格式：   "Bearer " + accessToken
+// → 服务器需要检查什么：   Token签名  Token是否过期  签发者iss  接收者aud  用户身份  用户权限
+// → Token无效或过期返回什么状态码：   401
+// → 身份有效但权限不足返回什么状态码：   403
+
+
+// 三、刷新Token流程
+
+// Access Token过期：
+// → 业务接口返回：   401
+// → 前端请求哪个接口：   post /api/login
+// → 浏览器携带什么：     Refresh Token的Cookie
+// → 服务器验证什么：    Refresh Token
+// → 验证成功返回什么：   accessToken
+// → 前端接下来重新执行什么：  继续业务接口
+// → 刷新失败后应该怎样处理：   停止刷新 清空 accessToken和用户状态
+
+
+// 四、退出登录流程
+
+// 前端请求什么：退出接口
+// → 服务器撤销或失效什么：Refresh Token
+// → 服务器怎样清除Refresh Token Cookie：   服务器使Refresh Token Cookie过期
+// → 前端清空什么：  access token  和用户状态
+// → 页面最后跳转到哪里：登录
+
+
+// 五、跨域是谁限制的？
+
+// 需要说明：   
+// 1. 是浏览器、JavaScript语言还是服务器？ 浏览器
+// 2. 主要限制的是什么？       限制前端 JavaScript 读取跨源响应 
+// 3. CORS错误是否代表请求一定没有发出？   不一定
+
+
+// 六、代理为什么有效？
+
+// 需要说明：
+// 1. 浏览器实际请求哪个源？   5173
+// 2. 谁把请求转发给目标服务器？   vite
+// 3. 为什么转发过程不受浏览器同源策略限制？   浏览器只向同源的 5173 发送请求，Vite 再从服务器端请求 3000。服务器到服务器的请求不受浏览器同源策略限制，而且代理没有关闭浏览器的安全策略。
+// 4. 代理是否关闭了浏览器的安全策略？   没有
+</script> 
+</html>
