@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>XSS 本地实验</title>
+</head>
+
+<body>
+    <label for="commentInput">评论内容</label>
+    <input id="commentInput" type="text">
+
+    <button id="showButton" type="button">
+        显示评论
+    </button>
+
+    <p id="status">脚本没有执行</p>
+    <div id="commentOutput"></div>
+
+    <script>
+        const input = document.querySelector("#commentInput");
+        const button = document.querySelector("#showButton");
+        const output = document.querySelector("#commentOutput");
+
+        button.addEventListener("click", function () {
+            const comment = input.value;
+
+            // 当前故意保留漏洞，下一部分再修复
+            // output.innerHTML = comment;
+            // 将用户输入作为文本渲染，避免被解析成可执行的 HTML
+            output.textContent = comment;
+        });
+
+        // 1. 测试一显示了什么？  显示了用户输入内容然后在div里
+        // 2. 测试二显示了什么？  显示了加粗的文字 在div里 识别到了strong标签
+        // 3. 测试三运行后，status 发生了什么变化？   status的内容变成了“脚本执行了”
+        // 4. 第三次测试中，是什么事件触发了 JavaScript？   onerror图片加载失败就触发了js
+        // 5. 如果 Cookie 设置了 HttpOnly，这段脚本还能不能修改页面？为什么？ 设置 HttpOnly 后，这段恶意脚本仍然能够修改页面 因为 HttpOnly 只会阻止 JavaScript 访问 Cookie，但不会阻止 JavaScript 修改页面内容
+
+        // 1. 你最终选择了哪个 API？  textContent
+
+        // 2. 第二段输入现在显示成加粗文字，还是显示完整标签？   显示完整标签
+
+        // 3. 第三段输入还会创建 img 元素吗？  不会 现在用户输入的所有内容都会被当成文本
+
+        // 4. status 是否还会变成“脚本已经执行”？    不会
+
+        // 5. 为什么这次修复有效？请使用“数据”和“代码”两个词来解释。   
+        // 修复有效，是因为 textContent 把用户输入当作文本，
+        // 而不是当作可以被浏览器解析和执行的html或者javascript。
+    </script>
+</body>
+
+</html>
